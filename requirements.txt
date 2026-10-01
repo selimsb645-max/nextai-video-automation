@@ -1,0 +1,8 @@
+kokoro-onnx==0.6.1
+onnxruntime==1.30.0
+numpy==2.4.6
+soundfile==0.14.0
+Pillow==12.3.0
+websocket-client==1.9.2
+edge-tts==7.2.8
+requests==2.34.2

@@ -1,0 +1,528 @@
+{
+  "schema_version": 1,
+  "private_repo": "selimsb645-max/nextai-video-automation",
+  "release_tag": "handover-2026-10-01",
+  "asset_name": "nextai-runtime-assets.tar.gz",
+  "archive_sha256": "11d29e52dbd302e66e4fa3ed3b45c1aed22da2f8743279c4fe728b0dac175678",
+  "archive_bytes": 1591673154,
+  "asset_file_count": 129,
+  "files": [
+    {
+      "path": "factory/footage/ai_0_8084494.mp4",
+      "bytes": 2289809
+    },
+    {
+      "path": "factory/footage/ai_1_8084503.mp4",
+      "bytes": 4152506
+    },
+    {
+      "path": "factory/footage/ai_2_8084624.mp4",
+      "bytes": 5280559
+    },
+    {
+      "path": "factory/footage/bacteria_sem_4114797.mp4",
+      "bytes": 5593098
+    },
+    {
+      "path": "factory/footage/bacteria_sem_4121129.mp4",
+      "bytes": 4423183
+    },
+    {
+      "path": "factory/footage/bacteria_sem_4121322.mp4",
+      "bytes": 4598994
+    },
+    {
+      "path": "factory/footage/bacteria_sem_4121897.mp4",
+      "bytes": 2474499
+    },
+    {
+      "path": "factory/footage/bacteria_sem_5838991.mp4",
+      "bytes": 2869522
+    },
+    {
+      "path": "factory/footage/bacteria_sem_5839028.mp4",
+      "bytes": 3482622
+    },
+    {
+      "path": "factory/footage/bacteria_sem_5839036.mp4",
+      "bytes": 3341393
+    },
+    {
+      "path": "factory/footage/bacteria_sem_5849464.mp4",
+      "bytes": 2458022
+    },
+    {
+      "path": "factory/footage/boardgame_sem_5146965.mp4",
+      "bytes": 8774301
+    },
+    {
+      "path": "factory/footage/boardgame_sem_5147018.mp4",
+      "bytes": 7307335
+    },
+    {
+      "path": "factory/footage/boardgame_sem_6058369.mp4",
+      "bytes": 2328363
+    },
+    {
+      "path": "factory/footage/boardgame_sem_6134028.mp4",
+      "bytes": 3444291
+    },
+    {
+      "path": "factory/footage/boardgame_sem_8058266.mp4",
+      "bytes": 6172374
+    },
+    {
+      "path": "factory/footage/boardgame_sem_855635.mp4",
+      "bytes": 1974476
+    },
+    {
+      "path": "factory/footage/boardgame_sem_9058102.mp4",
+      "bytes": 5906914
+    },
+    {
+      "path": "factory/footage/car_0_3059072.mp4",
+      "bytes": 9704363
+    },
+    {
+      "path": "factory/footage/car_1_5910552.mp4",
+      "bytes": 13119232
+    },
+    {
+      "path": "factory/footage/car_2_13802599.mp4",
+      "bytes": 15228607
+    },
+    {
+      "path": "factory/footage/chip_0_6755158.mp4",
+      "bytes": 5491120
+    },
+    {
+      "path": "factory/footage/chip_1_6754820.mp4",
+      "bytes": 6065363
+    },
+    {
+      "path": "factory/footage/chip_2_6754818.mp4",
+      "bytes": 12010211
+    },
+    {
+      "path": "factory/footage/city_0_8951964.mp4",
+      "bytes": 38746820
+    },
+    {
+      "path": "factory/footage/city_1_10603140.mp4",
+      "bytes": 66418851
+    },
+    {
+      "path": "factory/footage/city_2_11533613.mp4",
+      "bytes": 17979513
+    },
+    {
+      "path": "factory/footage/code_0_854053.mp4",
+      "bytes": 5547478
+    },
+    {
+      "path": "factory/footage/code_1_11274341.mp4",
+      "bytes": 5412353
+    },
+    {
+      "path": "factory/footage/code_2_18382358.mp4",
+      "bytes": 4774616
+    },
+    {
+      "path": "factory/footage/datacenter_0_7140928.mp4",
+      "bytes": 6448036
+    },
+    {
+      "path": "factory/footage/datacenter_1_1085656.mp4",
+      "bytes": 15361903
+    },
+    {
+      "path": "factory/footage/datacenter_2_7140931.mp4",
+      "bytes": 3293811
+    },
+    {
+      "path": "factory/footage/dna_0_9837848.mp4",
+      "bytes": 12302260
+    },
+    {
+      "path": "factory/footage/dna_1_9837842.mp4",
+      "bytes": 4156077
+    },
+    {
+      "path": "factory/footage/dna_2_10661569.mp4",
+      "bytes": 28082250
+    },
+    {
+      "path": "factory/footage/doctor_0_6130110.mp4",
+      "bytes": 17064328
+    },
+    {
+      "path": "factory/footage/doctor_1_6130127.mp4",
+      "bytes": 5271332
+    },
+    {
+      "path": "factory/footage/doctor_2_6129939.mp4",
+      "bytes": 6501063
+    },
+    {
+      "path": "factory/footage/go_sem_19428465.mp4",
+      "bytes": 8675972
+    },
+    {
+      "path": "factory/footage/go_sem_6970335.mp4",
+      "bytes": 6209890
+    },
+    {
+      "path": "factory/footage/go_sem_7829009.mp4",
+      "bytes": 3212926
+    },
+    {
+      "path": "factory/footage/go_sem_855634.mp4",
+      "bytes": 2816495
+    },
+    {
+      "path": "factory/footage/heart_0_6130551.mp4",
+      "bytes": 2213412
+    },
+    {
+      "path": "factory/footage/heart_1_6130125.mp4",
+      "bytes": 4890057
+    },
+    {
+      "path": "factory/footage/heart_2_6130124.mp4",
+      "bytes": 6623799
+    },
+    {
+      "path": "factory/footage/injection_sem_5973484.mp4",
+      "bytes": 2540487
+    },
+    {
+      "path": "factory/footage/injection_sem_5973485.mp4",
+      "bytes": 2669793
+    },
+    {
+      "path": "factory/footage/injection_sem_5998387.mp4",
+      "bytes": 2806914
+    },
+    {
+      "path": "factory/footage/injection_sem_5998399.mp4",
+      "bytes": 1649310
+    },
+    {
+      "path": "factory/footage/injection_sem_5998400.mp4",
+      "bytes": 3013499
+    },
+    {
+      "path": "factory/footage/injection_sem_6894909.mp4",
+      "bytes": 1267029
+    },
+    {
+      "path": "factory/footage/injection_sem_8670929.mp4",
+      "bytes": 3199449
+    },
+    {
+      "path": "factory/footage/laser_sem_10415847.mp4",
+      "bytes": 6953714
+    },
+    {
+      "path": "factory/footage/laser_sem_12426541.mp4",
+      "bytes": 3914675
+    },
+    {
+      "path": "factory/footage/laser_sem_13306930.mp4",
+      "bytes": 2764761
+    },
+    {
+      "path": "factory/footage/laser_sem_8328469.mp4",
+      "bytes": 2445412
+    },
+    {
+      "path": "factory/footage/laser_sem_8534097.mp4",
+      "bytes": 2025820
+    },
+    {
+      "path": "factory/footage/laser_sem_8534606.mp4",
+      "bytes": 1951570
+    },
+    {
+      "path": "factory/footage/laser_sem_8534740.mp4",
+      "bytes": 2089959
+    },
+    {
+      "path": "factory/footage/microscope_0_9244192.mp4",
+      "bytes": 7535236
+    },
+    {
+      "path": "factory/footage/microscope_1_12866100.mp4",
+      "bytes": 8740217
+    },
+    {
+      "path": "factory/footage/microscope_2_9244195.mp4",
+      "bytes": 6405622
+    },
+    {
+      "path": "factory/footage/nanotech_sem_8392607.mp4",
+      "bytes": 2932003
+    },
+    {
+      "path": "factory/footage/nanotech_sem_8534531.mp4",
+      "bytes": 2698358
+    },
+    {
+      "path": "factory/footage/nanotech_sem_8852659.mp4",
+      "bytes": 4652282
+    },
+    {
+      "path": "factory/footage/network_0_3141210.mp4",
+      "bytes": 13262290
+    },
+    {
+      "path": "factory/footage/network_1_3129595.mp4",
+      "bytes": 12150723
+    },
+    {
+      "path": "factory/footage/network_2_3141208.mp4",
+      "bytes": 14343978
+    },
+    {
+      "path": "factory/footage/ocean_0_9806390.mp4",
+      "bytes": 25089567
+    },
+    {
+      "path": "factory/footage/ocean_1_3116760.mp4",
+      "bytes": 25115604
+    },
+    {
+      "path": "factory/footage/ocean_2_15814631.mp4",
+      "bytes": 22470006
+    },
+    {
+      "path": "factory/footage/patient_sem_6010956.mp4",
+      "bytes": 2009555
+    },
+    {
+      "path": "factory/footage/patient_sem_6010961.mp4",
+      "bytes": 1809192
+    },
+    {
+      "path": "factory/footage/patient_sem_6010965.mp4",
+      "bytes": 1360853
+    },
+    {
+      "path": "factory/footage/patient_sem_6011420.mp4",
+      "bytes": 2486432
+    },
+    {
+      "path": "factory/footage/patient_sem_6129926.mp4",
+      "bytes": 3719756
+    },
+    {
+      "path": "factory/footage/patient_sem_6130022.mp4",
+      "bytes": 3671319
+    },
+    {
+      "path": "factory/footage/patient_sem_6997947.mp4",
+      "bytes": 4730960
+    },
+    {
+      "path": "factory/footage/patient_sem_6998171.mp4",
+      "bytes": 7818983
+    },
+    {
+      "path": "factory/footage/pills_0_7033780.mp4",
+      "bytes": 2445389
+    },
+    {
+      "path": "factory/footage/pills_1_7033922.mp4",
+      "bytes": 1793787
+    },
+    {
+      "path": "factory/footage/pills_2_7033769.mp4",
+      "bytes": 5240587
+    },
+    {
+      "path": "factory/footage/planet_0_4702442.mp4",
+      "bytes": 12920076
+    },
+    {
+      "path": "factory/footage/protein_0_9837848.mp4",
+      "bytes": 12302260
+    },
+    {
+      "path": "factory/footage/protein_1_9837842.mp4",
+      "bytes": 4156077
+    },
+    {
+      "path": "factory/footage/robot_0_8084620.mp4",
+      "bytes": 15101412
+    },
+    {
+      "path": "factory/footage/robot_10_8087021.mp4",
+      "bytes": 4009978
+    },
+    {
+      "path": "factory/footage/robot_11_8087073.mp4",
+      "bytes": 8569658
+    },
+    {
+      "path": "factory/footage/robot_12_8087311.mp4",
+      "bytes": 4148677
+    },
+    {
+      "path": "factory/footage/robot_13_8464634.mp4",
+      "bytes": 12989879
+    },
+    {
+      "path": "factory/footage/robot_14_8466288.mp4",
+      "bytes": 19542789
+    },
+    {
+      "path": "factory/footage/robot_15_8501992.mp4",
+      "bytes": 12975133
+    },
+    {
+      "path": "factory/footage/robot_16_8466300.mp4",
+      "bytes": 17958901
+    },
+    {
+      "path": "factory/footage/robot_17_8328106.mp4",
+      "bytes": 4465112
+    },
+    {
+      "path": "factory/footage/robot_18_8501985.mp4",
+      "bytes": 5261206
+    },
+    {
+      "path": "factory/footage/robot_19_8979421.mp4",
+      "bytes": 6109432
+    },
+    {
+      "path": "factory/footage/robot_1_8566675.mp4",
+      "bytes": 5709670
+    },
+    {
+      "path": "factory/footage/robot_2_8566673.mp4",
+      "bytes": 6418161
+    },
+    {
+      "path": "factory/footage/robot_3_35280160.mp4",
+      "bytes": 8921627
+    },
+    {
+      "path": "factory/footage/robot_4_5854603.mp4",
+      "bytes": 4247008
+    },
+    {
+      "path": "factory/footage/robot_5_8087012.mp4",
+      "bytes": 3779229
+    },
+    {
+      "path": "factory/footage/robot_6_8087013.mp4",
+      "bytes": 4601911
+    },
+    {
+      "path": "factory/footage/robot_7_8084496.mp4",
+      "bytes": 14871640
+    },
+    {
+      "path": "factory/footage/robot_8_8465908.mp4",
+      "bytes": 5550093
+    },
+    {
+      "path": "factory/footage/robot_9_8467244.mp4",
+      "bytes": 6898694
+    },
+    {
+      "path": "factory/footage/scientist_0_9431152.mp4",
+      "bytes": 10120483
+    },
+    {
+      "path": "factory/footage/scientist_1_9373466.mp4",
+      "bytes": 6536465
+    },
+    {
+      "path": "factory/footage/scientist_2_8534740.mp4",
+      "bytes": 4895102
+    },
+    {
+      "path": "factory/footage/socialmedia_sem_5099053.mp4",
+      "bytes": 1701450
+    },
+    {
+      "path": "factory/footage/socialmedia_sem_6279142.mp4",
+      "bytes": 1573325
+    },
+    {
+      "path": "factory/footage/socialmedia_sem_7480496.mp4",
+      "bytes": 2228354
+    },
+    {
+      "path": "factory/footage/socialmedia_sem_7504976.mp4",
+      "bytes": 2922053
+    },
+    {
+      "path": "factory/footage/socialmedia_sem_7534331.mp4",
+      "bytes": 1089126
+    },
+    {
+      "path": "factory/footage/socialmedia_sem_7616840.mp4",
+      "bytes": 3184919
+    },
+    {
+      "path": "factory/footage/socialmedia_sem_8391324.mp4",
+      "bytes": 2872525
+    },
+    {
+      "path": "factory/footage/socialmedia_sem_8992552.mp4",
+      "bytes": 2432352
+    },
+    {
+      "path": "factory/footage/space_0_10409075.mp4",
+      "bytes": 214327402
+    },
+    {
+      "path": "factory/footage/space_1_854238.mp4",
+      "bytes": 2231701
+    },
+    {
+      "path": "factory/footage/space_2_854225.mp4",
+      "bytes": 6195646
+    },
+    {
+      "path": "factory/footage/walk_0_8084618.mp4",
+      "bytes": 7145935
+    },
+    {
+      "path": "factory/footage/walk_1_8566674.mp4",
+      "bytes": 5214712
+    },
+    {
+      "path": "factory/footage/walk_2_8084617.mp4",
+      "bytes": 11250725
+    },
+    {
+      "path": "factory/runs/gemini_4_argon_2026-10-01_2026-10-01/final.mp4",
+      "bytes": 22554323
+    },
+    {
+      "path": "factory/runs/gemini_4_argon_2026-10-01_2026-10-01/narration.mp3",
+      "bytes": 1069005
+    },
+    {
+      "path": "factory/runs/openai_dots_coworker_2026-10-01_2026-10-01/final.mp4",
+      "bytes": 294022744
+    },
+    {
+      "path": "factory/runs/openai_dots_coworker_2026-10-01_2026-10-01/narration.mp3",
+      "bytes": 6282765
+    },
+    {
+      "path": "factory/tts_kokoro/kokoro-v1.0.fp16.onnx",
+      "bytes": 163527961
+    },
+    {
+      "path": "factory/tts_kokoro/voices-v1.0.bin",
+      "bytes": 28214398
+    }
+  ],
+  "excluded": "No tokens, passwords, login cookies, browser debug URLs, logs or archived unrelated code. Original third-party rights retained."
+}

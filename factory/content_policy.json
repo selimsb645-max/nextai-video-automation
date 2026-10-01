@@ -1,0 +1,86 @@
+{
+  "version": "2026-10-01",
+  "allowed_pillars": [
+    "ai_updates",
+    "gadget_reviews",
+    "personal_finance"
+  ],
+  "priority": [
+    "ai_updates",
+    "gadget_reviews",
+    "personal_finance"
+  ],
+  "ai_platforms": [
+    "ChatGPT",
+    "OpenAI",
+    "Claude",
+    "Anthropic",
+    "Gemini",
+    "Google AI Studio",
+    "Grok",
+    "xAI",
+    "DeepSeek",
+    "Qwen"
+  ],
+  "scope": "AI tool/platform/product updates and useful feature comparisons; evidence-based gadget buying reviews and comparisons; general personal-finance education. No standalone medical/scientific-discovery stories, robot spectacles or unrelated news.",
+  "research": {
+    "cache_hours": 24,
+    "max_search_queries_per_topup": 2,
+    "batch_topup_max": 3,
+    "prefer_official_sources": true,
+    "exact_search_volume": "Only report with named provider and dated evidence. Free trends/news/YouTube signals are proxies, never invented search counts."
+  },
+  "gadget_reviews": "Clearly label research-based/spec-based comparisons. Never claim hands-on testing or show generic stock footage as the actual reviewed device.",
+  "personal_finance": "General education only, no personalized investment/tax advice, guaranteed returns, get-rich-quick promises or fabricated rates. State jurisdiction/date for financial rules.",
+  "cost": "Use free sources, native agent composition, local Kokoro/ffmpeg/Pexels, existing ChatGPT web session. No paid LLM/SEO APIs, generate_image or extra scheduled research runs. Reuse cached research across all five video slots. Agent/workflow turns still consume Base44 credits.",
+  "schedules": {
+    "timezone": "Asia/Dhaka",
+    "lead_hours_min": 8,
+    "lead_hours_max": 10,
+    "production_lead_hours": 10,
+    "slots": {
+      "long": [
+        "19:30",
+        "23:30"
+      ],
+      "short": [
+        "02:30",
+        "06:30",
+        "22:00"
+      ]
+    },
+    "first_new_evening_long_date": "2026-10-02",
+    "preserve_existing": {
+      "videoId": "OISJ6w_gFKE",
+      "publishAt": "2026-10-01T12:30:00Z"
+    },
+    "rule": "Schedule ALL Longs and Shorts private with publishAt 8-10 hours ahead. Never publish immediately, move existing uploads or force a late slot. Bangladesh clock is authoritative; US Eastern/Central conversions vary with DST. No Long-to-Short recycling."
+  },
+  "production_style": {
+    "version": "reference_channels_2026-10-01",
+    "references": [
+      "https://youtube.com/@natebjones",
+      "https://youtube.com/@theneuralnutshell"
+    ],
+    "inspected_samples": [
+      "https://www.youtube.com/watch?v=osZZjdMZVvA",
+      "https://www.youtube.com/watch?v=CMzleh2wjdg"
+    ],
+    "evidence": "Channel thumbnail grids, sample video opening frames, descriptions, chapters and available transcripts inspected. Not a claim of full audiovisual review of every video.",
+    "video_structure": [
+      "Immediate specific thesis/hook grounded in verified facts",
+      "Explain the update and why it matters for the viewer",
+      "Give a verified practical example or comparison, accurately attribute external evidence",
+      "Explain limitations, uncertainty and tradeoffs",
+      "End with a useful takeaway and short subscribe CTA"
+    ],
+    "video_tone": "Nate-inspired calm, analytical, concrete English explanation plus Neural-inspired documentary tension where supported. Use original Kokoro am_michael narration and own semantically matched licensed footage. No borrowed creator interviews, likeness, voice, shots, music, thumbnail files, logos or scripts. Never falsely say we tested a product or measured a benchmark.",
+    "editing": "Evidence-led relevant B-roll, clean readable information, restrained transitions and clear narration. Keep existing render, audio and safety gates. Any new captions/infographic renderer must be separately implemented/tested before claiming that feature is live; channel reference alone does not add graphics.",
+    "thumbnail_generator": "ChatGPT ONLY, existing single account",
+    "thumbnail_default": "Original Neural-inspired clean black/dark background, one clear topic-appropriate focal subject, large flat white condensed sans-serif hook text of 2-5 words and one factual red emphasis word. Keep plenty of negative space and phone readability. No mandatory arrows, yellow 3D type, fake shocked presenter, visual clutter or sensational danger unsupported by the actual video.",
+    "thumbnail_alternative": "Original Nate-inspired clean subject/product layout, large white text with green or blue emphasis and clear contextual imagery for practical positive tool/comparison topics. Do not duplicate their creator face, artwork, channel identity or exact wording.",
+    "face_rule": "No creator-lookalike presenter or borrowed portraits. Without an approved owner presenter image, prefer a relevant original product/concept subject. Never imply a named expert said or endorsed an unverified claim.",
+    "preserve": "Scope AI platform updates/gadget reviews/personal finance only; two Long/three original Shorts, existing lengths and 8-10h scheduled lead unchanged. Do not reupload their videos or modify already-uploaded/scheduled videos unless specifically requested.",
+    "account_switches_allowed": false
+  }
+}

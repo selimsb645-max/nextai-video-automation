@@ -1,0 +1,25 @@
+# Never commit credentials or browser/session artifacts.
+.env
+.env.*
+!.env.example
+yt-auth/
+*token*.json
+!docs/token_nextai.example.json
+*cookie*
+*session*.db
+*storage_state*
+factory/*login*.py
+factory/pwd*.py
+factory/chatgpt_accounts.json
+__pycache__/
+*.pyc
+*.log
+*.bak*
+.venv/
+# Large private assets are in the private release, not git history.
+factory/footage/*.mp4
+factory/tts_kokoro/
+factory/runs/**/*.mp4
+factory/runs/**/*.mp3
+factory/runs/**/*.wav
+*.tar.gz
