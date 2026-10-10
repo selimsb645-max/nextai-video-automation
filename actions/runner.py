@@ -906,6 +906,15 @@ def main():
         st3 = factory.load_state()
         st3["done"][s_e["id"]] = {"date": today, "videoId": s_vid}
         factory.save_state(st3)
+        # 2026-10-10 FIX: hook-cut shorts had NO thumbnail step (longs and robot
+        # shorts did) — every hook-cut went public with a bare frame. Same
+        # flow as the robot short now: PIL v3 landscape thumb + thumbnails.set.
+        try:
+            if not factory.make_thumb_ai(s_e, workdir):
+                factory.make_thumb(s_e, workdir, tf_pairs[0][0])
+            factory.set_thumbnail(s_vid, workdir)
+        except Exception as ex2:
+            log("hook-cut short thumb failed (continuing): " + str(ex2)[:120])
         log(f"hook-cut short: OK videoId={s_vid} scheduledFor={s_pub} ({s_slot})")
     except (Exception, SystemExit) as ex:
         log("hook-cut short step failed (long already uploaded; continuing): " + str(ex)[:140])
