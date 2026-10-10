@@ -313,5 +313,32 @@
   "uploaded_at": "2026-10-09T05:53:44+06:00",
   "scheduled_for": "2026-10-09T20:30:00Z",
   "url": "https://www.youtube.com/watch?v=X7C1bdU9V_c"
+ },
+ {
+  "id": "chatgpt_intelligent_ui_guide_2026_10_10_2026-10-10",
+  "videoId": "7ded-vFRxQk",
+  "title": "ChatGPT Intelligent UI: Full Beginner Guide",
+  "kind": "long",
+  "uploaded_at": "2026-10-10T06:07:51+06:00",
+  "scheduled_for": "2026-10-10T15:00:00Z",
+  "url": "https://www.youtube.com/watch?v=7ded-vFRxQk"
+ },
+ {
+  "id": "humanoid_robot_cage_fight_banned_2026_10_10_2026-10-10",
+  "videoId": "-5KyQsN6qZw",
+  "title": "Shocking Robot vs Human Fight Just Got Banned",
+  "kind": "short",
+  "uploaded_at": "2026-10-10T06:14:57+06:00",
+  "scheduled_for": "2026-10-10T12:30:00Z",
+  "url": "https://www.youtube.com/watch?v=-5KyQsN6qZw"
+ },
+ {
+  "id": "chatgpt_intelligent_ui_guide_2026_10_10_2026-10-10_short1",
+  "videoId": "YI9DznqOHqM",
+  "title": "ChatGPT Intelligent UI: Full Beginner Guide",
+  "kind": "short",
+  "uploaded_at": "2026-10-10T06:18:02+06:00",
+  "scheduled_for": "2026-10-10T20:30:00Z",
+  "url": "https://www.youtube.com/watch?v=YI9DznqOHqM"
  }
 ]
