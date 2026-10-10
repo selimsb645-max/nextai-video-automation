@@ -1,0 +1,8 @@
+{
+  "name": "NextAI Studio",
+  "description": "YouTube video automation factory for scheduling, video pipelines, content library, and runs tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

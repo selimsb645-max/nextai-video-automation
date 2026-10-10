@@ -1,0 +1,11 @@
+{
+ "id": "gemini_4_argon_2026-10-01",
+ "date": "2026-10-01",
+ "status": "scheduled",
+ "file": "/app/conversations/6a8d48b612b12b3300cc62ee/factory/runs/gemini_4_argon_2026-10-01_2026-10-01/final.mp4",
+ "detail": "SCHEDULE_WINDOW_MISSED: no unfilled short BD slot 8-10 hours ahead; preserve rendered file, never immediate-publish",
+ "videoId": "o4LMHDzIWec",
+ "scheduledFor": "2026-10-01T16:00:00Z",
+ "url": "https://www.youtube.com/watch?v=o4LMHDzIWec",
+ "thumbnailStatus": "pending ChatGPT generation: account sign-in required"
+}

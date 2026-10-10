@@ -1,0 +1,38 @@
+{
+  "name": "Session Guard",
+  "description": "জরুরি কাজ পুনরুদ্ধার",
+  "migration_metadata": {
+    "enabled_in_old_agent": true,
+    "import_as_paused": true,
+    "representation": "reconstructed portable contract, not exact native definition export"
+  },
+  "trigger": {
+    "config": {
+      "trigger_type": "scheduled",
+      "cron_expression": "45 9,19 * * *",
+      "timezone": "Asia/Dhaka"
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "session_guard",
+      "namespace": "base44",
+      "version": "handover.1"
+    },
+    "do": [
+      {
+        "run_task": {
+          "call": "invoke_superagent_step",
+          "with": {
+            "message": "Read README.md, AGENT_HANDOVER.md and factory/content_policy.json (including production_style) before acting. These templates are reconstructed portable contracts, not a byte-for-byte export of the original live workflow definitions. Resolve the cloned repository's absolute path locally; never assume the old agent workspace path exists. Existing code is copied unchanged, not newly production-tested. Only owner-approved AI platform updates, gadget research/spec reviews and general personal finance; prioritize ChatGPT/OpenAI, Claude, Gemini/AI Studio, Grok, DeepSeek, Qwen. Verify primary sources actually read and dated demand evidence; no fabricated search volume, tests, quotes, finance rates or guarantees. Reuse valid shared24h research; no paid API/generate_image/Canva/routine subagents. Never reuse Long scripts as Shorts. Nate B Jones / Neural Nutshell style is inspiration only: original explanation/assets, factual hooks and clear clean thumbnails, no copied faces/voices/interviews/artwork/branding. Mandatory Kokoro am_michael and semantically matched local Pexels footage; cross-video reuse allowed, no unrelated clips or stock masquerading as reviewed product. ChatGPT thumbnails only, single owner-approved authenticated Browserbase session; never put cookies/debug URLs/secrets in files or logs. Authenticate YouTube securely outside git. Before retry, compare library/state/published_log/result and actual YouTube privacy/publishAt. Never duplicate an uploaded video. Every future upload PRIVATE, scheduled 8-10h before the owner Dhaka slot; missed window preserves render rather than immediately publishing. Already scheduled uploads immutable. Ledger for incomplete work; auth/2FA requires owner once then wait, no repeated login attempts. Restore credentials and assets and run offline preflight before any production. At cutover stop the old producer BEFORE activating the new producer. Do not activate templates merely by cloning this repository. Work under720s per agent run, report only verified meaningful results in Bengali; AI workflow runs still consume credits.\n\nMODE:\nOnly TWO checks/day09:45/19:45 Dhaka, slower recovery disclosed. Read ledger and affected results once. Resume only stale>20min authorized essential routine render/upload/thumbnail tasks. Future scheduled release is not incomplete. Cancelled/done/waiting_owner ->skip silently; no repeated auth notification. Comment Booster is budget-paused:do not recreate it or perform optional engagement-only tasks. No generic sweep/all-video rerender/research or automatic file deletion. Critical decisions/auth/2FA/payment/deletion ->owner once then wait. No actionable task ->silent exit immediately. Update exact affected ledger only."
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "জরুরি কাজ পুনরুদ্ধার"
+          }
+        }
+      }
+    ]
+  }
+}

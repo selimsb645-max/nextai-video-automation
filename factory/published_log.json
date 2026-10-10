@@ -1,0 +1,317 @@
+[
+ {
+  "id": "twinkle_star",
+  "videoId": "sqiCxdubicY",
+  "title": "twinkle_star",
+  "kind": "long",
+  "uploaded_at": "2026-09-15",
+  "scheduled_for": null,
+  "url": "https://www.youtube.com/watch?v=sqiCxdubicY"
+ },
+ {
+  "id": "halicin_46days",
+  "videoId": "BXVRD5SktoA",
+  "title": "halicin_46days",
+  "kind": "long",
+  "uploaded_at": "2026-09-18",
+  "scheduled_for": null,
+  "url": "https://www.youtube.com/watch?v=BXVRD5SktoA"
+ },
+ {
+  "id": "alphafold_solve",
+  "videoId": "YwTY0u3-v0k",
+  "title": "alphafold_solve",
+  "kind": "long",
+  "uploaded_at": "2026-09-19",
+  "scheduled_for": null,
+  "url": "https://www.youtube.com/watch?v=YwTY0u3-v0k"
+ },
+ {
+  "id": "driverless_america",
+  "videoId": "R7ltRuG1FpA",
+  "title": "driverless_america",
+  "kind": "long",
+  "uploaded_at": "2026-09-20",
+  "scheduled_for": null,
+  "url": "https://www.youtube.com/watch?v=R7ltRuG1FpA"
+ },
+ {
+  "id": "robot_builds_robot",
+  "videoId": "3UZVu3OnDhw",
+  "title": "robot_builds_robot",
+  "kind": "long",
+  "uploaded_at": "2026-09-20",
+  "scheduled_for": null,
+  "url": "https://www.youtube.com/watch?v=3UZVu3OnDhw"
+ },
+ {
+  "id": "ai_bar_exam",
+  "videoId": "wF7VKTqcD0E",
+  "title": "AI Passed America's Hardest Law Exam",
+  "kind": "short",
+  "uploaded_at": "2026-09-20T16:03:11+06:00",
+  "scheduled_for": null,
+  "url": "https://www.youtube.com/watch?v=wF7VKTqcD0E"
+ },
+ {
+  "id": "parkinsons_breath",
+  "videoId": "h9rqGVwuFfA",
+  "title": "This AI Detects Parkinson's From Your Breathing",
+  "kind": "short",
+  "uploaded_at": "2026-09-21T04:29:08+06:00",
+  "scheduled_for": null,
+  "url": "https://www.youtube.com/watch?v=h9rqGVwuFfA"
+ },
+ {
+  "id": "ai_faster_sorting",
+  "videoId": "zMxeY17z0ak",
+  "title": "An AI Invented a Faster Way to Sort Numbers",
+  "kind": "short",
+  "uploaded_at": "2026-09-21T15:11:05+06:00",
+  "scheduled_for": null,
+  "url": "https://www.youtube.com/watch?v=zMxeY17z0ak"
+ },
+ {
+  "id": "drone_bees",
+  "videoId": "zujVmVy6wvg",
+  "title": "Robotic Bees May Save Our Food Supply",
+  "kind": "short",
+  "uploaded_at": "2026-09-21T16:02:54+06:00",
+  "scheduled_for": null,
+  "url": "https://www.youtube.com/watch?v=zujVmVy6wvg"
+ },
+ {
+  "id": "ai_walk_again",
+  "videoId": "sQl-BBd1Bjo",
+  "title": "AI Helped a Paralyzed Man Walk Again",
+  "kind": "short",
+  "uploaded_at": "2026-09-21T20:02:39+06:00",
+  "scheduled_for": null,
+  "url": "https://www.youtube.com/watch?v=sQl-BBd1Bjo"
+ },
+ {
+  "id": "ai_war_warning_rec1",
+  "videoId": "pK9B3f3i7hk",
+  "title": "1 AI Report Almost Started a War",
+  "kind": "short",
+  "uploaded_at": "2026-09-22T02:34:46+06:00",
+  "scheduled_for": null,
+  "url": "https://www.youtube.com/watch?v=pK9B3f3i7hk"
+ },
+ {
+  "id": "rek_robot_fight",
+  "videoId": "ulmvjxVgToQ",
+  "title": "Robot Kicks a Human in First Terminator Fight 🤖🔥",
+  "kind": "short",
+  "uploaded_at": "2026-09-22T16:04:25+06:00",
+  "scheduled_for": null,
+  "url": "https://www.youtube.com/watch?v=ulmvjxVgToQ"
+ },
+ {
+  "id": "optimus_remote_truth",
+  "videoId": "f4WgNjGFJCg",
+  "title": "Musk Admits: Viral Robot Moves Were Remote Controlled 🤖",
+  "kind": "short",
+  "uploaded_at": "2026-09-22T20:05:37+06:00",
+  "scheduled_for": null,
+  "url": "https://www.youtube.com/watch?v=f4WgNjGFJCg"
+ },
+ {
+  "id": "robot_kick_remote",
+  "videoId": "5kDEIlLeM50",
+  "title": "This Robot Kicked a Remote From an Engineer's Hand 🤖",
+  "kind": "short",
+  "uploaded_at": "2026-09-23T02:34:45+06:00",
+  "scheduled_for": null,
+  "url": "https://www.youtube.com/watch?v=5kDEIlLeM50"
+ },
+ {
+  "id": "gpt61_sol_gpt55_deadline_2026-10-02",
+  "videoId": "6zld50hHi6A",
+  "title": "GPT-6.1 Sol Explained: The AI Warning Every GPT-5.5 User Needs",
+  "kind": "long",
+  "uploaded_at": "2026-10-02T00:26:20+06:00",
+  "scheduled_for": null,
+  "url": "https://www.youtube.com/watch?v=6zld50hHi6A"
+ },
+ {
+  "id": "claude_opus55_price_war_2026-10-03",
+  "videoId": "12U3aN5VBvI",
+  "title": "AI Warning: The Price War Between Claude Opus 5.5 and GPT-6 Sol Explained",
+  "kind": "long",
+  "uploaded_at": "2026-10-03T01:05:37+06:00",
+  "scheduled_for": null,
+  "url": "https://www.youtube.com/watch?v=12U3aN5VBvI"
+ },
+ {
+  "id": "openai_navier_stokes_ai_math_2026-10-04",
+  "videoId": "c3cdUoTHXrU",
+  "title": "Scientists Dispute: Did AI Just Solve a $1 Million Math Problem?",
+  "kind": "long",
+  "uploaded_at": "2026-10-04T00:52:53+06:00",
+  "scheduled_for": null,
+  "url": "https://www.youtube.com/watch?v=c3cdUoTHXrU"
+ },
+ {
+  "id": "ai_war_warning",
+  "videoId": "CzSzvIcXefs",
+  "title": "AI Warning: The Report That Nearly Started a War",
+  "kind": "long",
+  "uploaded_at": "2026-09-20T11:44:25+06:00",
+  "scheduled_for": "2026-09-20T12:30:00Z",
+  "url": "https://www.youtube.com/watch?v=CzSzvIcXefs"
+ },
+ {
+  "id": "heart_7days",
+  "videoId": "mos1Q0YApY0",
+  "title": "This AI Sees a Heart Attack Coming Before Doctors Do",
+  "kind": "long",
+  "uploaded_at": "2026-09-20T23:39:28+06:00",
+  "scheduled_for": "2026-09-21T12:30:00Z",
+  "url": "https://www.youtube.com/watch?v=mos1Q0YApY0"
+ },
+ {
+  "id": "robot_walk6h",
+  "videoId": "JGLrJwmRBfE",
+  "title": "This Robot Taught Itself to Walk in Just a Few Hours",
+  "kind": "long",
+  "uploaded_at": "2026-09-21T11:37:59+06:00",
+  "scheduled_for": "2026-09-22T00:30:00Z",
+  "url": "https://www.youtube.com/watch?v=JGLrJwmRBfE"
+ },
+ {
+  "id": "voice_3seconds",
+  "videoId": "sFbImfFbJAg",
+  "title": "This AI Can Clone Your Voice From Just 3 Seconds",
+  "kind": "long",
+  "uploaded_at": "2026-09-21T23:36:43+06:00",
+  "scheduled_for": "2026-09-22T12:30:00Z",
+  "url": "https://www.youtube.com/watch?v=sFbImfFbJAg"
+ },
+ {
+  "id": "ai_two_planets",
+  "videoId": "RIhuoX_4q2M",
+  "title": "AI Just Found 2 Hidden Planets in NASA's Old Data",
+  "kind": "long",
+  "uploaded_at": "2026-09-22T12:04:26+06:00",
+  "scheduled_for": "2026-09-23T00:30:00Z",
+  "url": "https://www.youtube.com/watch?v=RIhuoX_4q2M"
+ },
+ {
+  "id": "alphago_move37",
+  "videoId": "0hCJ-4cDfdg",
+  "title": "Move 37: The One AI Move That Shocked the World",
+  "kind": "long",
+  "uploaded_at": "2026-09-22T23:40:56+06:00",
+  "scheduled_for": "2026-09-23T12:30:00Z",
+  "url": "https://www.youtube.com/watch?v=0hCJ-4cDfdg"
+ },
+ {
+  "id": "ozempic_reddit_ai",
+  "videoId": "OISJ6w_gFKE",
+  "title": "AI Warning Signals: What 410,000 Ozempic Posts Reveal",
+  "kind": "long",
+  "uploaded_at": "2026-10-01T00:50:15+06:00",
+  "scheduled_for": "2026-10-01T12:30:00Z",
+  "url": "https://www.youtube.com/watch?v=OISJ6w_gFKE"
+ },
+ {
+  "id": "gemini_4_argon_2026-10-01",
+  "videoId": "o4LMHDzIWec",
+  "title": "Gemini 4 Argon: The 1 Million-Token Catch",
+  "kind": "short",
+  "uploaded_at": "2026-10-01T06:07:30+06:00",
+  "scheduled_for": "2026-10-01T16:00:00Z",
+  "url": "https://www.youtube.com/watch?v=o4LMHDzIWec"
+ },
+ {
+  "id": "openai_dots_coworker_2026-10-01",
+  "videoId": "vLbiHvf4XYo",
+  "title": "OpenAI Dots: What Its New AI Agents Can Actually Do",
+  "kind": "long",
+  "uploaded_at": "2026-10-01T07:43:50+06:00",
+  "scheduled_for": "2026-10-01T17:30:00Z",
+  "url": "https://www.youtube.com/watch?v=vLbiHvf4XYo"
+ },
+ {
+  "id": "chatgpt_finances_free_go_2026-10-03",
+  "videoId": "BsWfGC_xzos",
+  "title": "ChatGPT Finances Arrives for Free Users: What It Can and Cannot Do",
+  "kind": "long",
+  "uploaded_at": "2026-10-03T02:44:06+06:00",
+  "scheduled_for": "2026-10-03T12:30:00Z",
+  "url": "https://www.youtube.com/watch?v=BsWfGC_xzos"
+ },
+ {
+  "id": "pewdiepie_ajax_banned_ai_2026-10-04",
+  "videoId": "hyHm2Xf3F-k",
+  "title": "PewDiePie's Banned AI: The 9B Model OpenAI Didn't Want You to Have",
+  "kind": "long",
+  "uploaded_at": "2026-10-04T02:40:22+06:00",
+  "scheduled_for": "2026-10-04T12:30:00Z",
+  "url": "https://www.youtube.com/watch?v=hyHm2Xf3F-k"
+ },
+ {
+  "id": "gemini_guided_vision_android_2026-10-05",
+  "videoId": "RUUkEr62PHY",
+  "title": "Gemini Live Can Now See: Guided Vision on Android, Explained",
+  "kind": "long",
+  "uploaded_at": "2026-10-04T14:46:05+06:00",
+  "scheduled_for": "2026-10-05T00:30:00Z",
+  "url": "https://www.youtube.com/watch?v=RUUkEr62PHY"
+ },
+ {
+  "id": "chatgpt_virtual_tryon_2026-10-07",
+  "videoId": "qE0-4qLB8pA",
+  "title": "ChatGPT Virtual Try-On: What Your Selfie Is Used For",
+  "kind": "long",
+  "uploaded_at": "2026-10-06T14:43:47+06:00",
+  "scheduled_for": "2026-10-07T00:30:00Z",
+  "url": "https://www.youtube.com/watch?v=qE0-4qLB8pA"
+ },
+ {
+  "id": "claude_creator_s_shocking_ipo_warning_the_ai_filing_explaine_2026-10-07",
+  "videoId": "dgGRKE2BOkM",
+  "title": "Claude Creator's Shocking IPO Warning: The AI Filing Explained",
+  "kind": "long",
+  "uploaded_at": "2026-10-07T04:5x:xx+06:00",
+  "scheduled_for": "2026-10-07T15:00:00Z",
+  "url": "https://www.youtube.com/watch?v=dgGRKE2BOkM"
+ },
+ {
+  "id": "claude_creator_s_shocking_ipo_warning_the_ai_filing_explaine_2026-10-07_short1",
+  "videoId": "hH7apaR9Xxc",
+  "title": "Claude Creator Issues Shocking Warning Inside Secret IPO Documents",
+  "kind": "short",
+  "uploaded_at": "2026-10-07T05:0x:xx+06:00",
+  "scheduled_for": "2026-10-07T20:30:00Z",
+  "url": "https://www.youtube.com/watch?v=hH7apaR9Xxc"
+ },
+ {
+  "id": "chatgpt_intelligent_ui_2026_10_09_2026-10-09",
+  "videoId": "t395vunlXAM",
+  "title": "ChatGPT's New UI Hacks Most People Miss",
+  "kind": "long",
+  "uploaded_at": "2026-10-09T05:46:23+06:00",
+  "scheduled_for": "2026-10-09T15:00:00Z",
+  "url": "https://www.youtube.com/watch?v=t395vunlXAM"
+ },
+ {
+  "id": "robot_cage_fight_banned_2026_10_09_2026-10-09",
+  "videoId": "hRWV62dA_Ks",
+  "title": "Robot Cage Fights Are Now Banned!",
+  "kind": "short",
+  "uploaded_at": "2026-10-09T05:50:56+06:00",
+  "scheduled_for": "2026-10-09T12:30:00Z",
+  "url": "https://www.youtube.com/watch?v=hRWV62dA_Ks"
+ },
+ {
+  "id": "chatgpt_intelligent_ui_2026_10_09_2026-10-09_short1",
+  "videoId": "X7C1bdU9V_c",
+  "title": "ChatGPT's New UI Hacks Most People Miss",
+  "kind": "short",
+  "uploaded_at": "2026-10-09T05:53:44+06:00",
+  "scheduled_for": "2026-10-09T20:30:00Z",
+  "url": "https://www.youtube.com/watch?v=X7C1bdU9V_c"
+ }
+]

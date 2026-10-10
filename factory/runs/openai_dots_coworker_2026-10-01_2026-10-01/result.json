@@ -1,0 +1,13 @@
+{
+  "id": "openai_dots_coworker_2026-10-01",
+  "date": "2026-10-01",
+  "status": "scheduled",
+  "file": "/app/conversations/6a8d48b612b12b3300cc62ee/factory/runs/openai_dots_coworker_2026-10-01_2026-10-01/final.mp4",
+  "videoId": "vLbiHvf4XYo",
+  "scheduledFor": "2026-10-01T17:30:00Z",
+  "url": "https://www.youtube.com/watch?v=vLbiHvf4XYo",
+  "thumbnailStatus": "waiting_owner_chatgpt_login",
+  "thumbnail_source": "none; no thumbnail generated or applied",
+  "polished": false,
+  "commentStatus": "not_posted; keep owner-requested budget pause and private scheduling"
+}

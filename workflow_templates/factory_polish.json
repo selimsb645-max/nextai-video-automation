@@ -1,0 +1,38 @@
+{
+  "name": "Factory Polish",
+  "description": "ChatGPT থাম্বনেইল",
+  "migration_metadata": {
+    "enabled_in_old_agent": true,
+    "import_as_paused": true,
+    "representation": "reconstructed portable contract, not exact native definition export"
+  },
+  "trigger": {
+    "config": {
+      "trigger_type": "scheduled",
+      "cron_expression": "15 10,14 * * *",
+      "timezone": "Asia/Dhaka"
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "factory_polish",
+      "namespace": "base44",
+      "version": "handover.1"
+    },
+    "do": [
+      {
+        "run_task": {
+          "call": "invoke_superagent_step",
+          "with": {
+            "message": "Read README.md, AGENT_HANDOVER.md and factory/content_policy.json (including production_style) before acting. These templates are reconstructed portable contracts, not a byte-for-byte export of the original live workflow definitions. Resolve the cloned repository's absolute path locally; never assume the old agent workspace path exists. Existing code is copied unchanged, not newly production-tested. Only owner-approved AI platform updates, gadget research/spec reviews and general personal finance; prioritize ChatGPT/OpenAI, Claude, Gemini/AI Studio, Grok, DeepSeek, Qwen. Verify primary sources actually read and dated demand evidence; no fabricated search volume, tests, quotes, finance rates or guarantees. Reuse valid shared24h research; no paid API/generate_image/Canva/routine subagents. Never reuse Long scripts as Shorts. Nate B Jones / Neural Nutshell style is inspiration only: original explanation/assets, factual hooks and clear clean thumbnails, no copied faces/voices/interviews/artwork/branding. Mandatory Kokoro am_michael and semantically matched local Pexels footage; cross-video reuse allowed, no unrelated clips or stock masquerading as reviewed product. ChatGPT thumbnails only, single owner-approved authenticated Browserbase session; never put cookies/debug URLs/secrets in files or logs. Authenticate YouTube securely outside git. Before retry, compare library/state/published_log/result and actual YouTube privacy/publishAt. Never duplicate an uploaded video. Every future upload PRIVATE, scheduled 8-10h before the owner Dhaka slot; missed window preserves render rather than immediately publishing. Already scheduled uploads immutable. Ledger for incomplete work; auth/2FA requires owner once then wait, no repeated login attempts. Restore credentials and assets and run offline preflight before any production. At cutover stop the old producer BEFORE activating the new producer. Do not activate templates merely by cloning this repository. Work under720s per agent run, report only verified meaningful results in Bengali; AI workflow runs still consume credits.\n\nMODE:\nNo video upload/new research. Select newest Long result within6h, skip if no target or completed. Reuse existing completed ChatGPT artwork; never regenerate completed thumbnails. Generate <=3 ORIGINAL factual candidates through existing logged-in ChatGPT Browserbase session/chatgpt_thumb.py, one applied via factory.py --setthumb and two alternates for owner Studio Test & Compare. API cannot perform actual thumbnail A/B. Use production_style:flat large white2-5words+red on clean dark original topic subject, or white+green/blue practical variant; no mandatory yellow3D/arrows, fake creator/expert face/quote/endorsement. Max6min browser, no alternate account/captcha retry/Canva/paid tool. ChatGPT logged out ->waiting_owner, no PIL silently substituted. Engagement work currently deferred under budget pause; do not post or pin comments. No API pin capability. Record actual source/completion without modifying publishAt."
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "ChatGPT থাম্বনেইল"
+          }
+        }
+      }
+    ]
+  }
+}

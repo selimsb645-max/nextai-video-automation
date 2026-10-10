@@ -1,0 +1,116 @@
+name: NextAI Content Factory
+
+# Autonomous YouTube producer — runs entirely on GitHub free minutes.
+# Owner US-traffic schedule (2026-10-05): public slots 20:30 + 02:30 Dhaka
+# = US ~9:30AM (lunch feed) and ~3:30PM EST (evening prime feed).
+# OWNER RULE 2026-10-06: daily 1 LONG (public 20:30 BD) + 1 SHORT cut from it
+# (public 02:30 BD). The 11:00 BD run books both. The 12:00 BD cron is a retry
+# guard: if the 11:00 run failed, it still catches the 20:30 slot (8.5h lead);
+# when all is well it exits cleanly on the filled-slot guard.
+
+on:
+  schedule:
+    # OWNER FIX 2026-10-10: GitHub skips/delays :00/:30 crons at peak load
+    # (10-08 AND 10-09 the 11:00 BD run never fired). GitHub's own docs say
+    # schedule at odd minutes - so the produce attempts now run 11:23/11:53/
+    # 12:23/12:53 BD, all inside the 8-10h lead window for the 21:00 slot.
+    # The Base44 watchdog (12:35 BD) remains the backstop if all four miss.
+    - cron: "23 5 * * *"
+    - cron: "53 5 * * *"
+    - cron: "23 6 * * *"
+    - cron: "53 6 * * *"
+  workflow_dispatch:
+    inputs:
+      kind:
+        description: "long or short"
+        default: "long"
+      mode:
+        description: "produce or selftest (no upload)"
+        default: "produce"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: factory-produce
+  cancel-in-progress: false
+
+jobs:
+  produce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install runtime dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -q kokoro-onnx soundfile numpy edge-tts pillow
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          command -v ffmpeg && ffmpeg -version | head -1
+
+      - name: Restore private runtime assets (Kokoro voice model + footage pool)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          python3 - <<'PY'
+          import json, os, urllib.request
+          slug = os.environ['GITHUB_REPOSITORY']
+          tok = os.environ['GITHUB_TOKEN']
+          req = urllib.request.Request(f'https://api.github.com/repos/{slug}/releases',
+                                       headers={'Authorization': 'Bearer ' + tok})
+          rels = json.load(urllib.request.urlopen(req, timeout=60))
+          rel = next(r for r in rels
+                     if any(a['name'] == 'nextai-runtime-assets.tar.gz'
+                            for a in r.get('assets', [])))
+          a = next(a for a in rel['assets'] if a['name'] == 'nextai-runtime-assets.tar.gz')
+          req = urllib.request.Request(a['url'], headers={
+              'Authorization': 'Bearer ' + tok,
+              'Accept': 'application/octet-stream'})
+          with urllib.request.urlopen(req, timeout=900) as r, open('assets.tar.gz', 'wb') as f:
+              while True:
+                  chunk = r.read(1 << 22)
+                  if not chunk:
+                      break
+                  f.write(chunk)
+          print('downloaded', os.path.getsize('assets.tar.gz'), 'bytes')
+          PY
+          tar -xzf assets.tar.gz -C "$GITHUB_WORKSPACE" factory/tts_kokoro factory/footage
+          ls factory/tts_kokoro/
+          ls factory/footage/ | head -3
+          rm -f assets.tar.gz
+
+      - name: Production turn (topic -> footage -> voice -> render -> private publishAt upload)
+        env:
+          YT_TOKEN_JSON: ${{ secrets.YT_TOKEN_JSON }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+        run: |
+          MODE="${{ github.event.inputs.mode || 'produce' }}"
+          KIND="${{ github.event.inputs.kind || 'long' }}"
+          if [ "$MODE" = "curate" ]; then
+            python3 actions/runner.py --kind "$KIND" --curate
+          elif [ "$MODE" = "selftest" ]; then
+            python3 actions/runner.py --kind "$KIND" --selftest
+          else
+            python3 actions/runner.py --kind "$KIND"
+          fi
+
+      - name: Upload run report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: run-log
+          path: actions/reports/
+          if-no-files-found: ignore
+          retention-days: 14
