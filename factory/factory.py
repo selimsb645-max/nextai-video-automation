@@ -737,34 +737,18 @@ def make_thumb_ai(e, workdir):
             out = json.load(r)
         return _save_image(out, f"{model}, key#{GEMINI_KEYS.index(key)+1}")
 
-    # first pass: every (model, key) combination; on a quota error rotate keys
-    # immediately, on other errors move to the next model
+    # 2026-10-10 FIX: Google removed free-tier image generation (all image
+    # models limit 0) — the old two-pass sweep burned ~30 doomed calls plus
+    # 135s of sleep on EVERY video before the PIL fallback. Now: one probe per
+    # model, no key sweep, no backoff. Falls to the PIL fallback instantly.
     for model in THUMB_AI_MODELS:
-        for ki, key in enumerate(GEMINI_KEYS):
-            try:
-                f = _attempt(model, key)
-                if f:
-                    return f
-                print(f"thumb-ai {model} key{ki+1}/{len(GEMINI_KEYS)}: no image in response", flush=True)
-                break
-            except Exception as ex:
-                msg = str(ex)[:90]
-                print(f"thumb-ai {model} key{ki+1}/{len(GEMINI_KEYS)}: {msg}", flush=True)
-                if _is_quota_err(msg):
-                    continue  # quota hit -> next key takes over instantly
-                break  # non-quota error -> next model
-    # second pass with backoff: image-model free quota is rate-limited and 429s
-    # are usually transient; wait and sweep all keys/models once more
-    for wait in (45, 90):
-        time.sleep(wait)
-        for model in THUMB_AI_MODELS:
-            for ki, key in enumerate(GEMINI_KEYS):
-                try:
-                    f = _attempt(model, key)
-                    if f:
-                        return f
-                except Exception as ex:
-                    print(f"thumb-ai retry {model} key{ki+1}: {str(ex)[:90]}", flush=True)
+        try:
+            f = _attempt(model, GEMINI_KEYS[0])
+            if f:
+                return f
+            print(f"thumb-ai {model}: no image in response", flush=True)
+        except Exception as ex:
+            print(f"thumb-ai {model}: {str(ex)[:90]}", flush=True)
     return None
 
 
@@ -789,9 +773,11 @@ def _hook_phrase(title):
 
 
 def make_thumb(e, workdir, clip):
-    """Cinematic PIL fallback thumbnail (owner 2026-10-07): pick the most striking
-    frame from the beat-1 clip, grade it, overlay a BIG 2-4 word hook phrase.
-    Fully free, no AI quota needed."""
+    """Cinematic PIL thumbnail v3 (2026-10-10): 1280x720 landscape for BOTH longs
+    and shorts. Verified live 2026-10-10: landscape custom thumbnails ARE served
+    by YouTube for Shorts too; the old 1080x1920 vertical short design got
+    blur-filled by set_thumbnail into a tiny unreadable center strip. Picks the
+    most striking frame from the beat-1 clip, grades it, overlays a BIG hook."""
     import subprocess
     src_f = os.path.join(FOOTAGE, clip["file"])
     from PIL import Image, ImageDraw, ImageEnhance, ImageFont, ImageStat
@@ -818,60 +804,100 @@ def make_thumb(e, workdir, clip):
             best, best_score = fp, score
     im = Image.open(best).convert("RGB")
 
-    vertical = e.get("kind") == "short"
-    TW, TH = (1080, 1920) if vertical else (1280, 720)
-    im = im.resize((TW, TH), Image.LANCZOS)
+    # 2) 16:9 canvas for everything, cover-crop, cinematic grade
+    TW, TH = 1280, 720
+    sc = max(TW / im.width, TH / im.height)
+    im = im.resize((round(im.width * sc), round(im.height * sc)), Image.LANCZOS)
+    x = (im.width - TW) // 2
+    y = (im.height - TH) // 2
+    im = im.crop((x, y, x + TW, y + TH))
     im = ImageEnhance.Contrast(im).enhance(1.18)
     im = ImageEnhance.Color(im).enhance(1.32)
     im = ImageEnhance.Brightness(im).enhance(1.06)
 
-    # subtle cinematic vignette
+    short = e.get("kind") == "short"
     d = ImageDraw.Draw(im, "RGBA")
-    for i in range(90):
-        a = int(2.2 * i)
-        d.rectangle([i * 4, i * 4, TW - i * 4, TH - i * 4],
-                    outline=(0, 0, 0, a), width=4)
 
-    # dark gradient band bottom for text legibility
-    band_top = int(TH * (0.42 if vertical else 0.52))
-    for y in range(band_top, TH):
-        a = int(210 * ((y - band_top) / (TH - band_top)) ** 1.2)
-        d.line([(0, y), (TW, y)], fill=(8, 8, 12, a))
+    # vignette; shorts get the punchier dark ring (proven test design)
+    if short:
+        mask = Image.new("L", (TW, TH), 0)
+        dm = ImageDraw.Draw(mask)
+        for i in range(160):
+            dm.rectangle([i * 3, i * 2, TW - i * 3, TH - i * 2],
+                         outline=int(255 * (i / 160) ** 2 * 0.55))
+        dim = ImageEnhance.Brightness(im).enhance(0.55)
+        im = Image.composite(dim, im, mask.point(lambda v: 255 - v))
+        d = ImageDraw.Draw(im, "RGBA")
+    else:
+        for i in range(90):
+            a = int(2.2 * i)
+            d.rectangle([i * 4, i * 4, TW - i * 4, TH - i * 4],
+                        outline=(0, 0, 0, a), width=4)
+        # dark gradient band bottom for text legibility (long design)
+        band_top = int(TH * 0.52)
+        for yy in range(band_top, TH):
+            a = int(210 * ((yy - band_top) / (TH - band_top)) ** 1.2)
+            d.line([(0, yy), (TW, yy)], fill=(8, 8, 12, a))
 
-    # 2) BIG hook phrase (2-4 words), auto-fit up to 2 lines
+    # 3) BIG hook phrase
     phrase = _hook_phrase(e["title"])
     fpath = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
-    maxw = TW - 96
-    f_big = None
-    for size in range(150, 54, -6):
-        f_try = ImageFont.truetype(fpath, size)
-        probe = ImageDraw.Draw(Image.new("RGB", (10, 10)))
-        w = probe.textlength(phrase, font=f_try)
-        if w <= maxw:
-            f_big = f_try
-            break
-        # try two lines
-        ws = phrase.split()
-        mid = len(ws) // 2
-        for split in (mid, mid - 1, mid + 1):
-            if 0 < split < len(ws):
-                l1, l2 = " ".join(ws[:split]), " ".join(ws[split:])
-                if (probe.textlength(l1, font=f_try) <= maxw
-                        and probe.textlength(l2, font=f_try) <= maxw):
-                    phrase = l1 + "\n" + l2
-                    f_big = f_try
-                    break
-        if f_big:
-            break
-    if f_big is None:
-        f_big = ImageFont.truetype(fpath, 60)
-    tlines = phrase.split("\n")
-    lh = int(f_big.size * 1.12)
-    y0 = TH - 74 - lh * len(tlines)
-    for li, line in enumerate(tlines):
-        y = y0 + li * lh
-        d.text((48, y), line, font=f_big, fill=(255, 255, 255),
-               stroke_width=10, stroke_fill=(0, 0, 0))
+
+    if short:
+        # centered big yellow hook (2 words per line, max 3 lines), auto-fit
+        words = phrase.split()
+        lines = []
+        i = 0
+        while i < len(words) and len(lines) < 3:
+            lines.append(" ".join(words[i:i + 2]))
+            i += 2
+        size = 170
+        f_big = None
+        while size >= 72:
+            f_try = ImageFont.truetype(fpath, size)
+            if all(d.textlength(l, font=f_try) <= TW - 140 for l in lines):
+                f_big = f_try
+                break
+            size -= 8
+        if f_big is None:
+            f_big = ImageFont.truetype(fpath, 72)
+        lh = int(f_big.size * 1.14)
+        y0 = (TH - lh * len(lines)) // 2 - 40
+        for li, line in enumerate(lines):
+            w = d.textlength(line, font=f_big)
+            d.text(((TW - w) / 2, y0 + li * lh), line, font=f_big,
+                   fill=(255, 214, 0), stroke_width=max(6, f_big.size // 14),
+                   stroke_fill=(0, 0, 0))
+    else:
+        maxw = TW - 96
+        f_big = None
+        for size in range(150, 54, -6):
+            f_try = ImageFont.truetype(fpath, size)
+            probe = ImageDraw.Draw(Image.new("RGB", (10, 10)))
+            w = probe.textlength(phrase, font=f_try)
+            if w <= maxw:
+                f_big = f_try
+                break
+            ws = phrase.split()
+            mid = len(ws) // 2
+            for split in (mid, mid - 1, mid + 1):
+                if 0 < split < len(ws):
+                    l1, l2 = " ".join(ws[:split]), " ".join(ws[split:])
+                    if (probe.textlength(l1, font=f_try) <= maxw
+                            and probe.textlength(l2, font=f_try) <= maxw):
+                        phrase = l1 + "\n" + l2
+                        f_big = f_try
+                        break
+            if f_big:
+                break
+        if f_big is None:
+            f_big = ImageFont.truetype(fpath, 60)
+        tlines = phrase.split("\n")
+        lh = int(f_big.size * 1.12)
+        y0 = TH - 74 - lh * len(tlines)
+        for li, line in enumerate(tlines):
+            d.text((48, y0 + li * lh), line, font=f_big, fill=(255, 255, 255),
+                   stroke_width=10, stroke_fill=(0, 0, 0))
 
     # brand bar + label
     f_med = ImageFont.truetype(fpath, 34)
@@ -886,9 +912,8 @@ def make_thumb(e, workdir, clip):
             os.remove(fp)
         except OSError:
             pass
-    print(f"thumb: cinematic PIL fallback OK (hook: {phrase!r})", flush=True)
+    print(f"thumb: cinematic PIL v3 OK (kind={e.get('kind')}, hook: {phrase!r})", flush=True)
     return out
-
 
 
 def set_thumbnail(vid, workdir):
