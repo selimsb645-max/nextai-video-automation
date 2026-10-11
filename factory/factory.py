@@ -351,6 +351,68 @@ def pick_footage(e, workdir):
             capture_output=True, text=True).stdout.strip() or 0)
         return {"file": out, "url": v["url"], "id": hit["id"], "q": query, "dur": cdur, "rel": hit["rel"]}
 
+    def commons_download(query, beat_i):
+        """Wikimedia Commons free-license video for a weak Pixabay match
+        (owner 2026-10-11: copyright-free multi-source, per-sentence unique
+        footage). Commons hosts only free/CC/PD media, so any hit is safe."""
+        api = ("https://commons.wikimedia.org/w/api.php?action=query&generator=search"
+               "&gsrsearch=" + urllib.parse.quote(f"{query} filetype:video") +
+               "&gsrnamespace=6&gsrlimit=8&prop=imageinfo"
+               "&iiprop=url|mime|size&format=json")
+        try:
+            req = urllib.request.Request(api, headers={"User-Agent": UA})
+            data = json.load(urllib.request.urlopen(req, timeout=30))
+        except Exception as ex:
+            print(f"  commons fetch failed for {query!r}: {ex}", flush=True)
+            return None
+        pages = list((data.get("query", {}).get("pages") or {}).values())
+        # best-first: larger videos tend to be real footage, not icons
+        pages.sort(key=lambda g: -((g.get("imageinfo") or [{}])[0].get("width") or 0))
+        for pg in pages:
+            ii = (pg.get("imageinfo") or [{}])[0]
+            title = pg.get("title", "")
+            key = "commons:" + title
+            if key in used_ids or key in global_used:
+                continue
+            _mime = ii.get("mime") or ""
+            if not ii.get("url"):
+                continue
+            # .ogv videos report as application/ogg — accept by mime or ext
+            if not (_mime.startswith("video/") or _mime == "application/ogg"
+                    or ii["url"].lower().endswith((".webm", ".ogv", ".mp4"))):
+                continue
+            if (ii.get("width") or 0) < 640:
+                continue  # too low-res for a 1080p render
+            ext = os.path.splitext(urllib.parse.urlparse(ii["url"]).path)[1] or ".webm"
+            out = os.path.join(fresh_dir, f"beat{beat_i}_c{ext}")
+            try:
+                vreq = urllib.request.Request(ii["url"], headers={"User-Agent": UA})
+                with urllib.request.urlopen(vreq, timeout=180) as r, open(out, "wb") as f:
+                    while True:
+                        chunk = r.read(1 << 22)
+                        if not chunk:
+                            break
+                        f.write(chunk)
+            except Exception as ex:
+                print(f"  commons download failed ({title[:44]}): {ex}", flush=True)
+                continue
+            cdur = float(subprocess.run(
+                ["ffprobe", "-v", "error", "-show_entries", "format=duration",
+                 "-of", "default=noprint_wrappers=1:nokey=1", out],
+                capture_output=True, text=True).stdout.strip() or 0)
+            if cdur < 3:
+                try:
+                    os.remove(out)
+                except OSError:
+                    pass
+                continue
+            used_ids.add(key)
+            global_used.add(key)
+            print(f"  commons: {title[:56]} ({cdur:.0f}s)", flush=True)
+            return {"file": out, "url": ii["url"], "id": key, "q": query,
+                    "dur": cdur, "rel": 2}
+        return None
+
     def pool_clip(cats, beat_i):
         for c in cats:
             pool = idx.get(c) or []
@@ -401,6 +463,13 @@ def pick_footage(e, workdir):
                 clip = pixabay_download(top[off], bq, beat_i)
                 if clip and clip["rel"] == 0:
                     print(f"  warn: weak footage match beat={beat_i} q={bq!r}", flush=True)
+                # OWNER 2026-10-11: a weak match is not good enough — try
+                # Wikimedia Commons (free license) before keeping it
+                if clip and clip["rel"] < 2:
+                    ccl = commons_download(bq, beat_i)
+                    if ccl:
+                        clip = ccl
+                        src = "commons-fresh"
         src = "pixabay-fresh"
         if not clip:  # fetch failed/quota -> local pool fallback for this beat
             clip, chosen = pool_clip(cats, beat_i)
