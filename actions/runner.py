@@ -302,19 +302,21 @@ BEATS TO EXPAND:
 
 
 SHORT_PROMPT = """
-You are the script writer for a US-audience English YouTube SHORT (vertical, under 60 seconds) that MUST be about REAL ROBOTS: humanoid robots, robot dogs, industrial robots, drone swarms, robot competitions, or new robot technology. Style inspiration: the @casperpks robot channel - fun, action-first robot entertainment that hooks instantly. From the headlines below pick exactly ONE real, currently-trending robot story (last 7 days, US-interest). NEVER medical advice, no politics, no tragedy exploitation. If no robot headline is trending, pick the most visually dramatic recent robot milestone instead.
+You are the script writer for a US-audience English YouTube SHORT (vertical, under 60 seconds) that MUST be about REAL ROBOTS. Style (owner reference 2026-10-11: @androidalians): ONE robot, ONE dramatic STORY told like a mini-movie, poster-style visuals, impossible to scroll past. From the headlines below pick exactly ONE real, currently-trending robot story (last 7 days, US-interest) about ONE SPECIFIC NAMED ROBOT (a specific humanoid, robot dog, drone swarm, or competition robot - use its real model name). NEVER medical advice, no politics, no tragedy exploitation. If no robot headline is trending, pick the most visually dramatic recent robot milestone instead.
 
-NO-SKIP RULES (the video must feel impossible to scroll past):
-- Beat 1 is a 1-2 second cold open: DROP the viewer straight into the most dramatic robot action moment (the fall, the flip, the catch, the rescue). No intro, no greeting, no 'in this video'.
-- Every beat: max 16 words, punchy dramatic pacing. State the central wow-question early, hold the payoff to the LAST beat.
-- Fun, high-energy tone (a robot show, not a news report). Short sentences. Emotional punctuation.
-- End on a payoff beat: the moment the robot does the impossible thing, plus one short closing question.
+STORY STRUCTURE (a mini-movie, NOT a news report):
+- Beat 1 (1-2s): cold open ON the most dramatic moment or the shocking NUMBER ("This robot just walked 21 kilometers").
+- Middle beats: the STORY of how it happened - escalate beat by beat, present tense, short punchy sentences.
+- Final beat: the payoff (the impossible thing achieved) + one short closing question.
+- Fun, high-energy storytelling tone. Emotional punctuation. Hold the payoff to the END.
 
 HARD RULES:
 - Title: MAX 50 CHARACTERS, must contain "Robot" AND one hook word: Shocking / Warning / Banned / Solved / Impossible / Never.
-- narration: 100-150 words total (about 40-55 seconds spoken).
-- beats: 4-7 items, each {{"t":"<one spoken sentence, max 16 words>","kw":"<CONCRETE robot-action footage phrase naming a real physical scene, e.g. humanoid robot backflip, robot dog running, factory robot arm> — never brand names, never abstract words"}}. Every beat gets its own unique footage, all robot-action visuals. Aim for ~70-110 words TOTAL narration (about 30-45 seconds spoken at a fast pace).
-- Example JSON: {{"id":"snake_case_robot_short_{today}","title":"...","description":"2-3 sentence SEO summary + 'Related searches:' line with 5 tags","tags":["8 short search keywords"],"narration":"short narration text","beats":[{{"t":"beat text","kw":"robot footage phrase"}}],"verified_sources":["url"],"demand_evidence":"one line: which headline and why now"}}
+- headline: 2-5 ALL-CAPS poster words naming the robot or its wow fact (e.g. "ROBOTIC OVERLORDS", "21KM ROBOT"). It gets burned BIG on screen.
+- specs: 2-3 VERY short poster facts about THIS robot, each MAX 14 CHARACTERS, numbers preferred (e.g. ["120 KG", "21 KM", "50 MIN"]).
+- narration: 70-120 words total (about 35-50 seconds spoken), story-style.
+- beats: 4-7 items, each {{"t":"<one spoken sentence, max 16 words>","kw":"<CONCRETE filmable robot-action scene - keep the SAME robot type in every beat for visual continuity, never brand names, never abstract words>"}}. Every beat gets its own unique footage.
+- Example JSON: {{"id":"snake_case_robot_short_{today}","title":"...","headline":"...","specs":["...","..."],"description":"2-3 sentence SEO summary + 'Related searches:' line with 5 tags","tags":["8 short search keywords"],"narration":"short narration text","beats":[{{"t":"beat text","kw":"robot footage phrase"}}],"verified_sources":["url"],"demand_evidence":"one line: which headline and why now"}}
 - verified_sources: 1-2 headline URLs that prove the story.
 - id: short slug containing the topic and today's date.
 Return ONLY the JSON object.
@@ -485,6 +487,22 @@ def make_entry(kind):
             e["id"] = re.sub(r"_\d{4}-\d{2}-\d{2}$", "", e["id"])
             e["id"] = re.sub(r"_\d{4}$", "", e["id"])  # model may append its own year
             e["id"] = f"{e['id']}_{today}"
+            # OWNER STYLE 2026-10-11 (androidalians poster look): headline +
+            # specs get burned on screen by factory.render. The prompt asks
+            # for them, but lite models can be sloppy - always derive a
+            # fallback so the render never runs without the poster text.
+            if kind == "short":
+                _hl = " ".join(str(e.get("headline") or "").upper().split())
+                if not _hl or len(_hl.split()) > 6:
+                    _hl = re.sub(r"[^A-Z0-9 ]", " ", e["title"].upper())
+                    _hl = " ".join(w for w in _hl.split()
+                                   if w not in ("SHOCKING", "WARNING", "BANNED",
+                                                "SOLVED", "IMPOSSIBLE", "NEVER",
+                                                "JUST", "GOT", "THE", "THIS"))[:4]
+                    _hl = _hl or e["title"].upper()[:24]
+                e["headline"] = _hl
+                e["specs"] = [re.sub(r"[^A-Z0-9 .:/+-]", "", str(x)).strip()[:14]
+                              for x in (e.get("specs") or []) if str(x).strip()][:3]
             return e, None
         except Exception as ex:
             log("entry parse error: " + str(ex)[:120])
@@ -887,6 +905,11 @@ def main():
         rf = write_report(e, None, None, None, "selftest",
                           (thumb or {}).get("prompt", "n/a") if isinstance(thumb, dict) else str(thumb or "n/a"))
         factory.make_short_from_long(mp4, workdir)
+        try:
+            import shutil
+            shutil.copy(mp4, os.path.join(REPORTS, "selftest_final.mp4"))
+        except Exception as ex:
+            log("selftest video attach failed: " + str(ex)[:100])
         log("SELFTEST PASS: research -> topic -> footage -> voice -> render + short-cut all OK; "
             "no upload performed. Render: " + mp4)
         return

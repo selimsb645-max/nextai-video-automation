@@ -516,6 +516,67 @@ def gen_voice(e, workdir):
     return out
 
 
+def _poster_overlay(e, workdir, W, H, FONT):
+    """OWNER STYLE 2026-10-11 (@androidalians poster look): big ALL-CAPS
+    headline on top + spec-number badges under it, burned over the footage
+    so the frame reads like a viral robot poster. Returns PNG path."""
+    from PIL import Image, ImageDraw, ImageFont
+    img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    headline = " ".join(str(e.get("headline", "") or "").upper().split()) or "ROBOT"
+    specs = [" ".join(str(x).upper().split())
+             for x in (e.get("specs") or []) if str(x).strip()][:3]
+    # top gradient band for text readability over any footage
+    band_h = 430 if specs else 330
+    for y in range(band_h):
+        a = int(70 + 120 * max(0.0, 1.0 - y / band_h))
+        d.line([(0, y), (W, y)], fill=(6, 6, 12, a))
+    # headline auto-fit: wrap to <=2 lines, shrink font until it fits
+    words = headline.split()
+    if len(words) > 1:
+        half = (len(words) + 1) // 2
+        lines = [" ".join(words[:half]), " ".join(words[half:])]
+        if not lines[1]:
+            lines = [lines[0]]
+    else:
+        lines = [headline]
+    maxw = W - 150
+    fs = 104
+    while fs > 48:
+        f = ImageFont.truetype(FONT, fs)
+        if max(d.textlength(l, font=f) for l in lines if l) <= maxw:
+            break
+        fs -= 6
+    f = ImageFont.truetype(FONT, fs)
+    y = 88
+    for l in lines:
+        if not l:
+            continue
+        lw = d.textlength(l, font=f)
+        d.text(((W - lw) // 2, y), l, font=f, fill=(255, 255, 255, 255),
+               stroke_width=max(4, fs // 14), stroke_fill=(0, 0, 0, 255))
+        y += int(fs * 1.18)
+    # spec badges: yellow numbers in black pills with yellow border
+    if specs:
+        bfs = 56
+        bf = ImageFont.truetype(FONT, bfs)
+        pads, gap = 30, 26
+        widths = [d.textlength(sp, font=bf) + pads * 2 for sp in specs]
+        total = sum(widths) + gap * (len(specs) - 1)
+        x = max(0, (W - total) // 2)
+        by = y + 22
+        for sp, sw in zip(specs, widths):
+            d.rounded_rectangle([x, by, x + sw, by + bfs + 36], radius=18,
+                                fill=(0, 0, 0, 190),
+                                outline=(255, 214, 0, 255), width=4)
+            d.text((x + pads, by + 19), sp, font=bf, fill=(255, 214, 0, 255),
+                   stroke_width=2, stroke_fill=(0, 0, 0, 255))
+            x += sw + gap
+    out = os.path.join(workdir, "poster_overlay.png")
+    img.save(out)
+    return out
+
+
 def render(e, workdir, clips, audio):
     """Real-footage render: word-weighted beat timing, trims/slowmo, crossfades,
     cinematic grade + grain + vignette, loud narration + ambient bed."""
@@ -542,6 +603,16 @@ def render(e, workdir, clips, audio):
         W, H, XF = 1080, 1920, 0.3
     else:
         W, H, XF = 1920, 1080, 0.6
+    # OWNER STYLE 2026-10-11: robot Shorts get the androidalians poster
+    # overlay (big headline + spec badges). Any overlay failure must never
+    # kill the render - fall back to the plain render.
+    ovl = None
+    if e.get("kind") == "short" and e.get("headline"):
+        try:
+            ovl = _poster_overlay(e, workdir, W, H, FONT)
+            print("poster overlay: OK " + str(e.get("headline"))[:40], flush=True)
+        except Exception as _ex:
+            print("poster overlay failed (continuing without): " + str(_ex)[:120], flush=True)
     # VISUAL HOOK (owner rule 2026-10-06): in the first ~20 seconds the framing
     # must change every 2-3 seconds so long-video retention holds. Each of the
     # first 3 beats is split into two visually-distinct segments: second half
@@ -633,9 +704,17 @@ def render(e, workdir, clips, audio):
     fc.append("[nar][bed]amix=inputs=2:duration=first:normalize=0,aresample=48000[aout]")
     out = os.path.join(workdir, "final.mp4")
     tmp = os.path.join(workdir, "_final_tmp.mp4")
+    map_out = "[out]"
+    if ovl:
+        # overlay sits ABOVE the grade chain so the poster text stays crisp
+        fc.append(f"[out][{n + 1}:v]overlay=0:0:format=auto[out2]")
+        map_out = "[out2]"
     cmd = ["ffmpeg", "-y"] + inputs
-    cmd += ["-i", audio, "-filter_complex", ";".join(fc),
-            "-map", "[out]", "-map", "[aout]", "-t", f"{dur:.2f}",
+    cmd += ["-i", audio]
+    if ovl:
+        cmd += ["-i", ovl]
+    cmd += ["-filter_complex", ";".join(fc),
+            "-map", map_out, "-map", "[aout]", "-t", f"{dur:.2f}",
             "-c:v", "libx264", "-preset", ("veryfast" if e.get("kind") == "short" else "ultrafast"), "-crf", "21",
             "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
             "-movflags", "+faststart", tmp]
