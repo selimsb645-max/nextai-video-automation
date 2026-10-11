@@ -967,8 +967,8 @@ def main():
         log(f"hook-cut short: OK videoId={s_vid} scheduledFor={s_pub} ({s_slot})")
 
         # (c) OWNER 2026-10-11 funnel plan: a SECOND cut from the payoff zone
-        # (~55-60% in, the best trick/result beat) — 2 Shorts per Long, so
-        # each Long feeds the funnel twice.
+        # (~55-60% in, the best trick/result beat). Evening update 2026-10-11:
+        # owner wants exactly 2 Shorts/day - book only if a slot is still free.
         import subprocess
         try:
             _r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration",
@@ -976,7 +976,14 @@ def main():
             _dur = float(_r.stdout.strip())
         except Exception:
             _dur = 0.0
+        s2_pub = None
         if _dur > 120:
+            try:
+                s2_pub, s2_slot = factory.next_bd_slot("short")
+            except SystemExit:
+                s2_pub = None
+                log("hook-cut-2: no free Short slot (2/day plan) - skipped")
+        if s2_pub:
             _start = max(0, min(int(_dur * 0.55), int(_dur) - 45))
             s2_mp4 = factory.make_short_from_long(mp4, workdir, secs=42, start=_start)
             s2 = dict(e)
@@ -984,9 +991,8 @@ def main():
             s2["id"] = e["id"] + "_short2"
             s2["title"] = e["title"][:95]
             s2["description"] = (e["description"].strip()
-                                  + f"\n\nFull video: https://youtu.be/{vid}"
-                                  + "\n\n#Shorts")
-            s2_pub, s2_slot = factory.next_bd_slot("short")
+                                 + f"\n\nFull video: https://youtu.be/{vid}"
+                                 + "\n\n#Shorts")
             s2_vid = factory.upload(s2, s2_mp4, s2_pub)
             factory.note_published(s2, s2_vid, "short", s2_pub)
             st4 = factory.load_state()
