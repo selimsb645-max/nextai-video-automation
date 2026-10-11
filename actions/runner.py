@@ -408,6 +408,22 @@ def make_entry(kind):
                         val["beats"] = val3["beats"]
                         val["narration"] = " ".join(b["t"] for b in val["beats"])
                         log(f"expand-beats: now {len(val['narration'].split())} words")
+            # OWNER 2026-10-11 War Plan: HARD no-repeat guard. Oct 8 and
+            # Oct 10 longs got the IDENTICAL title ("ChatGPT Intelligent UI:
+            # Full Beginner Guide") even with the recent-titles feed in the
+            # prompt — YouTube suppresses repeats. Reject any topic too
+            # close to the last 10 published titles, retry via the ladder.
+            if val.get("title"):
+                try:
+                    _pl2 = json.load(open(os.path.join(FACT, "published_log.json")))
+                except Exception:
+                    _pl2 = []
+                _banned = [r.get("title", "") for r in _pl2 if r.get("title")][-10:]
+                _dup = next((bt for bt in _banned
+                             if bt and _title_overlap(val["title"], bt) >= 0.6), None)
+                if _dup:
+                    log(f"entry rejected: repeats recent title '{str(_dup)[:44]}'")
+                    continue
             words = len(val["narration"].split())
             beats = val["beats"]
             tl = val["title"].lower()
@@ -675,6 +691,57 @@ def commit_file(path_in_repo, local_path, msg):
         log(f"commit PUT failed {path_in_repo}: {str(ex)[:120]}")
 
 
+def _title_overlap(t1, t2):
+    """Word-overlap score between two titles (owner 2026-10-11 War Plan)."""
+    stop = {"the", "a", "an", "of", "in", "on", "is", "are", "this", "that",
+            "just", "its", "it", "to", "for", "with", "and", "new", "full",
+            "guide", "beginner", "most", "people", "miss", "what", "how", "why"}
+    w1 = {w for w in re.findall(r"[a-z0-9']+", str(t1).lower()) if w not in stop and len(w) > 2}
+    w2 = {w for w in re.findall(r"[a-z0-9']+", str(t2).lower()) if w not in stop and len(w) > 2}
+    if not w1 or not w2:
+        return 0.0
+    return len(w1 & w2) / min(len(w1), len(w2))
+
+
+def _robot_short(commit_extra, today):
+    """Standalone robot Short, casperpks-style (owner 2026-10-07). 2026-10-11
+    War Plan: also called on no-Long days so the channel is never dark."""
+    try:
+        r_e, r_err = make_entry("short")
+        if not (r_e and factory.content_eligible(r_e)):
+            r_e = None
+            log("robot short: no fresh topic (" + str(r_err)[:80] + "); trying library")
+            try:
+                r_e = factory.pick_entry(None, "short")
+            except (Exception, SystemExit) as ex:
+                r_e = None
+                log("robot short library empty: " + str(ex)[:100])
+        if r_e:
+            append_library(r_e)
+            r_wd = os.path.join(factory.BASE, "runs", f"{r_e['id']}_{today}")
+            os.makedirs(r_wd, exist_ok=True)
+            r_pairs = pool_footage(r_e, r_wd)
+            r_audio = factory.gen_voice(r_e, r_wd)
+            r_mp4 = factory.render(r_e, r_wd, r_pairs, r_audio)
+            r_pub, r_slot = factory.next_bd_slot("short")
+            r_vid = factory.upload(r_e, r_mp4, r_pub)
+            factory.note_published(r_e, r_vid, "short", r_pub)
+            st2 = factory.load_state()
+            st2["done"][r_e["id"]] = {"date": today, "videoId": r_vid}
+            factory.save_state(st2)
+            try:
+                if not factory.make_thumb_ai(r_e, r_wd):
+                    factory.make_thumb(r_e, r_wd, r_pairs[0][0])
+                factory.set_thumbnail(r_vid, r_wd)
+            except Exception as ex2:
+                log("robot short thumb failed (continuing): " + str(ex2)[:120])
+            rf2 = write_report(r_e, r_vid, r_pub, str(r_slot), "produce", "")
+            commit_extra.append((os.path.relpath(rf2, REPO), rf2,
+                                 "report: " + r_e["id"]))
+            log(f"robot short: OK videoId={r_vid} scheduledFor={r_pub} ({r_slot})")
+    except (Exception, SystemExit) as ex:
+        log("robot short step failed (long already uploaded; continuing): " + str(ex)[:140])
+
 def write_report(e, vid, publish_at, slot_local, mode, extra=""):
     os.makedirs(REPORTS, exist_ok=True)
     f = os.path.join(REPORTS, f"{e['id']}_{time.strftime('%Y%m%d_%H%M')}.md")
@@ -765,8 +832,16 @@ def main():
         try:
             publish_at, slot_local = factory.next_bd_slot(kind)
         except SystemExit:
-            log("no Long slot due in this 8-10h window (2-day cadence) - "
-                "nothing to produce today, exiting cleanly")
+            # OWNER 2026-10-11 War Plan: a no-Long day is NOT a dead day —
+            # the channel published NOTHING on off-days, which kills algo
+            # momentum. Produce the standalone robot Short for the next
+            # Short slot, then exit (hook-cut needs the Long, so it only
+            # happens on Long days).
+            log("no Long slot due (2-day cadence) - producing robot Short, then exiting")
+            try:
+                _robot_short([], time.strftime("%Y-%m-%d"))
+            except (Exception, SystemExit) as ex:
+                log("robot short step failed: " + str(ex)[:140])
             return
 
     # 2) Cross-producer duplicate guard (YouTube scheduled uploads)
@@ -856,41 +931,8 @@ def main():
     # the evening 18:30 slot; the hook-cut takes the next 02:30.
     commit_extra = []
     if not args.selftest:
-        try:
-            r_e, r_err = make_entry("short")
-            if not (r_e and factory.content_eligible(r_e)):
-                r_e = None
-                log("robot short: no fresh topic (" + str(r_err)[:80] + "); trying library")
-                try:
-                    r_e = factory.pick_entry(None, "short")
-                except (Exception, SystemExit) as ex:
-                    r_e = None
-                    log("robot short library empty: " + str(ex)[:100])
-            if r_e:
-                append_library(r_e)
-                r_wd = os.path.join(factory.BASE, "runs", f"{r_e['id']}_{today}")
-                os.makedirs(r_wd, exist_ok=True)
-                r_pairs = pool_footage(r_e, r_wd)
-                r_audio = factory.gen_voice(r_e, r_wd)
-                r_mp4 = factory.render(r_e, r_wd, r_pairs, r_audio)
-                r_pub, r_slot = factory.next_bd_slot("short")
-                r_vid = factory.upload(r_e, r_mp4, r_pub)
-                factory.note_published(r_e, r_vid, "short", r_pub)
-                st2 = factory.load_state()
-                st2["done"][r_e["id"]] = {"date": today, "videoId": r_vid}
-                factory.save_state(st2)
-                try:
-                    if not factory.make_thumb_ai(r_e, r_wd):
-                        factory.make_thumb(r_e, r_wd, r_pairs[0][0])
-                    factory.set_thumbnail(r_vid, r_wd)
-                except Exception as ex2:
-                    log("robot short thumb failed (continuing): " + str(ex2)[:120])
-                rf2 = write_report(r_e, r_vid, r_pub, str(r_slot), "produce", "")
-                commit_extra.append((os.path.relpath(rf2, REPO), rf2,
-                                     "report: " + r_e["id"]))
-                log(f"robot short: OK videoId={r_vid} scheduledFor={r_pub} ({r_slot})")
-        except (Exception, SystemExit) as ex:
-            log("robot short step failed (long already uploaded; continuing): " + str(ex)[:140])
+        _robot_short(commit_extra, today)
+
 
     # (b) hook-cut Short for the next 02:30 BD slot
     try:
