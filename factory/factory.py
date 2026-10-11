@@ -773,7 +773,9 @@ def _hook_phrase(title):
 
 
 def make_thumb(e, workdir, clip):
-    """Cinematic PIL thumbnail v3 (2026-10-10): 1280x720 landscape for BOTH longs
+    """Cinematic PIL thumbnail v3.1 (2026-10-11 War Plan: BRIGHTER — owner says
+    dark thumbs read as "black" and get no clicks; frame stays clearly visible).
+    1280x720 landscape for BOTH longs
     and shorts. Verified live 2026-10-10: landscape custom thumbnails ARE served
     by YouTube for Shorts too; the old 1080x1920 vertical short design got
     blur-filled by set_thumbnail into a tiny unreadable center strip. Picks the
@@ -812,8 +814,8 @@ def make_thumb(e, workdir, clip):
     y = (im.height - TH) // 2
     im = im.crop((x, y, x + TW, y + TH))
     im = ImageEnhance.Contrast(im).enhance(1.18)
-    im = ImageEnhance.Color(im).enhance(1.32)
-    im = ImageEnhance.Brightness(im).enhance(1.06)
+    im = ImageEnhance.Color(im).enhance(1.45)
+    im = ImageEnhance.Brightness(im).enhance(1.12)
 
     short = e.get("kind") == "short"
     d = ImageDraw.Draw(im, "RGBA")
@@ -824,8 +826,8 @@ def make_thumb(e, workdir, clip):
         dm = ImageDraw.Draw(mask)
         for i in range(160):
             dm.rectangle([i * 3, i * 2, TW - i * 3, TH - i * 2],
-                         outline=int(255 * (i / 160) ** 2 * 0.55))
-        dim = ImageEnhance.Brightness(im).enhance(0.55)
+                         outline=int(255 * (i / 160) ** 2 * 0.32))
+        dim = ImageEnhance.Brightness(im).enhance(0.88)
         im = Image.composite(dim, im, mask.point(lambda v: 255 - v))
         d = ImageDraw.Draw(im, "RGBA")
     else:
@@ -836,7 +838,7 @@ def make_thumb(e, workdir, clip):
         # dark gradient band bottom for text legibility (long design)
         band_top = int(TH * 0.52)
         for yy in range(band_top, TH):
-            a = int(210 * ((yy - band_top) / (TH - band_top)) ** 1.2)
+            a = int(165 * ((yy - band_top) / (TH - band_top)) ** 1.2)
             d.line([(0, yy), (TW, yy)], fill=(8, 8, 12, a))
 
     # 3) BIG hook phrase
