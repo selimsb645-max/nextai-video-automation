@@ -257,8 +257,9 @@ SELECTION RULE: the DEMAND COUNTS below show how many US headlines each topic cl
 SCRIPT FORMAT — a practical guide, not a dry news recap:
 - Write like a friendly expert teaching one viewer: direct, energetic, concrete. "Here is what it does", "Here is how you use it", "The trick most people miss". No newsreader tone, no channel intro.
 - Narration: total 630-690 words, split into 18-24 beats.
-- Beat 1 (10-12 seconds, cold open): drop the viewer straight onto the biggest concrete benefit or wow moment ("You can now do X for free..."). No greetings, no 'in this video'.
-- Beats 2-3 (fast hook zone, 15-22 words each): state what the tool/update is AND the single most surprising fact, so new viewers know exactly what they get by watching.
+- Beat 1 (10-12 seconds, cold open): drop the viewer straight onto the biggest concrete benefit or wow moment ("You can now do X for free..."). No greetings, no 'in this video'. The single most surprising fact, number or claim must land in the FIRST sentence.
+- Beats 2-3 (fast hook zone, 15-22 words each, max ~45 words total): state what the tool/update is AND the single most surprising fact, so new viewers know exactly what they get by watching. By SECOND 30 the viewer must know the payoff AND be left with one burning open question that only resolves in the final third.
+- OWNER DATA 2026-10-11: average view duration on 5-min longs is only 57s — assume viewers decide in the first 30 seconds; nothing slow, nothing generic, no throat-clearing before the surprise.
 - Middle beats (28-38 words each): a step-by-step walkthrough — what it is, how to get access, numbered steps ("First... Then..."), what you can create or automate with it, pro tips and common beginner mistakes.
 - PAYOFF STRUCTURE: save the BEST trick, result or money-saving detail for the final third so viewers stay to the end.
 - Last beat: end with a short closing question or call-to-action ("Try it and tell me...").
