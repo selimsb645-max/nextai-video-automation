@@ -253,6 +253,7 @@ def gemini_json(prompt, models=None):
 ENTRY_PROMPT = """You are the topic researcher and script writer for a US-audience English YouTube channel about AI. OWNER RULE 2026-10-08: the TOPICS stay the same as before — videos cover ALL types of AI: ChatGPT/OpenAI, Claude/Anthropic, Gemini/Google AI Studio, Grok/xAI, DeepSeek, Qwen, and EVERY other AI company, platform, tool, model or AI technology; also AI-linked science discoveries and robots. ONLY the PRESENTATION STYLE follows the channel "AI Master" (@iamAImaster): practical, beginner-friendly, benefit-first delivery.
 From the headlines below pick exactly ONE real, currently-trending topic (last 7 days, US-interest). Allowed pillars, in priority order: (1) AI updates and NEW MODEL LAUNCHES from ChatGPT/OpenAI, Claude/Anthropic, Gemini/Google AI Studio, Grok/xAI, DeepSeek, Qwen — ANY AI update from ANY AI company counts; (2) AI-linked science discoveries; (3) robots and new AI technology. NEVER medical advice, no politics, no tragedy exploitation.
 SELECTION RULE: the DEMAND COUNTS below show how many US headlines each topic cluster got in the last 7 days — this is the search-demand evidence. Pick a topic from the cluster with the HIGHEST count that still has one strong, specific story. PREFER a topic with a PRACTICAL angle a beginner can act on: a new tool or feature they can use, something that just became free or cheaper, a workflow that saves time or money.
+OWNER DATA 2026-10-11: robotics real-test/lab-demo stories and side-by-side AI model comparisons are this channel's best performers — when demand counts are close, pick one of those angles.
 
 SCRIPT FORMAT — a practical guide, not a dry news recap:
 - Write like a friendly expert teaching one viewer: direct, energetic, concrete. "Here is what it does", "Here is how you use it", "The trick most people miss". No newsreader tone, no channel intro.
@@ -942,7 +943,12 @@ def main():
         s_e["kind"] = "short"
         s_e["id"] = e["id"] + "_short1"
         s_e["title"] = e["title"][:95]
-        s_e["description"] = e["description"].strip() + "\n\n#Shorts"
+        # OWNER 2026-10-11 funnel plan: every hook-cut Short links its Long
+        # (the automatable version of the "Related Video" feature, which is
+        # Studio-only) so Shorts viewers can jump to the full video.
+        s_e["description"] = (e["description"].strip()
+                               + f"\n\nFull video: https://youtu.be/{vid}"
+                               + "\n\n#Shorts")
         s_pub, s_slot = factory.next_bd_slot("short")
         s_vid = factory.upload(s_e, smp4, s_pub)
         factory.note_published(s_e, s_vid, "short", s_pub)
@@ -959,6 +965,40 @@ def main():
         except Exception as ex2:
             log("hook-cut short thumb failed (continuing): " + str(ex2)[:120])
         log(f"hook-cut short: OK videoId={s_vid} scheduledFor={s_pub} ({s_slot})")
+
+        # (c) OWNER 2026-10-11 funnel plan: a SECOND cut from the payoff zone
+        # (~55-60% in, the best trick/result beat) — 2 Shorts per Long, so
+        # each Long feeds the funnel twice.
+        import subprocess
+        try:
+            _r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration",
+                                 "-of", "csv=p=0", mp4], capture_output=True, text=True)
+            _dur = float(_r.stdout.strip())
+        except Exception:
+            _dur = 0.0
+        if _dur > 120:
+            _start = max(0, min(int(_dur * 0.55), int(_dur) - 45))
+            s2_mp4 = factory.make_short_from_long(mp4, workdir, secs=42, start=_start)
+            s2 = dict(e)
+            s2["kind"] = "short"
+            s2["id"] = e["id"] + "_short2"
+            s2["title"] = e["title"][:95]
+            s2["description"] = (e["description"].strip()
+                                  + f"\n\nFull video: https://youtu.be/{vid}"
+                                  + "\n\n#Shorts")
+            s2_pub, s2_slot = factory.next_bd_slot("short")
+            s2_vid = factory.upload(s2, s2_mp4, s2_pub)
+            factory.note_published(s2, s2_vid, "short", s2_pub)
+            st4 = factory.load_state()
+            st4["done"][s2["id"]] = {"date": today, "videoId": s2_vid}
+            factory.save_state(st4)
+            try:
+                if not factory.make_thumb_ai(s2, workdir):
+                    factory.make_thumb(s2, workdir, tf_pairs[0][0])
+                factory.set_thumbnail(s2_vid, workdir)
+            except Exception as ex2:
+                log("hook-cut-2 thumb failed (continuing): " + str(ex2)[:120])
+            log(f"hook-cut-2 short: OK videoId={s2_vid} scheduledFor={s2_pub} ({s2_slot})")
     except (Exception, SystemExit) as ex:
         log("hook-cut short step failed (long already uploaded; continuing): " + str(ex)[:140])
 
