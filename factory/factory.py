@@ -585,6 +585,132 @@ def gen_voice(e, workdir):
     return out
 
 
+# ---------------- AI Horde glowing illustrations (owner 2026-10-12) ----------------
+# OWNER STYLE: robot Shorts are built from "glowing AI illustration" PHOTOS
+# (his reference images: neon blue/orange, robots, holograms), generated free
+# via the AI Horde crowdsourced SDXL API. Falls back to stock footage if the
+# Horde queue fails/times out, so a slot is never lost.
+HORDE_API = "https://stablehorde.net/api/v2"
+HORDE_STYLE = ("glowing neon blue and orange rim lighting, cinematic futuristic "
+               "digital illustration, hyper detailed, dramatic atmosphere, "
+               "vibrant colors, vertical composition")
+
+def _horde_post(path, payload):
+    req = urllib.request.Request(
+        HORDE_API + path,
+        data=json.dumps(payload).encode(),
+        headers={"Content-Type": "application/json", "apikey": "0000000000",
+                 "Client-Agent": "nextai-factory:1.0:github-actions"})
+    return json.load(urllib.request.urlopen(req, timeout=90))
+
+def _horde_get(path):
+    req = urllib.request.Request(
+        HORDE_API + path,
+        headers={"Content-Type": "application/json", "apikey": "0000000000",
+                 "Client-Agent": "nextai-factory:1.0:github-actions"})
+    return json.load(urllib.request.urlopen(req, timeout=90))
+
+def _kenburns_clip(img, out, dur=10.0, fps=25, W=1080, H=1920, mode=0):
+    """Turn one still image into a slow zoom/pan video segment."""
+    frames = int(dur * fps)
+    if mode % 2 == 0:  # zoom in, centered
+        z = f"min(1+0.16*on/{frames},1.16)"
+        x, y = "(iw-iw/zoom)/2", "(ih-ih/zoom)/2"
+    else:              # zoom out with a diagonal drift
+        z = f"max(1.16-0.16*on/{frames},1.0)"
+        x, y = "(iw-iw/zoom)*0.72", "(ih-ih/zoom)*0.60"
+    vf = (f"scale={W*2}:{H*2}:force_original_aspect_ratio=increase,"
+          f"crop={W*2}:{H*2},"
+          f"zoompan=z='{z}':x='{x}':y='{y}':d={frames}:s={W}x{H}:fps={fps},"
+          "eq=contrast=1.06:saturation=1.10:brightness=0.02,format=yuv420p")
+    subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", img,
+                    "-vf", vf, "-t", str(dur), "-r", str(fps), out], check=True)
+
+def horde_beat_clips(e, workdir, timeout=1500):
+    """Generate one glowing SDXL illustration per beat via AI Horde and return
+    Ken Burns clips shaped like pick_footage output. Returns None on any
+    failure (caller falls back to stock footage)."""
+    beats = e.get("beats") or []
+    if not beats:
+        return None
+    fresh_dir = os.path.join(workdir, "horde_img")
+    os.makedirs(fresh_dir, exist_ok=True)
+    jobs = []  # (rid, prompt, out_png)
+    for i, b in enumerate(beats):
+        kw = str(b.get("kw", "")).strip() or "futuristic humanoid robot"
+        prompt = f"{kw}, {HORDE_STYLE}"
+        try:
+            out = _horde_post("/generate/async", {
+                "prompt": prompt,
+                "params": {"width": 832, "height": 1216, "n": 1, "steps": 30,
+                           "sampler_name": "k_euler_a", "cfg_scale": 7,
+                           "seed": str(1000 + i * 7 + int(time.time()) % 90000)},
+                "models": ["SDXL 1.0"], "nsfw": False,
+                "censor_nsfw": True, "shared": False})
+            rid = out.get("id")
+            if not rid:
+                raise RuntimeError("no id: " + str(out)[:120])
+            jobs.append((rid, prompt, os.path.join(fresh_dir, f"b{i}.png")))
+            print(f"  horde: submitted beat {i} ({kw[:44]})", flush=True)
+        except Exception as ex:
+            print(f"  horde submit failed beat {i}: {str(ex)[:100]}", flush=True)
+            return None
+    t0 = time.time()
+    while time.time() - t0 < timeout:
+        time.sleep(15)
+        still = []
+        for rid, prompt, outp in jobs:
+            try:
+                st = _horde_get(f"/generate/check/{rid}")
+            except Exception:
+                still.append((rid, prompt, outp)); continue
+            if st.get("done"):
+                try:
+                    res = _horde_get(f"/generate/status/{rid}")
+                    g = (res.get("generations") or [{}])[0]
+                    img = g.get("img") or ""
+                    if img.startswith("http"):
+                        data = urllib.request.urlopen(
+                            urllib.request.Request(img, headers={"User-Agent": UA}),
+                            timeout=180).read()
+                    else:
+                        import base64 as _b64
+                        data = _b64.b64decode(img)
+                    tmp = outp + ".webp"
+                    open(tmp, "wb").write(data)
+                    from PIL import Image
+                    Image.open(tmp).convert("RGB").save(outp)
+                    os.remove(tmp)
+                    print(f"  horde: beat done ({int(time.time()-t0)}s, "
+                          f"worker {g.get('worker_name', '?')})", flush=True)
+                except Exception as ex:
+                    print(f"  horde fetch failed: {str(ex)[:100]}", flush=True)
+                    return None
+            else:
+                still.append((rid, prompt, outp))
+        if not still:
+            break
+        else:
+            print(f"  horde: waiting on {len(still)}/{len(jobs)} images "
+                  f"({int(time.time()-t0)}s)", flush=True)
+    missing = [outp for _, _, outp in jobs if not os.path.exists(outp)]
+    if missing:
+        print(f"  horde timeout: {len(missing)} images missing", flush=True)
+        return None
+    clips = []
+    for i, (_, _, outp) in enumerate(jobs):
+        seg = os.path.join(workdir, f"horde_seg{i}.mp4")
+        try:
+            _kenburns_clip(outp, seg, dur=10.0, mode=i)
+        except Exception as ex:
+            print(f"  kenburns failed beat {i}: {str(ex)[:100]}", flush=True)
+            return None
+        clips.append({"file": seg, "dur": 10.0, "q": "horde",
+                      "rel": 3, "url": ""})
+    print(f"  horde: {len(clips)} glowing illustration clips ready", flush=True)
+    return clips
+
+
 def _poster_overlay(e, workdir, W, H, FONT):
     """OWNER STYLE 2026-10-11 (@androidalians poster look): big ALL-CAPS
     headline on top + spec-number badges under it, burned over the footage

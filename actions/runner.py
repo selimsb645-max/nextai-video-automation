@@ -435,7 +435,7 @@ def make_entry(kind):
             beats = val["beats"]
             tl = val["title"].lower()
             srcs = {h["url"] for h in heads}
-            _wlen_ok = ((45 <= words <= 150 and 4 <= len(beats) <= 8)
+            _wlen_ok = ((70 <= words <= 150 and 4 <= len(beats) <= 8)
                         if kind == "short" else
                         (560 <= words <= 720 and 16 <= len(beats) <= 24))
             if kind == "short":
@@ -743,7 +743,16 @@ def _robot_short(commit_extra, today):
             append_library(r_e)
             r_wd = os.path.join(factory.BASE, "runs", f"{r_e['id']}_{today}")
             os.makedirs(r_wd, exist_ok=True)
-            r_pairs = pool_footage(r_e, r_wd)
+            # OWNER STYLE 2026-10-12: robot Shorts are built from glowing
+            # AI illustrations (free AI Horde SDXL); stock footage is the
+            # fallback so a slot is never lost.
+            r_pairs = None
+            try:
+                r_pairs = factory.horde_beat_clips(r_e, r_wd)
+            except Exception as hex_:
+                log("horde clips failed (stock fallback): " + str(hex_)[:120])
+            if not r_pairs:
+                r_pairs = pool_footage(r_e, r_wd)
             r_audio = factory.gen_voice(r_e, r_wd)
             r_mp4 = factory.render(r_e, r_wd, r_pairs, r_audio)
             r_pub, r_slot = factory.next_bd_slot("short")
