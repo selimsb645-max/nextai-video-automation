@@ -278,7 +278,7 @@ def pick_footage(e, workdir):
 
     ledger_path = os.path.join(FOOTAGE, "_pixabay_used.json")
     try:
-        global_used = set(json.load(open(ledger_path)))
+        global_used = {str(x) for x in json.load(open(ledger_path))}
     except Exception:
         global_used = set()
     fresh_dir = os.path.join(workdir, "fresh_footage")
@@ -307,7 +307,7 @@ def pick_footage(e, workdir):
             print(f"  pixabay fetch failed for {query!r}: {ex}", flush=True)
             return []
         cands = [h for h in data.get("hits", [])
-                 if h["id"] not in used_ids and h["id"] not in global_used
+                 if str(h["id"]) not in used_ids and str(h["id"]) not in global_used
                  and h.get("videos", {}).get("medium", {}).get("url")
                  and h.get("duration", 0) >= 3]
         # quality gate: prefer full-HD clips when the search offers any
@@ -343,8 +343,8 @@ def pick_footage(e, workdir):
         except Exception as ex:
             print(f"  pixabay download failed for {query!r}: {ex}", flush=True)
             return None
-        used_ids.add(hit["id"])
-        global_used.add(hit["id"])
+        used_ids.add(str(hit["id"]))
+        global_used.add(str(hit["id"]))
         cdur = float(subprocess.run(
             ["ffprobe", "-v", "error", "-show_entries", "format=duration",
              "-of", "default=noprint_wrappers=1:nokey=1", out],
@@ -482,7 +482,7 @@ def pick_footage(e, workdir):
         print(f"beat: {beat_i} <- {clip.get('q') or clip['file']} [{src}] ({len(txt.split())}w)", flush=True)
 
     if PIXABAY_KEY and used_ids:
-        json.dump(sorted(global_used)[-5000:], open(ledger_path, "w"))
+        json.dump(sorted(global_used, key=str)[-5000:], open(ledger_path, "w"))
     return clips
 
 
