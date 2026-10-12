@@ -261,7 +261,7 @@ SCRIPT FORMAT — an AI news story told by a real host:
 - Narration: total 780-860 words, split into 22-27 beats.
 - Beat 1 (10-14 seconds, cold open): the hook in one breath — the boldest concrete fact or number AND the name at the center of the drama. No greetings, no "in this video".
 - Beats 2-3 (fast hook zone, max ~50 words total): what just happened + the single most surprising fact. Then the ROADMAP in one curiosity-framed sentence: "Today we'll look at what X actually is, why Y happened, and what it means for you."
-- Beat 4 (channel stamp, ~12 words): "It's {month and day}, and you're watching NextAI Vision." — use the real current date from the headlines.
+- Beat 4 (channel stamp, ~12 words): one line naming today's real date and the channel, e.g. "It's October 12th, and you're watching NextAI Vision."
 - Middle beats (26-38 words each): tell the STORY chronologically — what happened, who said what, how it escalated; then explain the one technical bit simply enough for a beginner; weave in specific numbers, dates and model names wherever the sources give them.
 - QUOTES: include at least ONE short real quote from the story as reported in the headlines/snapshots, introduced naturally ("he said, quote, ..."). Cite at least ONE named source or outlet ("according to ...").
 - WIT: 1-3 light humorous asides per video — playful, never cruel, never cringe, family-safe.
