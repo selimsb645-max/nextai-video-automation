@@ -60,10 +60,11 @@ GH_BRANCH = os.environ.get("GITHUB_REF_NAME", "") or "main"
 HOOKS = ["shocking", "warning", "banned", "solved", "scientists",
          "impossible", "nobel", "doctors", "just happened",
          "never", "survives", "robot",
-         # tutorial hook patterns (owner 2026-10-08: longs now follow the
-         # AI Master @iamAImaster practical how-to style)
-         "pro", "free", "guide", "hack", "beginner", "tutorial", "how to",
-         "just became", "killed"]
+         # commentary/story hooks (owner 2026-10-12: longs follow the
+         # Farid Talks AI news-commentary style)
+         "built", "truth", "nobody", "finally", "vs", "exposed",
+         # legacy tutorial hooks still allowed occasionally
+         "pro", "free", "guide", "hack", "just became", "killed"]
 USED_F = os.path.join(FACT, "used_footage.json")
 REPORTS = os.path.join(REPO, "actions", "reports")
 
@@ -250,25 +251,27 @@ def gemini_json(prompt, models=None):
     return None
 
 
-ENTRY_PROMPT = """You are the topic researcher and script writer for a US-audience English YouTube channel about AI. OWNER RULE 2026-10-08: the TOPICS stay the same as before — videos cover ALL types of AI: ChatGPT/OpenAI, Claude/Anthropic, Gemini/Google AI Studio, Grok/xAI, DeepSeek, Qwen, and EVERY other AI company, platform, tool, model or AI technology; also AI-linked science discoveries and robots. ONLY the PRESENTATION STYLE follows the channel "AI Master" (@iamAImaster): practical, beginner-friendly, benefit-first delivery.
+ENTRY_PROMPT = """You are the topic researcher and script writer for a US-audience English YouTube channel about AI (NextAI Vision). OWNER RULE 2026-10-12: the TOPICS stay the same — videos cover ALL types of AI: ChatGPT/OpenAI, Claude/Anthropic, Gemini/Google AI Studio, Grok/xAI, DeepSeek, Qwen, and EVERY other AI company, platform, tool, model or AI technology; also AI-linked science discoveries and robots. ONLY the PRESENTATION STYLE follows the channel "Farid Talks AI and Tech" (owner reference video 2026-10-12, s8dAwNs14jo): a casual, witty, STORY-DRIVEN AI news commentary told by a human host — NOT a newsreader, NOT a tutorial, NOT a listicle.
 From the headlines below pick exactly ONE real, currently-trending topic (last 7 days, US-interest). Allowed pillars, in priority order: (1) AI updates and NEW MODEL LAUNCHES from ChatGPT/OpenAI, Claude/Anthropic, Gemini/Google AI Studio, Grok/xAI, DeepSeek, Qwen — ANY AI update from ANY AI company counts; (2) AI-linked science discoveries; (3) robots and new AI technology. NEVER medical advice, no politics, no tragedy exploitation.
-SELECTION RULE: the DEMAND COUNTS below show how many US headlines each topic cluster got in the last 7 days — this is the search-demand evidence. Pick a topic from the cluster with the HIGHEST count that still has one strong, specific story. PREFER a topic with a PRACTICAL angle a beginner can act on: a new tool or feature they can use, something that just became free or cheaper, a workflow that saves time or money.
+SELECTION RULE: the DEMAND COUNTS below show how many US headlines each topic cluster got in the last 7 days — this is the search-demand evidence. Pick a topic from the cluster with the HIGHEST count that still has one strong, specific story. PREFER stories with NARRATIVE DRAMA: someone built/released something bold, a ban, a feud, a record, an exposure, a plot twist, a big name doing something unexpected (e.g. "a YouTuber built an uncensored AI and OpenAI banned him twice"). Plain feature launches are second choice.
 OWNER DATA 2026-10-11: robotics real-test/lab-demo stories and side-by-side AI model comparisons are this channel's best performers — when demand counts are close, pick one of those angles.
 
-SCRIPT FORMAT — a practical guide, not a dry news recap:
-- Write like a friendly expert teaching one viewer: direct, energetic, concrete. "Here is what it does", "Here is how you use it", "The trick most people miss". No newsreader tone, no channel intro.
-- Narration: total 630-690 words, split into 18-24 beats.
-- Beat 1 (10-12 seconds, cold open): drop the viewer straight onto the biggest concrete benefit or wow moment ("You can now do X for free..."). No greetings, no 'in this video'. The single most surprising fact, number or claim must land in the FIRST sentence.
-- Beats 2-3 (fast hook zone, 15-22 words each, max ~45 words total): state what the tool/update is AND the single most surprising fact, so new viewers know exactly what they get by watching. By SECOND 30 the viewer must know the payoff AND be left with one burning open question that only resolves in the final third.
+SCRIPT FORMAT — an AI news story told by a real host:
+- First-person, conversational, contractions everywhere, short punchy sentences, occasional wit. Talk TO one viewer ("you"), react to the story ("Here's the funny part", "Now this is where it gets weird", "And yes, you heard that right").
+- Narration: total 780-860 words, split into 22-27 beats.
+- Beat 1 (10-14 seconds, cold open): the hook in one breath — the boldest concrete fact or number AND the name at the center of the drama. No greetings, no "in this video".
+- Beats 2-3 (fast hook zone, max ~50 words total): what just happened + the single most surprising fact. Then the ROADMAP in one curiosity-framed sentence: "Today we'll look at what X actually is, why Y happened, and what it means for you."
+- Beat 4 (channel stamp, ~12 words): "It's {month and day}, and you're watching NextAI Vision." — use the real current date from the headlines.
+- Middle beats (26-38 words each): tell the STORY chronologically — what happened, who said what, how it escalated; then explain the one technical bit simply enough for a beginner; weave in specific numbers, dates and model names wherever the sources give them.
+- QUOTES: include at least ONE short real quote from the story as reported in the headlines/snapshots, introduced naturally ("he said, quote, ..."). Cite at least ONE named source or outlet ("according to ...").
+- WIT: 1-3 light humorous asides per video — playful, never cruel, never cringe, family-safe.
+- PAYOFF: keep the best twist, reveal or resolution for the FINAL THIRD so viewers stay to the end.
+- Last two beats: a short ironic callback or "one more thing" twist if the story has one, then END with a comment question tied to the story ("Tell me in the comments: ...") and a quick sign-off ("See you in the next one.").
 - OWNER DATA 2026-10-11: average view duration on 5-min longs is only 57s — assume viewers decide in the first 30 seconds; nothing slow, nothing generic, no throat-clearing before the surprise.
-- Middle beats (28-38 words each): a step-by-step walkthrough — what it is, how to get access, numbered steps ("First... Then..."), what you can create or automate with it, pro tips and common beginner mistakes.
-- PAYOFF STRUCTURE: save the BEST trick, result or money-saving detail for the final third so viewers stay to the end.
-- Last beat: end with a short closing question or call-to-action ("Try it and tell me...").
-- Family-safe, factual, only claims the sources support, no fabricated numbers. Emotional punctuation allowed ("...", punchy tense sentences).
 
 HARD RULES:
-- Title: MAX 50 CHARACTERS (mobile viewers must read the full message at a glance), must contain "AI" (or the platform name) AND one of these hook patterns: Become a PRO / Free / Guide / Hacks / Beginner / Just Became / Killed / Shocking / Warning / Banned / Impossible.
-- TITLE PATTERNS that work (pick the best fit, not always the same one): "How to Use X (Become a PRO!)", "X Just Became Free", "X: Full Beginner Guide", "X Hacks Most People Miss", "X vs Y: Who Wins?".
+- Title: MAX 50 CHARACTERS (mobile viewers must read the full message at a glance), must contain "AI" or the platform/company name AND one of these story-drama hook patterns: Banned / Built / Just / Shocking / Warning / Nobody / Truth / Finally / vs.
+- TITLE PATTERNS that work (pick the best fit, never the same one twice in a row): "{Name} Built an AI. {Company} Banned Him.", "X Just Happened — Here's Why It Matters", "The Truth About X", "X Banned Y. Here's Why.", "Nobody Expected This From X", "X vs Y: It's Not Even Close".
 - TITLE VARIETY: do NOT reuse the same title template (like "AI Warning: ...") that appears in the RECENT TITLES list; at most one title there shares its first two words with yours.
 - Each beat gets "kw": a 2-4 word stock-footage search phrase naming a CONCRETE filmable object/place/action that matches what the sentence says (e.g. "server room lights", "robot arm factory", "person typing laptop", "computer chip macro"). NEVER brand or product names (ChatGPT, Claude, OpenAI, Gemini, DeepSeek...) and NEVER abstract words (future, intelligence, innovation) — stock libraries do not have them, so the footage would not match the words.
 - verified_sources: 1-3 URLs copied EXACTLY from the headline list that support the topic.
@@ -283,10 +286,10 @@ HEADLINES:
 {headlines}
 
 Output STRICT JSON only, no markdown fences:
-{{"id":"snake_case_topic_{today}","title":"...","description":"FIRST 2 LINES = tight summary of what the viewer learns, then 1-2 more sentences with search keywords","tags":["12 short search keywords"],"narration":"full narration text","beats":[{{"t":"beat text","kw":"footage phrase"}}],"verified_sources":["url"],"demand_evidence":"one line: which headline and why now"}}"""
+{{"id":"snake_case_topic_{today}","title":"...","description":"FIRST 2 LINES = tight summary of the story and what the viewer learns, then 1-2 more sentences with search keywords","tags":["12 short search keywords"],"narration":"full narration text","beats":[{{"t":"beat text","kw":"footage phrase"}}],"verified_sources":["url"],"demand_evidence":"one line: which headline and why now"}}"""
 
 
-CONTINUE_PROMPT = """You are continuing a US-audience YouTube AI-tutorial narration (friendly expert teaching one viewer, practical how-to style, like the channel "AI Master"). Write the NEXT {n} beats (each 28-38 words) that CONTINUE the walkthrough from where it stops — do not repeat earlier text. Step-by-step "First... Then..." flow, pro tips, beginner mistakes; save the best trick for the final part. Every beat gets a 2-4 word "kw" stock-footage search phrase. Return ONLY JSON: {{"beats":[{{"t":"<sentence>","kw":"<footage phrase>"}}]}}.
+CONTINUE_PROMPT = """You are continuing a US-audience YouTube AI news commentary (casual, witty, story-driven host style like "Farid Talks AI"). Write the NEXT {n} beats (each 26-38 words) that CONTINUE the story from where it stops — do not repeat earlier text. Keep the drama escalating toward the final-third payoff. Every beat gets a 2-4 word "kw" stock-footage search phrase. Return ONLY JSON: {{"beats":[{{"t":"<sentence>","kw":"<footage phrase>"}}]}}.
 
 TITLE: {title}
 STORY SO FAR (all beats in order):
@@ -294,7 +297,7 @@ STORY SO FAR (all beats in order):
 """
 
 
-EXPAND_PROMPT = """You are expanding a US-audience YouTube AI-tutorial narration. Rewrite EVERY beat below to be 30-38 words each (add concrete detail, steps, tips — keep the same meaning, order and tone). Keep exactly the same number of beats and each "kw" phrase. COUNT WORDS per beat: fewer than 30 is invalid. Return ONLY JSON: {{"beats":[{{"t":"...","kw":"..."}}]}}.
+EXPAND_PROMPT = """You are expanding a US-audience YouTube AI news commentary (casual witty host style). Rewrite EVERY beat below to be 26-38 words each (add concrete detail, numbers, quotes — keep the same meaning, order and tone). Keep exactly the same number of beats and each "kw" phrase. COUNT WORDS per beat: fewer than 30 is invalid. Return ONLY JSON: {{"beats":[{{"t":"...","kw":"..."}}]}}.
 
 TITLE: {title}
 BEATS TO EXPAND:
