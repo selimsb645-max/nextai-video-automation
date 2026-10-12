@@ -271,7 +271,7 @@ SCRIPT FORMAT — an AI news story told by a real host:
 
 HARD RULES:
 - Title: MAX 50 CHARACTERS (mobile viewers must read the full message at a glance), must contain "AI" or the platform/company name AND one of these story-drama hook patterns: Banned / Built / Just / Shocking / Warning / Nobody / Truth / Finally / vs.
-- TITLE PATTERNS that work (pick the best fit, never the same one twice in a row): "{Name} Built an AI. {Company} Banned Him.", "X Just Happened — Here's Why It Matters", "The Truth About X", "X Banned Y. Here's Why.", "Nobody Expected This From X", "X vs Y: It's Not Even Close".
+- TITLE PATTERNS that work (pick the best fit, never the same one twice in a row): "<Name> Built an AI. <Company> Banned Him.", "X Just Happened — Here's Why It Matters", "The Truth About X", "X Banned Y. Here's Why.", "Nobody Expected This From X", "X vs Y: It's Not Even Close".
 - TITLE VARIETY: do NOT reuse the same title template (like "AI Warning: ...") that appears in the RECENT TITLES list; at most one title there shares its first two words with yours.
 - Each beat gets "kw": a 2-4 word stock-footage search phrase naming a CONCRETE filmable object/place/action that matches what the sentence says (e.g. "server room lights", "robot arm factory", "person typing laptop", "computer chip macro"). NEVER brand or product names (ChatGPT, Claude, OpenAI, Gemini, DeepSeek...) and NEVER abstract words (future, intelligence, innovation) — stock libraries do not have them, so the footage would not match the words.
 - verified_sources: 1-3 URLs copied EXACTLY from the headline list that support the topic.
