@@ -340,5 +340,32 @@
   "uploaded_at": "2026-10-10T06:18:02+06:00",
   "scheduled_for": "2026-10-10T20:30:00Z",
   "url": "https://www.youtube.com/watch?v=YI9DznqOHqM"
+ },
+ {
+  "id": "claude_anthropic_ipo_warning_2026-10-04",
+  "videoId": "SV9e9rX1jos",
+  "title": "Claude Creator Issues Shocking Warning Inside Secret IPO Documents",
+  "kind": "long",
+  "uploaded_at": "2026-10-13T06:59:36+06:00",
+  "scheduled_for": "2026-10-13T15:00:00Z",
+  "url": "https://www.youtube.com/watch?v=SV9e9rX1jos"
+ },
+ {
+  "id": "claude_anthropic_ipo_warning_2026-10-04_short1",
+  "videoId": "uEuRvQkG18I",
+  "title": "Claude Creator Issues Shocking Warning Inside Secret IPO Documents",
+  "kind": "short",
+  "uploaded_at": "2026-10-13T07:15:19+06:00",
+  "scheduled_for": "2026-10-13T12:30:00Z",
+  "url": "https://www.youtube.com/watch?v=uEuRvQkG18I"
+ },
+ {
+  "id": "claude_anthropic_ipo_warning_2026-10-04_short2",
+  "videoId": "WPYAmGVb_9E",
+  "title": "Claude Creator Issues Shocking Warning Inside Secret IPO Documents",
+  "kind": "short",
+  "uploaded_at": "2026-10-13T07:16:04+06:00",
+  "scheduled_for": "2026-10-13T20:30:00Z",
+  "url": "https://www.youtube.com/watch?v=WPYAmGVb_9E"
  }
 ]
