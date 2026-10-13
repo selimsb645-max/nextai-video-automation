@@ -1349,15 +1349,15 @@ PLAYLIST_DEFS = [
     ("Gemini & Google AI Ecosystem",
      ["gemini", "google", "deepmind"],
      "Gemini, Google AI Studio and DeepMind updates - explained."),
+    ("AI Science & Robotics",
+     ["robot", "scientist", "science", "nobel", "lab", "doctor", "health",
+      "heart", "planet", "nasa", "voice", "clone", "breathing", "walk", "robots", "robotic", "humanoid"],
+     "AI science breakthroughs, health-AI and robotics - explained."),
     ("AI Controversy & Tech Leaks",
      ["leak", "leaks", "leaked", "ban", "bans", "banned", "warning", "warnings",
      "controversy", "controversies", "secret", "shock", "shocks", "shocked",
      "shocking", "dispute", "disputes", "ipo", "panic"],
      "AI controversies, leaked documents, bans and shocking warnings."),
-    ("AI Science & Robotics",
-     ["robot", "scientist", "science", "nobel", "lab", "doctor", "health",
-      "heart", "planet", "nasa", "voice", "clone", "breathing", "walk"],
-     "AI science breakthroughs, health-AI and robotics - explained."),
 ]
 
 
