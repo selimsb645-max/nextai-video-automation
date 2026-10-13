@@ -795,7 +795,9 @@ def render(e, workdir, clips, audio):
     if e.get("kind") == "short":
         if dur > 61:
             raise SystemExit(f"SHORT_TOO_LONG {dur:.0f}s - narration must fit 60s")
-        W, H, XF = 1080, 1920, 0.3
+        # MOTION UPGRADE 2026-10-13 (owner upgrade #4): quicker crossfades
+        # so every beat boundary reads as a synced cut, not a slow dissolve.
+        W, H, XF = 1080, 1920, 0.25
     else:
         W, H, XF = 1920, 1080, 0.6
     # OWNER STYLE 2026-10-11: robot Shorts get the androidalians poster
@@ -872,12 +874,23 @@ def render(e, workdir, clips, audio):
             + frame + f"fps={fps},format=yuv420p" + _cap + f"[v{k}]")
         inputs += ["-i", os.path.join(FOOTAGE, clip["file"])]
     last = "v0"
+    _is_short = e.get("kind") == "short"
     for k in range(1, n):
-        fc.append(f"[{last}][v{k}]xfade=transition=fade:duration={XF}:"
+        # MOTION UPGRADE 2026-10-13: on Shorts, odd beat boundaries get a
+        # short white-flash accent (fadewhite) so cuts feel beat-synced;
+        # even boundaries keep the smooth fade. Longs stay all-fade.
+        _trans = "fade"
+        if _is_short and k % 2 == 1:
+            _trans = "fadewhite"
+        fc.append(f"[{last}][v{k}]xfade=transition={_trans}:duration={XF}:"
                   f"offset={offsets[k]:.3f}[x{k}]")
         last = f"x{k}"
+    # MOTION UPGRADE 2026-10-13: on Shorts the brightness slowly "breathes"
+    # (~0.4 Hz, +/-0.012) - a subtle glowing pulse matching the neon-illustration
+    # style. Longs keep the fixed grade.
+    _bright = "0.012+0.012*sin(2*PI*t/2.4)" if _is_short else "0.01"
     fc.append(
-        f"[{last}]eq=contrast=1.10:saturation=1.14:brightness=0.01,"
+        f"[{last}]eq=contrast=1.10:saturation=1.14:brightness={_bright},"
         "colorbalance=rs=.02:bs=.05:bm=-.06,vignette=PI/4.5,"
         "noise=alls=4:allf=t+u,unsharp=5:5:0.35[out]")
     # ---- AUDIO: loud narration + ambient bed ----

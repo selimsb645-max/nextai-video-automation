@@ -40,6 +40,7 @@
    ],
    "short": [
     "02:30",
+    "08:30",
     "18:30"
    ]
   },
@@ -48,7 +49,7 @@
    "videoId": "OISJ6w_gFKE",
    "publishAt": "2026-10-01T12:30:00Z"
   },
-  "rule": "Owner rule 2026-10-11 (supersedes 10-07): SHORTS-FIRST growth. Exactly 2 Shorts every day (18:30 BD standalone robot Short + 02:30 BD second Short: hook-cut of same-day Long on Long days, standalone robot Short on off-days). 2 Longs per week: Long slot 21:00 BD with a 3-day minimum gap. Never publish immediately or move already-uploaded videos.",
+  "rule": "Owner rule 2026-10-13 (supersedes 10-11): SHORTS-FIRST growth, earnings urgency. Exactly 3 Shorts every day (18:30 BD standalone Short + 02:30 BD hook-cut of same-day Long on Long days / standalone Short on off-days + 08:30 BD standalone Short). 2-3 Longs per week: Long slot 21:00 BD with a 3-day minimum gap. Never publish immediately or move already-uploaded videos.",
   "daily_long_limit": 1,
   "production_times": {
    "long": [
@@ -59,8 +60,8 @@
    ]
   },
   "lead_hours_min_short": 1,
-  "lead_hours_max_short": 20,
-  "daily_short_limit": 2,
+  "lead_hours_max_short": 22,
+  "daily_short_limit": 3,
   "long_min_gap_days": 3
  },
  "production_style": {
