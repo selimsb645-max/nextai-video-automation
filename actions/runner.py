@@ -271,6 +271,7 @@ SCRIPT FORMAT — an AI news story told by a real host:
 
 HARD RULES:
 - Title: MAX 50 CHARACTERS (mobile viewers must read the full message at a glance), must contain "AI" or the platform/company name AND one of these story-drama hook patterns: Banned / Built / Just / Shocking / Warning / Nobody / Truth / Finally / vs.
+- TITLE SEARCHABILITY (owner 2026-10-16: 70% of views come from SEARCH, and drama-only titles rank for nothing): the title MUST contain the exact SEARCHABLE SUBJECT NAME a viewer would actually type into YouTube/Google — the model name (e.g. "GPT-5.1", "Claude Opus 4.5", "Gemini 3"), the company name, the robot name, or the law/event name — spelled EXACTLY as in the headlines. GOOD: "Claude Opus 4.5 Just Beat GPT-5.1", "Tesla Optimus Banned Itself". BAD: "AI Agent Hacked a Government. Nobody Told It To" (no searchable subject, nobody searches this).
 - TITLE PATTERNS that work (pick the best fit, never the same one twice in a row): "<Name> Built an AI. <Company> Banned Him.", "X Just Happened — Here's Why It Matters", "The Truth About X", "X Banned Y. Here's Why.", "Nobody Expected This From X", "X vs Y: It's Not Even Close".
 - TITLE VARIETY: do NOT reuse the same title template (like "AI Warning: ...") that appears in the RECENT TITLES list; at most one title there shares its first two words with yours.
 - Each beat gets "kw": a 2-4 word stock-footage search phrase naming a CONCRETE filmable object/place/action that matches what the sentence says (e.g. "server room lights", "robot arm factory", "person typing laptop", "computer chip macro"). NEVER brand or product names (ChatGPT, Claude, OpenAI, Gemini, DeepSeek...) and NEVER abstract words (future, intelligence, innovation) — stock libraries do not have them, so the footage would not match the words.
@@ -286,7 +287,7 @@ HEADLINES:
 {headlines}
 
 Output STRICT JSON only, no markdown fences:
-{{"id":"snake_case_topic_{today}","title":"...","description":"FIRST 2 LINES = tight summary of the story and what the viewer learns, then 1-2 more sentences with search keywords","tags":["12 short search keywords"],"narration":"full narration text","beats":[{{"t":"beat text","kw":"footage phrase"}}],"verified_sources":["url"],"demand_evidence":"one line: which headline and why now"}}"""
+{{"id":"snake_case_topic_{today}","subject":"exact searchable subject name from the headlines","title":"...","description":"FIRST LINE must contain the subject name plus 1-2 exact phrases people search (e.g. 'Claude Opus 4.5 review', what happened, and why it matters), then 1-2 more sentences with search keywords","tags":["12 short search keywords, FIRST one = the subject name verbatim"],"narration":"full narration text","beats":[{{"t":"beat text","kw":"footage phrase"}}],"verified_sources":["url"],"demand_evidence":"one line: which headline and why now"}}"""
 
 
 CONTINUE_PROMPT = """You are continuing a US-audience YouTube AI news commentary (casual, witty, story-driven host style like "Farid Talks AI"). Write the NEXT {n} beats (each 26-38 words) that CONTINUE the story from where it stops — do not repeat earlier text. Keep the drama escalating toward the final-third payoff. Every beat gets a 2-4 word "kw" stock-footage search phrase. Return ONLY JSON: {{"beats":[{{"t":"<sentence>","kw":"<footage phrase>"}}]}}.
@@ -319,7 +320,7 @@ HARD RULES:
 - specs: 2-3 VERY short poster facts about THIS robot, each MAX 14 CHARACTERS, numbers preferred (e.g. ["120 KG", "21 KM", "50 MIN"]).
 - narration: 70-120 words total (about 35-50 seconds spoken), story-style.
 - beats: 4-7 items, each {{"t":"<one spoken sentence, max 16 words>","kw":"<CONCRETE filmable robot-action scene - keep the SAME robot type in every beat for visual continuity, never brand names, never abstract words>"}}. Every beat gets its own unique footage.
-- Example JSON: {{"id":"snake_case_robot_short_{today}","title":"...","headline":"...","specs":["...","..."],"description":"2-3 sentence SEO summary + 'Related searches:' line with 5 tags","tags":["8 short search keywords"],"narration":"short narration text","beats":[{{"t":"beat text","kw":"robot footage phrase"}}],"verified_sources":["url"],"demand_evidence":"one line: which headline and why now"}}
+- Example JSON: {{"id":"snake_case_robot_short_{today}","subject":"exact searchable subject (robot name, e.g. Tesla Optimus / Figure 02, or 'humanoid robot')","title":"...","headline":"...","specs":["...","..."],"description":"FIRST LINE must name the robot/subject + what it did (searchable), then 1-2 more sentences, + 'Related searches:' line with 5 tags","tags":["8 short search keywords"],"narration":"short narration text","beats":[{{"t":"beat text","kw":"robot footage phrase"}}],"verified_sources":["url"],"demand_evidence":"one line: which headline and why now"}}
 - verified_sources: 1-2 headline URLs that prove the story.
 - id: short slug containing the topic and today's date.
 Return ONLY the JSON object.
@@ -438,10 +439,17 @@ def make_entry(kind):
             _wlen_ok = ((70 <= words <= 150 and 4 <= len(beats) <= 8)
                         if kind == "short" else
                         (560 <= words <= 720 and 16 <= len(beats) <= 24))
+            # OWNER 2026-10-16 SEARCHABILITY GUARD: 70% of views come from
+            # search; a drama-only title no one searches gets zero reach.
+            # The model must emit "subject" (the exact searchable name) and
+            # it must appear verbatim in the title AND in the description.
+            _subj = " ".join(str(val.get("subject") or "").split()).lower()
+            _subj_ok = bool(_subj) and _subj in tl and _subj in str(val.get("description", "")).lower()
             if kind == "short":
                 # OWNER 2026-10-07 21:46 BD: standalone shorts are ROBOT
                 # videos (casperpks-style); must be robot-focused.
                 ok = (_wlen_ok
+                      and _subj_ok
                       and len(val["title"]) <= 52
                       and "robot" in (val["title"] + " " + val["narration"]).lower()
                       and any(h in tl for h in HOOKS)
@@ -452,6 +460,7 @@ def make_entry(kind):
                 # (any, not all) — 3.5-flash passes a sloppy second URL
                 # sometimes; grounding is kept by the one exact source.
                 ok = (_wlen_ok
+                      and _subj_ok
                       and len(val["title"]) <= 52
                       and ("ai" in tl or any(p in tl for p in
                             ["chatgpt", "openai", "claude", "gemini", "grok", "deepseek", "qwen"]))
@@ -462,6 +471,8 @@ def make_entry(kind):
                 _why = []
                 if not _wlen_ok:
                     _why.append(f"words={words},beats={len(beats)}")
+                if not _subj_ok:
+                    _why.append(f"subject-not-searchable ({_subj[:24] if _subj else 'missing'})")
                 if len(val["title"]) > 52:
                     _why.append("title>52")
                 if kind == "short" and "robot" not in (val["title"] + " " + val["narration"]).lower():
