@@ -705,8 +705,12 @@ def horde_beat_clips(e, workdir, timeout=1500):
         except Exception as ex:
             print(f"  kenburns failed beat {i}: {str(ex)[:100]}", flush=True)
             return None
-        clips.append({"file": seg, "dur": 10.0, "q": "horde",
-                      "rel": 3, "url": ""})
+        _t = str((beats[i] or {}).get("t", "")).strip()
+        # FIX 2026-10-18: render() expects (clip, word_count) pairs exactly
+        # like pick_footage; returning bare dicts crashed every horde-path
+        # robot Short with "too many values to unpack (expected 2)".
+        clips.append(({"file": seg, "dur": 10.0, "q": "horde",
+                       "rel": 3, "url": ""}, max(1, len(_t.split()))))
     print(f"  horde: {len(clips)} glowing illustration clips ready", flush=True)
     return clips
 
