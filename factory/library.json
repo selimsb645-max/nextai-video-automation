@@ -4705,6 +4705,143 @@
    "scope_reviewed": true,
    "content_policy_version": "2026-10-01",
    "seed": 796
+  },
+  {
+   "id": "anthropic_s1_draft_2026-10-21",
+   "kind": "short",
+   "content_pillar": "ai_updates",
+   "content_policy_version": "2026-10-01",
+   "scope_reviewed": true,
+   "title": "Anthropic Just Filed the IPO Nobody Expected",
+   "description": "Anthropic is drafting its S-1. The company behind Claude may go public — here's what the filing means for the AI race.",
+   "verified_sources": [
+    {
+     "title": "AI and Tech News 21 Oct 2026: Anthropic draft S-1",
+     "publisher": "bestproductivityresources.com",
+     "date": "2026-10-21",
+     "url": "https://bestproductivityresources.com/articles/ai-and-tech-news-21-october-2026",
+     "accessed": "2026-10-23",
+     "verified_facts": [
+      "On Oct 21, 2026, outlets reported Anthropic has drafted an S-1, the filing that precedes a US IPO.",
+      "The move signals Anthropic believes its financials can withstand public-market scrutiny amid the AI race."
+     ]
+    }
+   ],
+   "tags": [
+    "anthropic ipo",
+    "claude s-1",
+    "ai company goes public",
+    "anthropic news",
+    "ai stocks"
+   ],
+   "headline": "ANTHROPIC FILES IPO",
+   "specs": [
+    "S-1 DRAFTED",
+    "CLAUDE MAKER"
+   ]
+  },
+  {
+   "id": "openai_text_watermarks_2026-10-16",
+   "kind": "short",
+   "content_pillar": "ai_updates",
+   "content_policy_version": "2026-10-01",
+   "scope_reviewed": true,
+   "title": "OpenAI's New Watermark Exposes AI Text Instantly",
+   "description": "After Anthropic's move, OpenAI adds invisible text watermarks. Detection just became native — what changes for users?",
+   "verified_sources": [
+    {
+     "title": "This Week in AI Oct 16 2026: OpenAI adds text watermarks after Anthropic",
+     "publisher": "Micro Center News",
+     "date": "2026-10-21",
+     "url": "https://www.microcenter.com/site/mc-news/article/this-week-in-ai-oct-2-2026.aspx",
+     "accessed": "2026-10-23",
+     "verified_facts": [
+      "In the week of Oct 16, 2026, OpenAI added text watermarks to its models, following Anthropic's earlier watermarking.",
+      "Watermarks let tools detect AI-written text without changing how the text looks to readers."
+     ]
+    }
+   ],
+   "tags": [
+    "openai watermark",
+    "ai text detection",
+    "chatgpt news",
+    "anthropic watermark",
+    "ai updates"
+   ],
+   "headline": "OPENAI WATERMARKS TEXT",
+   "specs": [
+    "AFTER CLAUDE",
+    "AI DETECTABLE"
+   ]
+  },
+  {
+   "id": "optimus_public_sale_2027_2026-10",
+   "kind": "short",
+   "content_pillar": "ai_updates",
+   "content_policy_version": "2026-10-01",
+   "scope_reviewed": true,
+   "title": "Tesla Says Optimus Goes on Sale in 2027",
+   "description": "Elon Musk gave a public timeline: Optimus on sale by end of 2027. Humanoids you can order TODAY already start under $9,000.",
+   "verified_sources": [
+    {
+     "title": "Tesla Optimus Preorder and Price (Oct 2026): Not for Sale Yet",
+     "publisher": "botinfo.ai",
+     "date": "2026-10-21",
+     "url": "https://botinfo.ai/articles/tesla-optimus",
+     "accessed": "2026-10-23",
+     "verified_facts": [
+      "As of October 2026, Tesla's site lists no Optimus preorder, deposit or price.",
+      "Musk stated Optimus will be on sale to the public by the end of 2027.",
+      "Humanoid robots orderable now exist from around $8,990 (checked Oct 5, 2026)."
+     ]
+    }
+   ],
+   "tags": [
+    "tesla optimus price",
+    "humanoid robot for sale",
+    "elon musk robot",
+    "optimus 2027",
+    "buy humanoid robot"
+   ],
+   "headline": "OPTIMUS ON SALE 2027",
+   "specs": [
+    "UNDER $9,000 NOW",
+    "2027 PUBLIC"
+   ]
+  },
+  {
+   "id": "ai_decompilation_viral_2026-10-16",
+   "kind": "short",
+   "content_pillar": "ai_updates",
+   "content_policy_version": "2026-10-01",
+   "scope_reviewed": true,
+   "title": "AI That Reverse-Engineers Any App Went Viral",
+   "description": "AI decompilation broke into the mainstream: models that read compiled code and rebuild source. Devs are split.",
+   "verified_sources": [
+    {
+     "title": "This Week in AI Oct 16, 2026: AI decompilation goes viral",
+     "publisher": "Micro Center News",
+     "date": "2026-10-21",
+     "url": "https://www.microcenter.com/site/mc-news/article/this-week-in-ai-oct-2-2026.aspx",
+     "accessed": "2026-10-23",
+     "verified_facts": [
+      "In the week of Oct 16, 2026, AI decompilation tools went viral.",
+      "They reconstruct understandable source code from compiled binaries, shaking up how developers think about code ownership."
+     ]
+    }
+   ],
+   "tags": [
+    "ai decompilation",
+    "ai coding tool",
+    "reverse engineering ai",
+    "developer news",
+    "ai updates"
+   ],
+   "headline": "AI REBUILDS ANY APP",
+   "specs": [
+    "VIRAL THIS WEEK",
+    "DEVS DIVIDED"
+   ]
   }
  ]
 }

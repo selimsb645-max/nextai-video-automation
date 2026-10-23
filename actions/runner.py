@@ -725,6 +725,51 @@ def commit_file(path_in_repo, local_path, msg):
         log(f"commit PUT failed {path_in_repo}: {str(ex)[:120]}")
 
 
+def _recent_short_titles(days=14):
+    """Titles of shorts published in the last N days (anti-spam guard 2026-10-23).
+    Reads the repo published_log plus any in-run additions so state is never
+    trusted stale: 17 identical 'Robot Conducts Orchestra' shorts went live
+    2026-10-19..23 because done-state never persisted. Never again the same
+    story twice inside a fortnight."""
+    import datetime as _dt
+    titles = []
+    try:
+        pl = json.load(open(os.path.join(FACT, "published_log.json")))
+        cutoff = _dt.datetime.now(_dt.timezone.utc) - _dt.timedelta(days=days)
+        for it in pl:
+            if it.get("kind") != "short":
+                continue
+            when = str(it.get("uploaded_at") or it.get("scheduled_for") or "")
+            try:
+                ts = _dt.datetime.fromisoformat(when.replace("Z", "+00:00"))
+            except ValueError:
+                ts = None
+            if ts is None or ts >= cutoff:
+                titles.append(it.get("title", ""))
+    except Exception:
+        pass
+    return [t for t in titles if t]
+
+
+def _pick_unique_short_entry(fresh_e):
+    """Return the first non-duplicate short entry: the fresh Gemini entry if
+    clean, else the oldest pending library short whose title does NOT overlap
+    >=0.6 with any recent short. None => skip production this run (better a
+    dark slot than channel-killing spam)."""
+    used = _recent_short_titles()
+    if fresh_e and all(_title_overlap(fresh_e["title"], t) < 0.6 for t in used):
+        return fresh_e
+    st = factory.load_state()
+    for e in factory.LIB["entries"]:
+        if e.get("kind", "long") != "short" or e["id"] in st["done"]:
+            continue
+        if not factory.content_eligible(e):
+            continue
+        if all(_title_overlap(e["title"], t) < 0.6 for t in used):
+            return e
+    return None
+
+
 def _title_overlap(t1, t2):
     """Word-overlap score between two titles (owner 2026-10-11 War Plan)."""
     stop = {"the", "a", "an", "of", "in", "on", "is", "are", "this", "that",
@@ -745,11 +790,10 @@ def _robot_short(commit_extra, today):
         if not (r_e and factory.content_eligible(r_e)):
             r_e = None
             log("robot short: no fresh topic (" + str(r_err)[:80] + "); trying library")
-            try:
-                r_e = factory.pick_entry(None, "short")
-            except (Exception, SystemExit) as ex:
-                r_e = None
-                log("robot short library empty: " + str(ex)[:100])
+        # ANTI-SPAM GUARD 2026-10-23: never the same story twice in 14 days
+        r_e = _pick_unique_short_entry(r_e)
+        if not r_e:
+            log("robot short: no unique topic available - skipping upload (anti-spam guard)")
         if r_e:
             append_library(r_e)
             r_wd = os.path.join(factory.BASE, "runs", f"{r_e['id']}_{today}")
@@ -772,6 +816,17 @@ def _robot_short(commit_extra, today):
             st2 = factory.load_state()
             st2["done"][r_e["id"]] = {"date": today, "videoId": r_vid}
             factory.save_state(st2)
+            # PERSISTENCE FIX 2026-10-23: state/published_log were never
+            # committed on the robot-short path, so every run re-picked the
+            # same pending library entry -> 17 identical shorts. Commit now,
+            # before any crash-prone step can skip it.
+            for _rel, _loc, _msg in [
+                ("factory/state.json", os.path.join(FACT, "state.json"), "state: done " + r_e["id"]),
+                ("factory/published_log.json", os.path.join(FACT, "published_log.json"), "state: published " + r_e["id"]),
+                ("factory/library.json", os.path.join(FACT, "library.json"), "state: library " + r_e["id"]),
+            ]:
+                if os.path.exists(_loc):
+                    commit_file(_rel, _loc, _msg)
             try:
                 if not factory.make_thumb_ai(r_e, r_wd):
                     factory.make_thumb(r_e, r_wd, r_pairs[0][0])
@@ -796,7 +851,7 @@ def write_report(e, vid, publish_at, slot_local, mode, extra=""):
 **Status:** {state}
 **Slot (Dhaka):** {slot_local or 'n/a'}  |  **Slot (UTC):** {publish_at or 'n/a'}
 {"**Video:** https://www.youtube.com/watch?v=" + vid if vid else ""}
-**Topic pillar:** {e.get('content_pillar')}  |  **Sources:** {', '.join(e.get('verified_sources', [])[:2])}
+**Topic pillar:** {e.get('content_pillar')}  |  **Sources:** {', '.join(str(x)[:60] for x in (e.get('verified_sources') or [])[:2])}
 
 ## Thumbnail prompt (owner makes it in ChatGPT)
 {extra}
