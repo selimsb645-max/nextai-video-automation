@@ -4718,7 +4718,7 @@
    "content_policy_version": "2026-10-01",
    "scope_reviewed": true,
    "title": "Anthropic Just Filed the IPO Nobody Expected",
-   "description": "Anthropic is drafting its S-1. The company behind Claude may go public — here's what the filing means for the AI race.",
+   "description": "Anthropic IPO: Claude Maker Drafts S-1 Filing. Anthropic may be about to go public! The company behind Claude has reportedly drafted its S-1 filing!",
    "verified_sources": [
     {
      "title": "AI and Tech News 21 Oct 2026: Anthropic draft S-1",
@@ -4744,7 +4744,48 @@
     "S-1 DRAFTED",
     "CLAUDE MAKER"
    ],
-   "demand_evidence": "bestproductivityresources.com 2026-10-21 lists Anthropic's draft S-1 among top AI headlines; Anthropic and OpenAI vs Google Gemini 4 competition covered by CNBC and VentureBeat in October 2026."
+   "demand_evidence": "bestproductivityresources.com 2026-10-21 lists Anthropic's draft S-1 among top AI headlines; Anthropic and OpenAI vs Google Gemini 4 competition covered by CNBC and VentureBeat in October 2026.",
+   "narration": "Anthropic may be about to go public! The company behind Claude has reportedly drafted its S-1 filing! That is the document a company files before an IPO! It would put one of the biggest AI labs in front of public investors! Every number inside it would suddenly become public record! The AI race just got a Wall Street scoreboard! Would you buy Anthropic stock? Comment yes or no!",
+   "beats": [
+    {
+     "t": "Anthropic may be about to go public!",
+     "kw": "stock market trading screen with rising chart",
+     "tags": []
+    },
+    {
+     "t": "The company behind Claude has reportedly drafted its S-1 filing!",
+     "kw": "business executives in glass office meeting",
+     "tags": []
+    },
+    {
+     "t": "That is the document a company files before an IPO!",
+     "kw": "financial documents and pen on desk",
+     "tags": []
+    },
+    {
+     "t": "It would put one of the biggest AI labs in front of public investors!",
+     "kw": "wall street building exterior",
+     "tags": []
+    },
+    {
+     "t": "Every number inside it would suddenly become public record!",
+     "kw": "crowd of investors watching screens",
+     "tags": []
+    },
+    {
+     "t": "The AI race just got a Wall Street scoreboard!",
+     "kw": "server room blue lights",
+     "tags": []
+    },
+    {
+     "t": "Would you buy Anthropic stock?",
+     "kw": "city skyline at night",
+     "tags": []
+    }
+   ],
+   "categoryId": "28",
+   "madeForKids": false,
+   "seed": 95353
   },
   {
    "id": "openai_text_watermarks_2026-10-16",
@@ -4753,7 +4794,7 @@
    "content_policy_version": "2026-10-01",
    "scope_reviewed": true,
    "title": "OpenAI's New Watermark Exposes AI Text Instantly",
-   "description": "After Anthropic's move, OpenAI adds invisible text watermarks. Detection just became native — what changes for users?",
+   "description": "OpenAI Text Watermarks: ChatGPT Writing Can Be Detected. OpenAI can now mark the text that ChatGPT writes! This week the company added invisible watermarks to AI text, right after Anthropic did the same!",
    "verified_sources": [
     {
      "title": "This Week in AI Oct 16 2026: OpenAI adds text watermarks after Anthropic",
@@ -4779,7 +4820,48 @@
     "AFTER CLAUDE",
     "AI DETECTABLE"
    ],
-   "demand_evidence": "Micro Center This Week in AI (2026-10-16) reports OpenAI adding text watermarks after Anthropic."
+   "demand_evidence": "Micro Center This Week in AI (2026-10-16) reports OpenAI adding text watermarks after Anthropic.",
+   "narration": "OpenAI can now mark the text that ChatGPT writes! This week the company added invisible watermarks to AI text, right after Anthropic did the same! You cannot see the mark when you read the words! But a detection tool can find it instantly! That could change how schools and bosses check your writing! Is this fair, or is it spying on writers? Tell me below!",
+   "beats": [
+    {
+     "t": "OpenAI can now mark the text that ChatGPT writes!",
+     "kw": "person typing on laptop at night",
+     "tags": []
+    },
+    {
+     "t": "This week the company added invisible watermarks to AI text, right after Anthropic did the same!",
+     "kw": "computer screen with lines of code",
+     "tags": []
+    },
+    {
+     "t": "You cannot see the mark when you read the words!",
+     "kw": "magnifying glass over text document",
+     "tags": []
+    },
+    {
+     "t": "But a detection tool can find it instantly!",
+     "kw": "digital security padlock on screen",
+     "tags": []
+    },
+    {
+     "t": "That could change how schools and bosses check your writing!",
+     "kw": "office worker reading paper",
+     "tags": []
+    },
+    {
+     "t": "Is this fair, or is it spying on writers?",
+     "kw": "abstract data stream blue",
+     "tags": []
+    },
+    {
+     "t": "Tell me below!",
+     "kw": "hands typing keyboard close up",
+     "tags": []
+    }
+   ],
+   "categoryId": "28",
+   "madeForKids": false,
+   "seed": 93806
   },
   {
    "id": "optimus_public_sale_2027_2026-10",
@@ -4788,7 +4870,7 @@
    "content_policy_version": "2026-10-01",
    "scope_reviewed": true,
    "title": "Tesla Says Optimus Goes on Sale in 2027",
-   "description": "Elon Musk gave a public timeline: Optimus on sale by end of 2027. Humanoids you can order TODAY already start under $9,000.",
+   "description": "Tesla Optimus Goes on Sale in 2027, But There Is No Price Yet. Tesla says you will be able to buy an Optimus robot in twenty twenty-seven! Elon Musk gave the public timeline at Davos!",
    "verified_sources": [
     {
      "title": "Tesla Optimus Preorder and Price (Oct 2026): Not for Sale Yet",
@@ -4815,7 +4897,43 @@
     "UNDER $9,000 NOW",
     "2027 PUBLIC"
    ],
-   "demand_evidence": "botinfo.ai (2026-10-05) and multiple outlets report Tesla targeting Optimus public sale by end of 2027; Yahoo Tech 2026-10-24 notes Tesla should worry about Unitree self-improving robots."
+   "demand_evidence": "botinfo.ai (2026-10-05) and multiple outlets report Tesla targeting Optimus public sale by end of 2027; Yahoo Tech 2026-10-24 notes Tesla should worry about Unitree self-improving robots.",
+   "narration": "Tesla says you will be able to buy an Optimus robot in twenty twenty-seven! Elon Musk gave the public timeline at Davos! But right now Tesla's website lists no price, no preorder, and no waitlist! Meanwhile other humanoid robots are already for sale from about nine thousand dollars! So who wins, the famous robot or the one you can actually buy today? Pick a side in the comments!",
+   "beats": [
+    {
+     "t": "Tesla says you will be able to buy an Optimus robot in twenty twenty-seven!",
+     "kw": "humanoid robot walking in factory",
+     "tags": []
+    },
+    {
+     "t": "Elon Musk gave the public timeline at Davos!",
+     "kw": "robot arm assembling car parts",
+     "tags": []
+    },
+    {
+     "t": "But right now Tesla's website lists no price, no preorder, and no waitlist!",
+     "kw": "electric car production line",
+     "tags": []
+    },
+    {
+     "t": "Meanwhile other humanoid robots are already for sale from about nine thousand dollars!",
+     "kw": "humanoid robot hand close up",
+     "tags": []
+    },
+    {
+     "t": "So who wins, the famous robot or the one you can actually buy today?",
+     "kw": "engineer testing robot in lab",
+     "tags": []
+    },
+    {
+     "t": "Pick a side in the comments!",
+     "kw": "humanoid robot standing in showroom",
+     "tags": []
+    }
+   ],
+   "categoryId": "28",
+   "madeForKids": false,
+   "seed": 8533
   },
   {
    "id": "ai_decompilation_viral_2026-10-16",
@@ -4824,7 +4942,7 @@
    "content_policy_version": "2026-10-01",
    "scope_reviewed": true,
    "title": "AI That Reverse-Engineers Any App Went Viral",
-   "description": "AI decompilation broke into the mainstream: models that read compiled code and rebuild source. Devs are split.",
+   "description": "AI Decompilation Goes Viral: Code Rebuilt From Any App. AI can now rebuild the source code of almost any app! This week AI decompilation went viral among developers!",
    "verified_sources": [
     {
      "title": "This Week in AI Oct 16, 2026: AI decompilation goes viral",
@@ -4850,7 +4968,48 @@
     "VIRAL THIS WEEK",
     "DEVS DIVIDED"
    ],
-   "demand_evidence": "Micro Center This Week in AI (2026-10-16) lists AI decompilation going viral among top developer AI stories."
+   "demand_evidence": "Micro Center This Week in AI (2026-10-16) lists AI decompilation going viral among top developer AI stories.",
+   "narration": "AI can now rebuild the source code of almost any app! This week AI decompilation went viral among developers! These tools read a finished program and write back readable code! Developers are split between amazed and worried about code ownership! Because if anyone can reverse any app, what is a secret worth? Is this a gift or a threat? Comment below!",
+   "beats": [
+    {
+     "t": "AI can now rebuild the source code of almost any app!",
+     "kw": "programmer coding on dual monitors",
+     "tags": []
+    },
+    {
+     "t": "This week AI decompilation went viral among developers!",
+     "kw": "green code scrolling on black screen",
+     "tags": []
+    },
+    {
+     "t": "These tools read a finished program and write back readable code!",
+     "kw": "developer office at night",
+     "tags": []
+    },
+    {
+     "t": "Developers are split between amazed and worried about code ownership!",
+     "kw": "computer chip close up",
+     "tags": []
+    },
+    {
+     "t": "Because if anyone can reverse any app, what is a secret worth?",
+     "kw": "hands typing code keyboard",
+     "tags": []
+    },
+    {
+     "t": "Is this a gift or a threat?",
+     "kw": "server racks blinking lights",
+     "tags": []
+    },
+    {
+     "t": "Comment below!",
+     "kw": "software engineer thinking at desk",
+     "tags": []
+    }
+   ],
+   "categoryId": "28",
+   "madeForKids": false,
+   "seed": 5259
   },
   {
    "id": "unitree_h2x_leg_falls_off_2026-10-25",
@@ -4891,53 +5050,48 @@
    "beats": [
     {
      "t": "This humanoid robot just lost part of its leg on stage!",
-     "tags": [
-      "humanoid robot",
-      "robot kung fu",
-      "robot fall"
-     ]
+     "kw": "humanoid robot martial arts kick on stage",
+     "tags": []
     },
     {
-     "t": "Unitree unveiled the new H2-X, then it tried a kung fu side kick during a live demo!",
-     "tags": [
-      "humanoid robot",
-      "robot kung fu",
-      "robot fall"
-     ]
+     "t": "Unitree unveiled the new H2-X, then it tried!",
+     "kw": "humanoid robot stumbling falling",
+     "tags": []
+    },
+    {
+     "t": "a kung fu side kick during a live demo!",
+     "kw": "humanoid robot stumbling falling close up",
+     "tags": []
     },
     {
      "t": "The kick failed and a piece of the leg came off in front of the crowd!",
-     "tags": [
-      "humanoid robot",
-      "robot kung fu",
-      "robot fall"
-     ]
+     "kw": "crowd watching robot demo on stage",
+     "tags": []
     },
     {
      "t": "Chinese social media is split between laughing and defending it!",
-     "tags": [
-      "humanoid robot",
-      "robot kung fu",
-      "robot fall"
-     ]
+     "kw": "engineers repairing humanoid robot",
+     "tags": []
     },
     {
-     "t": "The point is simple, because every robot that fails in public teaches the next one to stay up!",
-     "tags": [
-      "humanoid robot",
-      "robot kung fu",
-      "robot fall"
-     ]
+     "t": "The point is simple, because every robot that fails!",
+     "kw": "humanoid robot standing in spotlight",
+     "tags": []
+    },
+    {
+     "t": "in public teaches the next one to stay up!",
+     "kw": "humanoid robot standing in spotlight close up",
+     "tags": []
     },
     {
      "t": "Would you trust a robot with a kick like that?",
-     "tags": [
-      "humanoid robot",
-      "robot kung fu",
-      "robot fall"
-     ]
+     "kw": "audience filming robot with phones",
+     "tags": []
     }
-   ]
+   ],
+   "categoryId": "28",
+   "madeForKids": false,
+   "seed": 19170
   },
   {
    "id": "unitree_founder_2028_80pct_2026-10-23",
@@ -4978,61 +5132,48 @@
    "beats": [
     {
      "t": "The boss of the world's most famous robot maker just made a huge prediction!",
-     "tags": [
-      "humanoid robot",
-      "Unitree",
-      "robots 2028"
-     ]
+     "kw": "humanoid robot walking in factory",
+     "tags": []
     },
     {
-     "t": "Unitree's founder says humanoid robots could finish eighty percent of home and factory tasks by twenty twenty-eight!",
-     "tags": [
-      "humanoid robot",
-      "Unitree",
-      "robots 2028"
-     ]
+     "t": "Unitree's founder says humanoid robots could finish eighty!",
+     "kw": "robot working in warehouse shelves",
+     "tags": []
+    },
+    {
+     "t": "percent of home and factory tasks by twenty twenty-eight!",
+     "kw": "robot working in warehouse shelves close up",
+     "tags": []
     },
     {
      "t": "That is only two years away!",
-     "tags": [
-      "humanoid robot",
-      "Unitree",
-      "robots 2028"
-     ]
+     "kw": "engineer on stage presenting robot",
+     "tags": []
     },
     {
      "t": "Just months ago he sounded far more cautious about the timeline!",
-     "tags": [
-      "humanoid robot",
-      "Unitree",
-      "robots 2028"
-     ]
+     "kw": "humanoid robot doing household chores",
+     "tags": []
     },
     {
      "t": "Bloomberg says it is a full reversal driven by recent gains in robot software!",
-     "tags": [
-      "humanoid robot",
-      "Unitree",
-      "robots 2028"
-     ]
+     "kw": "factory assembly line robots",
+     "tags": []
     },
     {
      "t": "So is he right, or is this just good marketing?",
-     "tags": [
-      "humanoid robot",
-      "Unitree",
-      "robots 2028"
-     ]
+     "kw": "humanoid robot hand holding object",
+     "tags": []
     },
     {
      "t": "Tell me which one you believe!",
-     "tags": [
-      "humanoid robot",
-      "Unitree",
-      "robots 2028"
-     ]
+     "kw": "futuristic robot lab",
+     "tags": []
     }
-   ]
+   ],
+   "categoryId": "28",
+   "madeForKids": false,
+   "seed": 85793
   },
   {
    "id": "x1_robot_wears_drone_backpack_2026-10-26",
@@ -5073,61 +5214,43 @@
    "beats": [
     {
      "t": "A humanoid robot that can fly!",
-     "tags": [
-      "humanoid robot",
-      "drone",
-      "flying robot"
-     ]
+     "kw": "drone flying over rocky terrain",
+     "tags": []
     },
     {
      "t": "Scientists strapped a drone onto a robot's back like a backpack!",
-     "tags": [
-      "humanoid robot",
-      "drone",
-      "flying robot"
-     ]
+     "kw": "humanoid robot walking on rough ground",
+     "tags": []
     },
     {
      "t": "Caltech and Abu Dhabi's Technology Innovation Institute built it, and they call it X1!",
-     "tags": [
-      "humanoid robot",
-      "drone",
-      "flying robot"
-     ]
+     "kw": "drone taking off close up",
+     "tags": []
     },
     {
      "t": "It starts as a modified Unitree G1 that walks on two legs!",
-     "tags": [
-      "humanoid robot",
-      "drone",
-      "flying robot"
-     ]
+     "kw": "engineers testing robot outdoors",
+     "tags": []
     },
     {
      "t": "Then the drone lifts it over obstacles a walking robot could never cross!",
-     "tags": [
-      "humanoid robot",
-      "drone",
-      "flying robot"
-     ]
+     "kw": "humanoid robot climbing obstacle",
+     "tags": []
     },
     {
      "t": "Is this the first real step toward robots that walk and fly?",
-     "tags": [
-      "humanoid robot",
-      "drone",
-      "flying robot"
-     ]
+     "kw": "drone hovering above robot",
+     "tags": []
     },
     {
      "t": "Drop your guess in the comments!",
-     "tags": [
-      "humanoid robot",
-      "drone",
-      "flying robot"
-     ]
+     "kw": "aerial view of research campus",
+     "tags": []
     }
-   ]
+   ],
+   "categoryId": "28",
+   "madeForKids": false,
+   "seed": 24952
   },
   {
    "id": "nyc_park_ai_robot_babysitter_2026-10-25",
@@ -5168,61 +5291,43 @@
    "beats": [
     {
      "t": "A robot worth eighty-nine thousand dollars was just set loose in a New York park!",
-     "tags": [
-      "humanoid robot",
-      "NYC",
-      "AI robot"
-     ]
+     "kw": "humanoid robot walking in city park",
+     "tags": []
     },
     {
      "t": "It walked among real people in Brooklyn Bridge Park on Sunday!",
-     "tags": [
-      "humanoid robot",
-      "NYC",
-      "AI robot"
-     ]
+     "kw": "people walking in Brooklyn Bridge Park",
+     "tags": []
     },
     {
      "t": "Its job is to learn how humans behave!",
-     "tags": [
-      "humanoid robot",
-      "NYC",
-      "AI robot"
-     ]
+     "kw": "children playing in park",
+     "tags": []
     },
     {
      "t": "The goal, according to the report, is to eventually become a babysitter!",
-     "tags": [
-      "humanoid robot",
-      "NYC",
-      "AI robot"
-     ]
+     "kw": "humanoid robot waving at people",
+     "tags": []
     },
     {
      "t": "Imagine your kid being watched by a machine!",
-     "tags": [
-      "humanoid robot",
-      "NYC",
-      "AI robot"
-     ]
+     "kw": "parents watching kids at playground",
+     "tags": []
     },
     {
      "t": "Would you ever allow it?",
-     "tags": [
-      "humanoid robot",
-      "NYC",
-      "AI robot"
-     ]
+     "kw": "robot interacting with passersby",
+     "tags": []
     },
     {
      "t": "Comment yes or no!",
-     "tags": [
-      "humanoid robot",
-      "NYC",
-      "AI robot"
-     ]
+     "kw": "New York skyline from park",
+     "tags": []
     }
-   ]
+   ],
+   "categoryId": "28",
+   "madeForKids": false,
+   "seed": 45581
   }
  ]
 }
