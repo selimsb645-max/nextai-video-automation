@@ -430,5 +430,23 @@
   "uploaded_at": "2026-10-25T10:10:44+06:00",
   "scheduled_for": "2026-10-25T12:30:00Z",
   "url": "https://www.youtube.com/watch?v=oCkSpGQG-8E"
+ },
+ {
+  "id": "nvidia_microduck_short_2026_10_26_2026-10-26",
+  "videoId": "iyWN5jss_fk",
+  "title": "$399 Robot Duck Hits 20,000 Preorders",
+  "kind": "short",
+  "uploaded_at": "2026-10-26T16:15:07+06:00",
+  "scheduled_for": "2026-10-26T20:30:00Z",
+  "url": "https://www.youtube.com/watch?v=iyWN5jss_fk"
+ },
+ {
+  "id": "humanoid_robots_2028_2026_10_26_2026-10-26",
+  "videoId": "S0E6hSbulSY",
+  "title": "Unitree Boss: 80% of Jobs by 2028",
+  "kind": "short",
+  "uploaded_at": "2026-10-26T16:33:48+06:00",
+  "scheduled_for": "2026-10-27T02:30:00Z",
+  "url": "https://www.youtube.com/watch?v=S0E6hSbulSY"
  }
 ]
