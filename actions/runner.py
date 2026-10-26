@@ -309,14 +309,14 @@ SHORT_PROMPT = """
 You are the script writer for a US-audience English YouTube SHORT (vertical, under 60 seconds) that MUST be about REAL ROBOTS. Style (owner reference 2026-10-11: @androidalians): ONE robot, ONE dramatic STORY told like a mini-movie, poster-style visuals, impossible to scroll past. From the headlines below pick exactly ONE real, currently-trending robot story (last 7 days, US-interest) about ONE SPECIFIC NAMED ROBOT (a specific humanoid, robot dog, drone swarm, or competition robot - use its real model name). NEVER medical advice, no politics, no tragedy exploitation. If no robot headline is trending, pick the most visually dramatic recent robot milestone instead.
 
 STORY STRUCTURE (a mini-movie, NOT a news report):
-- Beat 1 (1-2s): cold open ON the most dramatic moment or the shocking NUMBER ("This robot just walked 21 kilometers").
+- Beat 1 (FIRST 3 SECONDS = the whole game: 2026 Shorts rank on swipe-away rate, target <25% leave): a pattern-interrupt cold open, MAX 10 words, ON the single most shocking NUMBER or event, stated as a claim that creates a question ("Renting a real humanoid robot now costs $40 a day." / "This robot just lost its leg on stage."). NEVER start with "Tesla just..." style vague setups, never a greeting, never context first.
 - Middle beats: the STORY of how it happened - escalate beat by beat, present tense, short punchy sentences.
-- Final beat: the payoff (the impossible thing achieved) + one short closing question.
+- Final beat: the payoff + ONE short closing question that makes people COMMENT (a two-option question works best: "Real or hype? Comment below."). Narration should loop naturally - the last words should flow back into the first line so replays count as engaged views.
 - Fun, high-energy storytelling tone. Emotional punctuation. Hold the payoff to the END.
 
 HARD RULES:
-- Title: MAX 50 CHARACTERS, must contain "Robot" AND one hook word: Shocking / Warning / Banned / Solved / Impossible / Never.
-- headline: 2-5 ALL-CAPS poster words naming the robot or its wow fact (e.g. "ROBOTIC OVERLORDS", "21KM ROBOT"). It gets burned BIG on screen.
+- Title: MAX 50 CHARACTERS. DATA-PROVEN FORMULA (our best Short: "Humanoid Robots Now Rent for $40 a Day" = 140 views vs 2-6 for generic titles): lead with ONE concrete SURPRISING NUMBER or price or comparison, plus the robot/subject word. Good: "Robots Now Rent for $40 a Day", "This Robot Lost a Leg Mid-Kick", "Unitree Boss: 80% of Jobs by 2028". Bad (never write): generic "Shocking Robot ...", "Tesla Robot Shocking 2027 Launch", vague hype with no number or specific event. A hook word (Banned/Never/Impossible/Lost/Cost) is optional - the number or specific event is mandatory.
+- headline: 2-4 ALL-CAPS poster words that carry the NUMBER or the shocking event itself (e.g. "$40 A DAY", "LOST A LEG", "80% BY 2028"), not a generic label. It gets burned BIG on screen.
 - specs: 2-3 VERY short poster facts about THIS robot, each MAX 14 CHARACTERS, numbers preferred (e.g. ["120 KG", "21 KM", "50 MIN"]).
 - narration: 70-120 words total (about 35-50 seconds spoken), story-style.
 - beats: 4-7 items, each {{"t":"<one spoken sentence, max 16 words>","kw":"<CONCRETE filmable robot-action scene - keep the SAME robot type in every beat for visual continuity, never brand names, never abstract words>"}}. Every beat gets its own unique footage.
@@ -444,7 +444,16 @@ def make_entry(kind):
             # The model must emit "subject" (the exact searchable name) and
             # it must appear verbatim in the title AND in the description.
             _subj = " ".join(str(val.get("subject") or "").split()).lower()
-            _subj_ok = bool(_subj) and _subj in tl and _subj in str(val.get("description", "")).lower()
+            _desc_l = str(val.get("description", "")).lower()
+            if kind == "short":
+                # 2026-10-26: shorts accept the subject (or its first word) in
+                # the description only - number-first titles ("Robots Now Rent
+                # for $40 a Day") are our proven winners and rarely repeat the
+                # full model name verbatim.
+                _sw = _subj.split()[0] if _subj else ""
+                _subj_ok = bool(_subj) and (_subj in _desc_l or (_sw and _sw in _desc_l))
+            else:
+                _subj_ok = bool(_subj) and _subj in tl and _subj in _desc_l
             if kind == "short":
                 # OWNER 2026-10-07 21:46 BD: standalone shorts are ROBOT
                 # videos (casperpks-style); must be robot-focused.
@@ -452,7 +461,7 @@ def make_entry(kind):
                       and _subj_ok
                       and len(val["title"]) <= 52
                       and "robot" in (val["title"] + " " + val["narration"]).lower()
-                      and any(h in tl for h in HOOKS)
+                      and (any(h in tl for h in HOOKS) or bool(re.search(r"[0-9$%]", val["title"])))
                       and val.get("verified_sources")
                       and any(s in srcs for s in val["verified_sources"][:3]))
             else:
@@ -760,7 +769,13 @@ def _pick_unique_short_entry(fresh_e):
     if fresh_e and all(_title_overlap(fresh_e["title"], t) < 0.6 for t in used):
         return fresh_e
     st = factory.load_state()
-    for e in factory.LIB["entries"]:
+    # FIX 2026-10-26: factory.LIB is loaded once at import; re-read from disk so
+    # entries appended/committed earlier this run (and pre-seeded topics) are seen.
+    try:
+        _entries = json.load(open(os.path.join(FACT, "library.json")))["entries"]
+    except Exception:
+        _entries = factory.LIB["entries"]
+    for e in _entries:
         if e.get("kind", "long") != "short" or e["id"] in st["done"]:
             continue
         if not factory.content_eligible(e):

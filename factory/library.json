@@ -2437,7 +2437,8 @@
       "robot"
      ]
     }
-   ]
+   ],
+   "demand_evidence": "NY Post 2026-10-25 and Interesting Engineering 2026-10-26 report humanoid robots in the news daily; Unitree H2-X stumbled in a kung fu demo (Global Times, 2026-10-25), keeping humanoid-robot demos trending."
   },
   {
    "id": "unitree_r1_price",
@@ -2498,7 +2499,8 @@
       "robot"
      ]
     }
-   ]
+   ],
+   "demand_evidence": "Bloomberg 2026-10-23: Unitree founder expects humanoid breakthrough by 2028; Seeking Alpha 2026-10-26 covers Unitree as a profitable pure-play humanoid leader."
   },
   {
    "id": "humanoid_sales_7000",
@@ -2559,7 +2561,8 @@
       "robot"
      ]
     }
-   ]
+   ],
+   "demand_evidence": "TipRanks 2026-10-23: Unitree founder expects humanoids to complete 80% of tasks by 2028; humanoid sales and pricing are an active news cycle."
   },
   {
    "id": "agibot_a3",
@@ -2620,7 +2623,8 @@
       "robot"
      ]
     }
-   ]
+   ],
+   "demand_evidence": "Humanoid robot skills are trending: Interesting Engineering 2026-10-26 covers new humanoid duo X1 (modified Unitree G1 plus drone); Yahoo Tech 2026-10-24 covers robot self-improvement AI."
   },
   {
    "id": "unitree_mecha_gd01",
@@ -2682,7 +2686,8 @@
       "robot"
      ]
     }
-   ]
+   ],
+   "demand_evidence": "Futurism 2026-10-24 covers Unitree's bodyguard robot teaser; Unitree is in the top robot headlines this week."
   },
   {
    "id": "gemini_4_argon_2026-10-01",
@@ -4738,7 +4743,8 @@
    "specs": [
     "S-1 DRAFTED",
     "CLAUDE MAKER"
-   ]
+   ],
+   "demand_evidence": "bestproductivityresources.com 2026-10-21 lists Anthropic's draft S-1 among top AI headlines; Anthropic and OpenAI vs Google Gemini 4 competition covered by CNBC and VentureBeat in October 2026."
   },
   {
    "id": "openai_text_watermarks_2026-10-16",
@@ -4772,7 +4778,8 @@
    "specs": [
     "AFTER CLAUDE",
     "AI DETECTABLE"
-   ]
+   ],
+   "demand_evidence": "Micro Center This Week in AI (2026-10-16) reports OpenAI adding text watermarks after Anthropic."
   },
   {
    "id": "optimus_public_sale_2027_2026-10",
@@ -4807,7 +4814,8 @@
    "specs": [
     "UNDER $9,000 NOW",
     "2027 PUBLIC"
-   ]
+   ],
+   "demand_evidence": "botinfo.ai (2026-10-05) and multiple outlets report Tesla targeting Optimus public sale by end of 2027; Yahoo Tech 2026-10-24 notes Tesla should worry about Unitree self-improving robots."
   },
   {
    "id": "ai_decompilation_viral_2026-10-16",
@@ -4841,6 +4849,379 @@
    "specs": [
     "VIRAL THIS WEEK",
     "DEVS DIVIDED"
+   ],
+   "demand_evidence": "Micro Center This Week in AI (2026-10-16) lists AI decompilation going viral among top developer AI stories."
+  },
+  {
+   "id": "unitree_h2x_leg_falls_off_2026-10-25",
+   "kind": "short",
+   "content_pillar": "ai_updates",
+   "content_policy_version": "2026-10-01",
+   "scope_reviewed": true,
+   "title": "This Humanoid Lost a Leg During Kung Fu",
+   "headline": "UNITREE H2-X FAILS",
+   "specs": [
+    "LOST A LEG",
+    "LIVE DEMO",
+    "KUNG FU"
+   ],
+   "description": "This Humanoid Lost a Leg During Kung Fu. This humanoid robot just lost part of its leg on stage! Unitree unveiled the new H2-X, then it tried a kung fu side kick during a live demo!",
+   "verified_sources": [
+    {
+     "title": "Unitree's newly unveiled humanoid robot stumbles at demo",
+     "publisher": "Global Times",
+     "date": "2026-10-25",
+     "url": "https://www.globaltimes.cn/page/202610/1372914.shtml",
+     "accessed": "2026-10-26",
+     "verified_facts": [
+      "Unitree's new H2-X humanoid robot stumbled during a kung fu demo at a recent event.",
+      "The robot lost part of a leg after a failed side kick, drawing mixed reactions on Chinese social media."
+     ]
+    }
+   ],
+   "demand_evidence": "Global Times 2026-10-25 reports on the H2-X demo stumble; Unitree humanoids are in daily headlines (Bloomberg 2026-10-23, Futurism 2026-10-24).",
+   "narration": "This humanoid robot just lost part of its leg on stage! Unitree unveiled the new H2-X, then it tried a kung fu side kick during a live demo! The kick failed and a piece of the leg came off in front of the crowd! Chinese social media is split between laughing and defending it! The point is simple, because every robot that fails in public teaches the next one to stay up! Would you trust a robot with a kick like that?",
+   "tags": [
+    "humanoid robot",
+    "robot kung fu",
+    "robot fall",
+    "stage demo",
+    "robotics"
+   ],
+   "beats": [
+    {
+     "t": "This humanoid robot just lost part of its leg on stage!",
+     "tags": [
+      "humanoid robot",
+      "robot kung fu",
+      "robot fall"
+     ]
+    },
+    {
+     "t": "Unitree unveiled the new H2-X, then it tried a kung fu side kick during a live demo!",
+     "tags": [
+      "humanoid robot",
+      "robot kung fu",
+      "robot fall"
+     ]
+    },
+    {
+     "t": "The kick failed and a piece of the leg came off in front of the crowd!",
+     "tags": [
+      "humanoid robot",
+      "robot kung fu",
+      "robot fall"
+     ]
+    },
+    {
+     "t": "Chinese social media is split between laughing and defending it!",
+     "tags": [
+      "humanoid robot",
+      "robot kung fu",
+      "robot fall"
+     ]
+    },
+    {
+     "t": "The point is simple, because every robot that fails in public teaches the next one to stay up!",
+     "tags": [
+      "humanoid robot",
+      "robot kung fu",
+      "robot fall"
+     ]
+    },
+    {
+     "t": "Would you trust a robot with a kick like that?",
+     "tags": [
+      "humanoid robot",
+      "robot kung fu",
+      "robot fall"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "unitree_founder_2028_80pct_2026-10-23",
+   "kind": "short",
+   "content_pillar": "ai_updates",
+   "content_policy_version": "2026-10-01",
+   "scope_reviewed": true,
+   "title": "Unitree Boss Says Robots Do 80% of Tasks by 2028",
+   "headline": "UNITREE 2028 CLAIM",
+   "specs": [
+    "80% OF TASKS",
+    "BY 2028",
+    "FOUNDER"
+   ],
+   "description": "Unitree Boss Says Robots Do 80% of Tasks by 2028. The boss of the world's most famous robot maker just made a huge prediction! Unitree's founder says humanoid robots could finish eighty perc",
+   "verified_sources": [
+    {
+     "title": "Unitree Founder Now Expects Robots Breakthrough as Soon as 2028",
+     "publisher": "Bloomberg",
+     "date": "2026-10-23",
+     "url": "https://www.bloomberg.com/news/articles/2026-10-23/unitree-founder-now-expects-robots-breakthrough-as-soon-as-2028",
+     "accessed": "2026-10-26",
+     "verified_facts": [
+      "Bloomberg reported on 2026-10-23 that Unitree's founder expects a humanoid breakthrough in as little as two years.",
+      "TipRanks reported he expects humanoids to finish 80% of tasks in homes and factories by 2028."
+     ]
+    }
+   ],
+   "demand_evidence": "Bloomberg 2026-10-23 and TipRanks 2026-10-23 both report the Unitree founder's 2028 prediction.",
+   "narration": "The boss of the world's most famous robot maker just made a huge prediction! Unitree's founder says humanoid robots could finish eighty percent of home and factory tasks by twenty twenty-eight! That is only two years away! Just months ago he sounded far more cautious about the timeline! Bloomberg says it is a full reversal driven by recent gains in robot software! So is he right, or is this just good marketing? Tell me which one you believe!",
+   "tags": [
+    "humanoid robot",
+    "Unitree",
+    "robots 2028",
+    "factory robots",
+    "robotics"
+   ],
+   "beats": [
+    {
+     "t": "The boss of the world's most famous robot maker just made a huge prediction!",
+     "tags": [
+      "humanoid robot",
+      "Unitree",
+      "robots 2028"
+     ]
+    },
+    {
+     "t": "Unitree's founder says humanoid robots could finish eighty percent of home and factory tasks by twenty twenty-eight!",
+     "tags": [
+      "humanoid robot",
+      "Unitree",
+      "robots 2028"
+     ]
+    },
+    {
+     "t": "That is only two years away!",
+     "tags": [
+      "humanoid robot",
+      "Unitree",
+      "robots 2028"
+     ]
+    },
+    {
+     "t": "Just months ago he sounded far more cautious about the timeline!",
+     "tags": [
+      "humanoid robot",
+      "Unitree",
+      "robots 2028"
+     ]
+    },
+    {
+     "t": "Bloomberg says it is a full reversal driven by recent gains in robot software!",
+     "tags": [
+      "humanoid robot",
+      "Unitree",
+      "robots 2028"
+     ]
+    },
+    {
+     "t": "So is he right, or is this just good marketing?",
+     "tags": [
+      "humanoid robot",
+      "Unitree",
+      "robots 2028"
+     ]
+    },
+    {
+     "t": "Tell me which one you believe!",
+     "tags": [
+      "humanoid robot",
+      "Unitree",
+      "robots 2028"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x1_robot_wears_drone_backpack_2026-10-26",
+   "kind": "short",
+   "content_pillar": "ai_updates",
+   "content_policy_version": "2026-10-01",
+   "scope_reviewed": true,
+   "title": "This Humanoid Robot Wears a Drone Backpack",
+   "headline": "DRONE BACKPACK ROBOT",
+   "specs": [
+    "UNITREE G1",
+    "DRONE",
+    "CALTECH"
+   ],
+   "description": "This Humanoid Robot Wears a Drone Backpack. A humanoid robot that can fly! Scientists strapped a drone onto a robot's back like a backpack! Caltech and Abu Dhabi's Technology Innovatio",
+   "verified_sources": [
+    {
+     "title": "Why this humanoid robot wears a drone as a backpack",
+     "publisher": "Interesting Engineering",
+     "date": "2026-10-26",
+     "url": "https://interestingengineering.com/videos/why-this-humanoid-robot-wears-a-drone-as-a-backpack",
+     "accessed": "2026-10-26",
+     "verified_facts": [
+      "Caltech and Abu Dhabi's Technology Innovation Institute built X1, a robot duo.",
+      "X1 pairs a modified Unitree G1 humanoid with a drone worn like a backpack."
+     ]
+    }
+   ],
+   "demand_evidence": "Interesting Engineering published the X1 story on 2026-10-26, the freshest humanoid headline of the day.",
+   "narration": "A humanoid robot that can fly! Scientists strapped a drone onto a robot's back like a backpack! Caltech and Abu Dhabi's Technology Innovation Institute built it, and they call it X1! It starts as a modified Unitree G1 that walks on two legs! Then the drone lifts it over obstacles a walking robot could never cross! Is this the first real step toward robots that walk and fly? Drop your guess in the comments!",
+   "tags": [
+    "humanoid robot",
+    "drone",
+    "flying robot",
+    "Caltech",
+    "robotics"
+   ],
+   "beats": [
+    {
+     "t": "A humanoid robot that can fly!",
+     "tags": [
+      "humanoid robot",
+      "drone",
+      "flying robot"
+     ]
+    },
+    {
+     "t": "Scientists strapped a drone onto a robot's back like a backpack!",
+     "tags": [
+      "humanoid robot",
+      "drone",
+      "flying robot"
+     ]
+    },
+    {
+     "t": "Caltech and Abu Dhabi's Technology Innovation Institute built it, and they call it X1!",
+     "tags": [
+      "humanoid robot",
+      "drone",
+      "flying robot"
+     ]
+    },
+    {
+     "t": "It starts as a modified Unitree G1 that walks on two legs!",
+     "tags": [
+      "humanoid robot",
+      "drone",
+      "flying robot"
+     ]
+    },
+    {
+     "t": "Then the drone lifts it over obstacles a walking robot could never cross!",
+     "tags": [
+      "humanoid robot",
+      "drone",
+      "flying robot"
+     ]
+    },
+    {
+     "t": "Is this the first real step toward robots that walk and fly?",
+     "tags": [
+      "humanoid robot",
+      "drone",
+      "flying robot"
+     ]
+    },
+    {
+     "t": "Drop your guess in the comments!",
+     "tags": [
+      "humanoid robot",
+      "drone",
+      "flying robot"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "nyc_park_ai_robot_babysitter_2026-10-25",
+   "kind": "short",
+   "content_pillar": "ai_updates",
+   "content_policy_version": "2026-10-01",
+   "scope_reviewed": true,
+   "title": "This 89K Robot Is Learning to Babysit in a NYC Park",
+   "headline": "ROBOT BABYSITTER?",
+   "specs": [
+    "$89,000",
+    "NYC PARK",
+    "LEARNING"
+   ],
+   "description": "This 89K Robot Is Learning to Babysit in a NYC Park. A robot worth eighty-nine thousand dollars was just set loose in a New York park! It walked among real people in Brooklyn Bridge Park on Sun",
+   "verified_sources": [
+    {
+     "title": "$89K AI robot unleashed in NYC park to learn human behavior",
+     "publisher": "New York Post",
+     "date": "2026-10-25",
+     "url": "https://nypost.com/2026/10/25/us-news/89k-ai-robot-unleashed-in-nyc-park-to-learn-human-behavior/",
+     "accessed": "2026-10-26",
+     "verified_facts": [
+      "An AI-powered humanoid robot was spotted mingling with people in Brooklyn Bridge Park on Sunday, 2026-10-25.",
+      "The report says the robot is trying to learn human behavior and may eventually become a babysitter."
+     ]
+    }
+   ],
+   "demand_evidence": "New York Post 2026-10-25 reports the Brooklyn Bridge Park robot story.",
+   "narration": "A robot worth eighty-nine thousand dollars was just set loose in a New York park! It walked among real people in Brooklyn Bridge Park on Sunday! Its job is to learn how humans behave! The goal, according to the report, is to eventually become a babysitter! Imagine your kid being watched by a machine! Would you ever allow it? Comment yes or no!",
+   "tags": [
+    "humanoid robot",
+    "NYC",
+    "AI robot",
+    "babysitter robot",
+    "robotics"
+   ],
+   "beats": [
+    {
+     "t": "A robot worth eighty-nine thousand dollars was just set loose in a New York park!",
+     "tags": [
+      "humanoid robot",
+      "NYC",
+      "AI robot"
+     ]
+    },
+    {
+     "t": "It walked among real people in Brooklyn Bridge Park on Sunday!",
+     "tags": [
+      "humanoid robot",
+      "NYC",
+      "AI robot"
+     ]
+    },
+    {
+     "t": "Its job is to learn how humans behave!",
+     "tags": [
+      "humanoid robot",
+      "NYC",
+      "AI robot"
+     ]
+    },
+    {
+     "t": "The goal, according to the report, is to eventually become a babysitter!",
+     "tags": [
+      "humanoid robot",
+      "NYC",
+      "AI robot"
+     ]
+    },
+    {
+     "t": "Imagine your kid being watched by a machine!",
+     "tags": [
+      "humanoid robot",
+      "NYC",
+      "AI robot"
+     ]
+    },
+    {
+     "t": "Would you ever allow it?",
+     "tags": [
+      "humanoid robot",
+      "NYC",
+      "AI robot"
+     ]
+    },
+    {
+     "t": "Comment yes or no!",
+     "tags": [
+      "humanoid robot",
+      "NYC",
+      "AI robot"
+     ]
+    }
    ]
   }
  ]
