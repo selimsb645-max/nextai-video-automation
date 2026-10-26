@@ -5328,6 +5328,143 @@
    "categoryId": "28",
    "madeForKids": false,
    "seed": 45581
+  },
+  {
+   "id": "nvidia_microduck_short_2026_10_26_2026-10-26",
+   "subject": "Nvidia Microduck",
+   "title": "$399 Robot Duck Hits 20,000 Preorders",
+   "headline": "20,000 PREORDERS",
+   "specs": [
+    "399 PRICE",
+    "20000 UNITS",
+    "NVIDIA AI"
+   ],
+   "description": "Nvidia Microduck robot duck surpassed 20,000 preorders following its viral keynote reveal. Learn how this tiny $399 AI robot is shaking up hardware robotics. Related searches: nvidia microduck, robot duck, mini robot ai, nvidia gtc keynote, robotics $399, autonomous duck robot, ai hardware news, viral robot 2026",
+   "tags": [
+    "nvidia microduck",
+    "robot duck",
+    "ai robot",
+    "nvidia gtc",
+    "mini robot",
+    "robotics news",
+    "tech trends",
+    "399 robot"
+   ],
+   "narration": "This $399 yellow robot duck sold 20,000 preorders overnight. Nvidia revealed the Microduck live on stage, running on ultra-compact AI chips. It waddles across desks, tracks hand movements, and learns tricks in real time. Developers flooded the site, pushing orders past 20,000 units in record time. Engineers are now coding custom AI behaviors into its tiny frame. Is a $399 AI duck the future of home robotics, or just viral hype? Real or hype? Comment below.",
+   "beats": [
+    {
+     "t": "This $399 yellow robot duck sold 20,000 preorders overnight.",
+     "kw": "yellow robot duck sitting on lab table close up",
+     "tags": []
+    },
+    {
+     "t": "Nvidia revealed the Microduck live on stage, running on ultra-compact AI chips.",
+     "kw": "yellow robot duck walking across brightly lit stage presentation",
+     "tags": []
+    },
+    {
+     "t": "It waddles across desks, tracks hand movements, and learns tricks in real time.",
+     "kw": "yellow robot duck waddling on wooden desk following human hand",
+     "tags": []
+    },
+    {
+     "t": "Developers flooded the site, pushing orders past 20,000 units in record time.",
+     "kw": "yellow robot duck blinking LED eye sensors on test bench",
+     "tags": []
+    },
+    {
+     "t": "Engineers are now coding custom AI behaviors into its tiny frame.",
+     "kw": "yellow robot duck connected to computer wire turning head",
+     "tags": []
+    },
+    {
+     "t": "Is a $399 AI duck the future of home robotics, or just viral hype?",
+     "kw": "yellow robot duck staring into camera lens waddling forward",
+     "tags": []
+    },
+    {
+     "t": "Real or hype? Comment below.",
+     "kw": "yellow robot duck waving mechanical wing on clean background",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMidkFVX3lxTFBVYnZUcC00ZHNteGJhREJwOVpRY09BcXBuVjdMTGhvRGMzelA5ejREb1JoWFk3cXpLdFJ2X3BZZUNsUnFlWUZCYXVQZWZEWnNuZkxHbjZXUkswZWNQWVNqb1BzOC0wdVlNMm14WUJIbW1zakltcEE?oc=5"
+   ],
+   "demand_evidence": "Nvidia's $399 Microduck Robot Duck Surpasses 20,000 Preorders After Viral GTC Berlin Keynote",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 197
+  },
+  {
+   "id": "humanoid_robots_2028_2026_10_26_2026-10-26",
+   "subject": "Unitree humanoid robot",
+   "title": "Unitree Boss: 80% of Jobs by 2028",
+   "headline": "80% BY 2028",
+   "specs": [
+    "20K UNITS",
+    "2028 GOAL",
+    "AI LEAP"
+   ],
+   "description": "Humanoid robots could take over 80% of tasks by 2028 according to Unitree's founder. Discover the rapid production milestones shaking up the robotics industry. Related searches: Unitree humanoid robot, Unitree G1, Tesla Optimus 2027, humanoid robots future, robot labor statistics, AI robotics news, 2028 robot takeover, humanoids mass production",
+   "tags": [
+    "Unitree",
+    "Humanoid",
+    "Robotics",
+    "Future",
+    "Tech",
+    "AI",
+    "Innovation",
+    "2028"
+   ],
+   "narration": "Eighty percent of physical jobs handled entirely by machines. Unitree's founder just dropped a massive timeline for humanoid robots taking over daily tasks. Factories are scaling up output to tens of thousands of units. While critics call it hype, autonomous training is advancing faster than anyone predicted. The shift from lab experiments to your local workplace is happening right now. Are we ready for a workforce of metal and code? Real or hype? Comment below.",
+   "beats": [
+    {
+     "t": "Eighty percent of physical jobs handled entirely by machines.",
+     "kw": "humanoid robot walking in a modern warehouse setting",
+     "tags": []
+    },
+    {
+     "t": "Unitree's founder just dropped a massive timeline for humanoid robots taking over daily tasks.",
+     "kw": "advanced humanoid robot moving its arms and hands precisely",
+     "tags": []
+    },
+    {
+     "t": "Factories are scaling up output to tens of thousands of units.",
+     "kw": "assembly line producing multiple robotic torsos rapidly",
+     "tags": []
+    },
+    {
+     "t": "While critics call it hype, autonomous training is advancing faster than anyone predicted.",
+     "kw": "close up of a robot head with glowing sensors scanning the room",
+     "tags": []
+    },
+    {
+     "t": "The shift from lab experiments to your local workplace is happening right now.",
+     "kw": "humanoid robot navigating a busy office environment smoothly",
+     "tags": []
+    },
+    {
+     "t": "Are we ready for a workforce of metal and code? Real or hype? Comment below.",
+     "kw": "humanoid robot waving directly at the camera",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMiigFBVV95cUxPUzZaaTZMWkNFcHhndXR4NUtiT0ZKWkg3WkM4UDVyWkVqQTAwYW9sbHE2U0dKNUl3eXg3ZGNkbnNQN2hUNnYxMnZhVUNBMzBjYzY3REtLVTdmVHBZRnVIMkpFM0hJZWN4NkZUUDh5dFk3RjNaSDdKTGNZWm9VdHdod1VoejZHRjRWVFE?oc=5"
+   ],
+   "demand_evidence": "Unitree's 80% task prediction headline is surging with high US audience interest in humanoid robot manufacturing milestones.",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 475
   }
  ]
 }
