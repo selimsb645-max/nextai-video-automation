@@ -1058,7 +1058,10 @@ def main():
         s_e = dict(e)
         s_e["kind"] = "short"
         s_e["id"] = e["id"] + "_short1"
-        s_e["title"] = e["title"][:95]
+        # ANTI-DUPLICATE-TITLE 2026-10-27: a hook-cut must never repeat the
+        # parent's exact title (YouTube reads identical titles as spam - the
+        # 17-clone incident). Give it its own angle suffix.
+        s_e["title"] = (e["title"][:72] + " — 30 Seconds That Changed It")
         # OWNER 2026-10-11 funnel plan: every hook-cut Short links its Long
         # (the automatable version of the "Related Video" feature, which is
         # Studio-only) so Shorts viewers can jump to the full video.
@@ -1105,7 +1108,7 @@ def main():
             s2 = dict(e)
             s2["kind"] = "short"
             s2["id"] = e["id"] + "_short2"
-            s2["title"] = e["title"][:95]
+            s2["title"] = (e["title"][:72] + " — The Part Nobody Shows")
             s2["description"] = (e["description"].strip()
                                  + f"\n\nFull video: https://youtu.be/{vid}"
                                  + "\n\n#Shorts")
