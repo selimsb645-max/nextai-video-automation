@@ -5582,6 +5582,67 @@
    "scope_reviewed": true,
    "content_policy_version": "2026-10-01",
    "seed": 184
+  },
+  {
+   "id": "chinese_robot_runner_2026_10_28_2026-10-28",
+   "subject": "Chinese Robot Runner",
+   "title": "This Robot Just Smashed a Half-Marathon Record",
+   "headline": "BEATS WORLD RECORD",
+   "specs": [
+    "21.1 KM",
+    "1 HR 58 MIN",
+    "0 FATIGUE"
+   ],
+   "description": "Chinese Robot Runner smashes the men’s half-marathon world record in a stunning display of endurance and speed. Watch how this incredible machine outpaced expectations. Related searches: robot runner half marathon, Chinese humanoid robot world record, bipedal robot endurance test, robot marathon running speed, AI robotics news 2026, autonomous robot distance record, humanoid robot running fast, future of robotics.",
+   "tags": [
+    "robot runner",
+    "humanoid robot",
+    "world record",
+    "half marathon",
+    "robot speed",
+    "ai robotics",
+    "bipedal robot",
+    "tech news"
+   ],
+   "narration": "This bipedal machine just outran human athletes over twenty-one kilometers! Without a single coffee break, the autonomous runner tackles the grueling half-marathon course with mechanical precision. Step by step, it logs miles at a blistering pace, crushing human endurance records in real-time testing. Engineers watched in awe as it crossed the finish line without overheating or missing a beat. Is this the end of human marathons, or just the beginning? Real or hype? Comment below.",
+   "beats": [
+    {
+     "t": "This bipedal machine just outran human athletes over twenty-one kilometers!",
+     "kw": "humanoid robot running on outdoor asphalt road during marathon",
+     "tags": []
+    },
+    {
+     "t": "Without a single coffee break, the autonomous runner tackles the grueling half-marathon course.",
+     "kw": "bipedal robot legs striding rapidly forward in daylight",
+     "tags": []
+    },
+    {
+     "t": "Step by step, it logs miles at a blistering pace, crushing human endurance records.",
+     "kw": "close-up of robotic feet hitting pavement running fast",
+     "tags": []
+    },
+    {
+     "t": "Engineers watched in awe as it crossed the finish line without overheating or missing a beat.",
+     "kw": "humanoid robot crossing white finish line outdoors",
+     "tags": []
+    },
+    {
+     "t": "Is this the end of human marathons, or just the beginning? Real or hype? Comment below.",
+     "kw": "humanoid robot standing proudly at a race finish line",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNNURQU1FtUGZwR2pvOGtfcnU1OWhVbWpvQ1VtdVdLcDdkSVlpcVlaTXJSZmRMdWVacmFQTEpxaXhZTVU2NUxUSHAtZm13eTl5T3BOZkxUc0p2bVNlTzhwY0ZMTktBRHNmU0ZfZGhnRjNXUEZ4Z2s3aVY1U25HeVB2LWdvRW9Pams1bElkX25mTGhsTWVCNl9VVkxlSjNlUXhYZ3pqNmpqS2RJdw?oc=5"
+   ],
+   "demand_evidence": "Chinese Robot Runner Beats Men’s Half-Marathon World Record - Sixth Tone headline trending on 2026-10-28",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 792
   }
  ]
 }
