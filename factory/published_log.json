@@ -484,5 +484,14 @@
   "uploaded_at": "2026-10-28T11:34:12+06:00",
   "scheduled_for": "2026-10-28T20:30:00Z",
   "url": "https://www.youtube.com/watch?v=GDv3ThJJbvs"
+ },
+ {
+  "id": "anthropic_s1_draft_2026-10-21",
+  "videoId": "bTZDqZxtmfg",
+  "title": "Anthropic Just Filed the IPO Nobody Expected",
+  "kind": "short",
+  "uploaded_at": "2026-10-28T11:53:15+06:00",
+  "scheduled_for": "2026-10-29T02:30:00Z",
+  "url": "https://www.youtube.com/watch?v=bTZDqZxtmfg"
  }
 ]
