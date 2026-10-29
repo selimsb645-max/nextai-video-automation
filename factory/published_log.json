@@ -493,5 +493,14 @@
   "uploaded_at": "2026-10-28T11:53:15+06:00",
   "scheduled_for": "2026-10-29T02:30:00Z",
   "url": "https://www.youtube.com/watch?v=bTZDqZxtmfg"
+ },
+ {
+  "id": "openai_text_watermarks_2026-10-16",
+  "videoId": "HHTST3bwudk",
+  "title": "OpenAI's New Watermark Exposes AI Text Instantly",
+  "kind": "short",
+  "uploaded_at": "2026-10-29T11:47:04+06:00",
+  "scheduled_for": "2026-10-29T20:30:00Z",
+  "url": "https://www.youtube.com/watch?v=HHTST3bwudk"
  }
 ]
