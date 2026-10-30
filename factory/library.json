@@ -5643,6 +5643,67 @@
    "scope_reviewed": true,
    "content_policy_version": "2026-10-01",
    "seed": 792
+  },
+  {
+   "id": "110_humanoid_robots_guinness_record_2026_10_30_2026-10-30",
+   "subject": "AGIBOT humanoid robots",
+   "title": "110 Humanoid Robots Just Smashed a World Record",
+   "headline": "110 ROBOTS DANCING",
+   "specs": [
+    "110 UNITS",
+    "ONE SYNC",
+    "WORLD RECORD"
+   ],
+   "description": "110 AGIBOT humanoid robots just set an official Guinness World Record with a massive synchronized dance in China. Watch how humanoids are moving from factories straight to the main stage. Related searches: AGIBOT humanoid robots, Guinness World Record robot dance, humanoid robot mass deployment, robot choreography 2026, Tesla Optimus competitor, robot flash mob, AI humanoid news, future of robotics.",
+   "tags": [
+    "AGIBOT",
+    "Humanoid",
+    "WorldRecord",
+    "RobotDance",
+    "TechNews",
+    "Robotics",
+    "AI",
+    "Future"
+   ],
+   "narration": "One hundred and ten humanoid robots just did something impossible on live stage! This massive army of AGIBOT humanoids moved in perfect, terrifying harmony to set an official Guinness World Record for synchronized robot dancing. No wires. No CGI. Just pure edge-computing and precise motor control working as one hive mind. They are leaving labs, conquering factories, and now taking over the dance floor. Is this the ultimate flex or the start of the machine takeover? Real or hype? Comment below.",
+   "beats": [
+    {
+     "t": "One hundred and ten humanoid robots just did something impossible on live stage!",
+     "kw": "massive army of humanoid robots standing on a brightly lit stage",
+     "tags": []
+    },
+    {
+     "t": "This massive army moved in perfect, terrifying harmony to set an official Guinness World Record.",
+     "kw": "hundreds of humanoid robots performing identical synchronized dance moves",
+     "tags": []
+    },
+    {
+     "t": "No wires. No CGI. Just pure edge-computing and precise motor control working as one hive mind.",
+     "kw": "close-up of humanoid robot joints and glowing LED sensors moving rapidly",
+     "tags": []
+    },
+    {
+     "t": "They are leaving labs, conquering factories, and now taking over the dance floor.",
+     "kw": "humanoid robots marching forward in unison under dramatic stage lights",
+     "tags": []
+    },
+    {
+     "t": "Is this the ultimate flex or the start of the machine takeover? Real or hype? Comment below.",
+     "kw": "wide shot of the entire robot squad bowing together on a massive stage",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMi3AFBVV95cUxQeDZxWGpLRFFSb3BteC1pOGNTR2JwejdRVjJndGx0R2dld0JhQlBORUk1c2k2amlPdTJoN0RkdUlSSjRpMUxmMktVWkhmTEpJM29JQlNseWx5TVNPRDNpbUFqYXJBM0lYUmRsT1REcXZmVy1aT0hTSDJzQ0JNcHpKdi12aFFrN2RqNGdhTTJPRXl0aDVTbEpXWnZKWUs5S3dzSmt2LTRwZWpYRG45QWczMXBLVTBMbGphcHFybWxQUE1pUWwwZVNJOEhNc1pzWXk4S2Q3cW9NQ3ZQYlJG0gHiAUFVX3lxTE1MY3h5WmFtMnI2LTVMSXRaeXEwc3h6OTJWRTFFamNzcERjNmFBUXBzSFNRczIxM2p6LUtUeXh0Q1czOFNaMlU2NXpIb1VVSzYzR0p4NFM2QUVKWEJzUjJCMVRxR1Rlb1F0OUdwT2FvN2NmRjBjeC1jcGhPRFc4dk1DSlFFX0U5eEpmWFI1VWRrZWF2ajUzaTZiYnNaUE82bW83dVJQYnozcGJhU0wyR0NVa3lHZGhWcDdhMGhzejhZRmxacmluXzJ5MDM0czR5YlpMbE9uWk9yMENtM1hNZkdrWEE?oc=5"
+   ],
+   "demand_evidence": "China's 110 humanoid robots setting Guinness World Record for synchronized dancing is a top trending robotics milestone generating massive US and global interest.",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 545
   }
  ]
 }
