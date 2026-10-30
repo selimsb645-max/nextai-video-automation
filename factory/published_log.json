@@ -511,5 +511,14 @@
   "uploaded_at": "2026-10-29T12:01:44+06:00",
   "scheduled_for": "2026-10-30T02:30:00Z",
   "url": "https://www.youtube.com/watch?v=IyfEOp9d6_k"
+ },
+ {
+  "id": "ai_decompilation_viral_2026-10-16",
+  "videoId": "biKrLAW0o0o",
+  "title": "AI That Reverse-Engineers Any App Went Viral",
+  "kind": "short",
+  "uploaded_at": "2026-10-30T11:38:11+06:00",
+  "scheduled_for": "2026-10-30T20:30:00Z",
+  "url": "https://www.youtube.com/watch?v=biKrLAW0o0o"
  }
 ]
