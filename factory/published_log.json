@@ -538,5 +538,14 @@
   "uploaded_at": "2026-10-31T11:08:43+06:00",
   "scheduled_for": "2026-10-31T12:30:00Z",
   "url": "https://www.youtube.com/watch?v=OIrzXIIb1o4"
+ },
+ {
+  "id": "x1_robot_wears_drone_backpack_2026-10-26",
+  "videoId": "Jq7h5bFW1JI",
+  "title": "This Humanoid Robot Wears a Drone Backpack",
+  "kind": "short",
+  "uploaded_at": "2026-10-31T11:24:36+06:00",
+  "scheduled_for": "2026-10-31T20:30:00Z",
+  "url": "https://www.youtube.com/watch?v=Jq7h5bFW1JI"
  }
 ]
