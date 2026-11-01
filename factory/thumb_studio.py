@@ -489,7 +489,25 @@ def render_stack(base, story, face=None, accent=RED):
     return tag_bottom(im)
 
 
-COMPOSITIONS = {"bell": render_bell, "hero": render_hero, "stack": render_stack}
+def render_keynote(base, story, face=None, accent=CYAN):
+    """Keynote scene: presenter + floating product + LED keyart + UNVEILED badge.
+    The most literal match to the owner's reference frame."""
+    try:
+        import sys as _s
+        if HERE not in _s.path:
+            _s.path.insert(0, HERE)
+        import thumb_scene as SC
+        p = SC.build(None, None, story["product"], story.get("brand") or "AI",
+                     story["product"], story["descriptor"], accent,
+                     out=os.path.join(os.path.dirname(base or ".") if base is None
+                                      else ".", "_keynote.jpg"))
+        return __import__("PIL.Image", fromlist=["Image"]).open(p).convert("RGB")
+    except Exception as _e:
+        print("studio: keynote fallback:", str(_e)[:80], flush=True)
+        return stage(None, accent)
+
+
+COMPOSITIONS = {"keynote": render_keynote, "bell": render_bell, "hero": render_hero, "stack": render_stack}
 
 
 def render_all(base, story, face=None, workdir=None, accents=None):
