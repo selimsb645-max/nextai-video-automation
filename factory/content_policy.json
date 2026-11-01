@@ -117,13 +117,15 @@
  },
  "long_min_gap_days": 1,
  "production_targets": {
-  "long_minutes_standard": "10-16",
+  "long_minutes_standard": "8-10",
   "long_minutes_deepdive": "16-22",
-  "long_target_words": 1900,
+  "long_target_words": 1300,
   "long_max_beats": 70,
   "resolution": "1920x1080",
   "fps": 30,
   "qc_min_score": 85,
-  "source": "owner master prompt 2026-11-01 (AI Revolution style upgrade)"
+  "source": "owner master prompt 2026-11-01 (AI Revolution style upgrade)",
+  "longs_per_day": 1,
+  "cadence_note": "Owner 2026-11-01: ONE long EVERY day at 21:00 BD (confirmed: '\u09aa\u09cd\u09b0\u09a4\u09bf\u09a6\u09bf\u09a8 \u098f\u0995\u099f\u09bf')."
  }
 }
