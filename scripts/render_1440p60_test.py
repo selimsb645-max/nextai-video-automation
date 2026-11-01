@@ -287,6 +287,8 @@ def final_encode(clips, cfg, out, audio=None, ass=None, transitions=None,
     else:
         cmd += ["-an"]
     base = list(cmd)
+    log("final encode cmd: " + " ".join(base))
+    log("final encode graph: " + ";".join(fc))
     t0 = time.time()
     attempts = [
         ("spec", []),
