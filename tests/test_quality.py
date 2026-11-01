@@ -11,6 +11,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "factory"))
 
+import numpy as np  # noqa: E402
 import pytest  # noqa: E402
 
 import qc_visual          # noqa: E402
@@ -252,3 +253,42 @@ def test_poster_matches_reference_profile(media):
     assert prof["white"] >= 2.0, f"hook text too small: {prof}"
     assert TA.style_distance(prof) <= 2.8, f"off-reference look: {prof}"
     assert im.size == (1280, 720)
+
+
+# ── Task 1c: announcement-slide studio (owner annotated reference) ───────
+def test_studio_three_compositions(media):
+    """Owner 2026-11-01: the four annotated reference thumbs are the target -
+    brand wordmark + INTRODUCING + big product name + descriptor on a stage."""
+    import thumb_studio as TS
+    from PIL import Image
+    assert TS.parse_story("Google Just Introduced Gemini 4 With "
+                          "Synthetic Reality", "Gemini")["brand"] == "Google"
+    story = TS.parse_story("OpenAI Just Launched GPT-6 With Real Memory", "OpenAI")
+    assert story["product"] and story["descriptor"]
+    assert story["product"] != story["descriptor"]
+    frames = thumb_variants._grab_frames(media["clip"], media["dir"])
+    base = TS.stage(Image.open(frames[0]).convert("RGB")) if frames else TS.stage()
+    outs = TS.render_all(base, story, None, media["dir"])
+    assert len(outs) >= 3, "three announcement compositions expected"
+    names = [n for n, _, _ in outs]
+    assert len(set(names)) == 3 and set(names) == {"bell", "hero", "stack"}
+    arrs = []
+    for n, p, im in outs:
+        assert os.path.exists(p) and im.size == (1280, 720)
+        prof = TS._profile(im)
+        assert prof["luma"] < 85, f"{n} too bright for a stage poster: {prof}"
+        assert prof["white"] > 1.0, f"{n} has no legible type: {prof}"
+        arrs.append(np.asarray(Image.open(p).convert("RGB").resize((160, 90))).astype(int))
+    for i in range(len(arrs) - 1):
+        assert abs(arrs[i] - arrs[i + 1]).mean() > 12, "compositions look alike"
+
+
+def test_studio_build_saves_both_names(media):
+    import thumb_studio as TS
+    e = {"title": "NVIDIA Just Made Every Other Chip Obsolete", "subject": "NVIDIA"}
+    p = TS.build(e, media["dir"], media["clip"] if isinstance(media["clip"], dict) else None)
+    assert p and os.path.exists(p)
+    for name in ("thumb.jpg", "thumbnail.jpg"):
+        assert os.path.exists(os.path.join(media["dir"], name))
+        assert os.path.getsize(os.path.join(media["dir"], name)) < 1_900_000
+    assert os.path.exists(os.path.join(media["dir"], "thumb_choice.json"))

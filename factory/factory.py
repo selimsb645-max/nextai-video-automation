@@ -1134,12 +1134,20 @@ def make_thumb(e, workdir, clip):
     most striking frame from the beat-1 clip, grades it, overlays a BIG hook."""
     # House style 2026-11-01: the @airevolutionx alert look is the default; the
     # old v3.1 design remains as THUMB_STYLE=v3 or if the new engine fails.
-    if os.environ.get("THUMB_STYLE", "alert") == "alert":
+    if os.environ.get("THUMB_STYLE", "studio") == "studio":
         try:
             import sys as _s
             _fd = os.path.dirname(os.path.abspath(__file__))
             if _fd not in _s.path:
                 _s.path.insert(0, _fd)
+            import thumb_studio
+            f = thumb_studio.build(e, workdir, clip)
+            if f and os.path.exists(f):
+                return f
+        except Exception as _ex:
+            print("thumb-studio failed, trying alert:", str(_ex)[:110], flush=True)
+    if os.environ.get("THUMB_STYLE", "studio") in ("studio", "alert"):
+        try:
             import thumb_alert
             f = thumb_alert.build(e, workdir, clip)
             if f and os.path.exists(f):
