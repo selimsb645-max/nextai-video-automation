@@ -231,3 +231,24 @@ def test_post_processing_hits_target_loudness_and_rate(tmp_path):
     lufs = re.findall(r"I:\s*(-?\d+\.\d+)\s*LUFS", r.stderr)
     assert lufs and -18.5 <= float(lufs[-1]) <= -14.0, f"loudness off: {lufs}"
     assert "48000 Hz" in r.stderr or "48000" in r.stderr
+
+
+# ── Task 1b: house-style closeness (measured from @airevolutionx) ───────
+def test_poster_matches_reference_profile(media):
+    """Owner 2026-11-01: 'no similarity at all' - so closeness is now measured.
+
+    Targets came from 8 real @airevolutionx thumbnails: luma ~55, saturation
+    ~0.46, luma std ~70, bright text pixels ~5%, near-black ~67%.
+    """
+    import thumb_alert as TA
+    from PIL import Image
+    frame = thumb_variants._grab_frames(media["clip"], media["dir"])
+    assert frame, "need at least one frame for the style test"
+    base = Image.open(frame[0]).convert("RGB")
+    im = TA.concept_poster(base, "OPENAI JUST CROSSED THE LINE", "AI NEWS", None)
+    prof = TA.style_profile(im)
+    assert prof["luma"] < 90, f"too bright for the house style: {prof}"
+    assert prof["sat"] > 0.28, f"saturation below the reference range: {prof}"
+    assert prof["white"] >= 2.0, f"hook text too small: {prof}"
+    assert TA.style_distance(prof) <= 2.8, f"off-reference look: {prof}"
+    assert im.size == (1280, 720)

@@ -237,7 +237,205 @@ def _score(im):
     return round(s, 1)
 
 
-def render_concepts(e, workdir, phrase, clip=None):
+
+
+
+def _duotone(im, amount=0.42, shadow=(8, 32, 62), high=(255, 118, 40)):
+    """Grade grey/teal-less footage toward the reference saturation.
+
+    ImageEnhance.Color cannot add colour to a grey frame, which is why a plain
+    datacenter shot stayed at saturation 0.23 while the reference sits at 0.46.
+    Mapping the luma ramp onto a cool-shadow / warm-highlight ramp fixes it.
+    """
+    from PIL import Image
+    g = im.convert("L")
+    sh = Image.new("RGB", im.size, shadow)
+    hi = Image.new("RGB", im.size, high)
+    tone = Image.composite(hi, sh, g)
+    return Image.blend(im, tone, amount)
+
+
+def _crush_shadows(im, knee=96, floor=8):
+    """Pull the shadow end toward black: the reference sits at ~67% near-black
+    pixels, our graded footage was landing near 54%."""
+    lut = []
+    for v in range(256):
+        if v < knee:
+            lut.append(int(floor + (v / knee) ** 1.55 * (knee - floor) * 0.42))
+        else:
+            lut.append(v)
+    return im.point(lut * 3)
+
+
+def _luma_of(im):
+    """Mean luma (0-255)."""
+    from PIL import ImageStat
+    return ImageStat.Stat(im.convert("L")).mean[0]
+
+
+def _apply_face(im, path, width_frac=0.72, bottom=False):
+    """Big free-licensed portrait: right side by default, cropped shoulders-up,
+    brightened with a hard red rim light (the reference cuts people out)."""
+    from PIL import Image, ImageDraw, ImageEnhance, ImageFilter
+    TW, TH = im.size
+    face = Image.open(path).convert("RGB")
+    w = int(TW * width_frac)
+    h = int(TH * (1.06 if not bottom else 0.98))
+    sc = max(w / face.width, h / face.height)
+    fp = face.resize((round(face.width * sc), round(face.height * sc)), Image.LANCZOS)
+    x = (fp.width - w) // 2
+    y = int(fp.height * 0.04)
+    fp = fp.crop((x, y, x + w, y + h))
+    fp = ImageEnhance.Contrast(fp).enhance(1.18)
+    fp = ImageEnhance.Brightness(fp).enhance(1.10)
+    fp = ImageEnhance.Color(fp).enhance(1.15)
+    # crisp-ish edge (small feather) so it reads as a cut-out, not a blurry blob
+    mask = Image.new("L", fp.size, 255).filter(ImageFilter.GaussianBlur(26))
+    px = TW - fp.width + int(fp.width * 0.10)
+    py = TH - fp.height if bottom else -14
+    im.paste(fp, (px, py), mask)
+    rim = Image.new("RGBA", (TW, TH), (0, 0, 0, 0))
+    dr = ImageDraw.Draw(rim)
+    dr.rectangle([px - 5, py, px + 5, py + fp.height], fill=(255, 43, 43, 130))
+    rim = rim.filter(ImageFilter.GaussianBlur(14))
+    return Image.alpha_composite(im.convert("RGBA"), rim).convert("RGB")
+
+
+def _draw_hook_center(im, phrase, accent):
+    """Huge 2-line block across the middle band (reference geometry), one
+    accent-coloured word, heavy black outline."""
+    from PIL import ImageDraw, Image, ImageFilter
+    TW, TH = im.size
+    words = phrase.split()
+    best = None
+    for size in range(210, 60, -4):
+        f = _font(size)
+        d0 = ImageDraw.Draw(Image.new("RGB", (8, 8)))
+        cand = None
+        for i in range(1, len(words)):
+            l1, l2 = " ".join(words[:i]), " ".join(words[i:])
+            wmax = max(d0.textlength(l1, font=f), d0.textlength(l2, font=f))
+            if wmax <= TW * 0.90:
+                cand = (l1, l2, wmax)
+                break
+        if cand:
+            best = (size, f, cand)
+            break
+    if best is None:
+        size, f = 60, _font(60)
+        lines = [phrase]
+    else:
+        size, f, (l1, l2, _) = best
+        lines = [l1, l2]
+    # soft dark plate behind the text so it reads on any footage
+    plate = Image.new("RGBA", (TW, TH), (0, 0, 0, 0))
+    dp = ImageDraw.Draw(plate)
+    lh = int(size * 1.06)
+    total = lh * len(lines)
+    y0 = int(TH * 0.50 - total / 2)
+    dp.rectangle([0, max(0, y0 - 26), TW, min(TH, y0 + total + 26)],
+                 fill=(4, 5, 9, 132))
+    plate = plate.filter(ImageFilter.GaussianBlur(18))
+    im = Image.alpha_composite(im.convert("RGBA"), plate).convert("RGB")
+    d = ImageDraw.Draw(im)
+    accent_i = _accent_index(phrase.split())
+    stroke = max(8, size // 9)
+    wi = 0
+    for li, line in enumerate(lines):
+        x = (TW - d.textlength(line, font=f)) / 2
+        for wd in line.split(" "):
+            col = accent if wi == accent_i else WHITE
+            d.text((x, y0 + li * lh), wd, font=f, fill=col,
+                   stroke_width=stroke, stroke_fill=(0, 0, 0))
+            x += d.textlength(wd + " ", font=f)
+            wi += 1
+    d.rectangle([(TW - 220) / 2, y0 + total + 16, (TW + 220) / 2, y0 + total + 26],
+                fill=accent)
+    return im
+
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# HOUSE STYLE (measured from the reference channel itself, 2026-11-01)
+# 8 real @airevolutionx thumbnails: luma 54.8, saturation 0.46, luma std 69.5,
+# bright text pixels 5.1%, near-black 67.2%, and the text block sits CENTRED in
+# the middle band in two huge lines. This function reproduces exactly that.
+# ═══════════════════════════════════════════════════════════════════════════
+def concept_poster(base, phrase, tag="AI NEWS", face_path=None, target_luma=54.8):
+    from PIL import ImageEnhance, ImageStat
+    im = _cover_from(base) if not isinstance(base, tuple) else _cover(base)
+    im = ImageEnhance.Color(im).enhance(1.9)
+    im = ImageEnhance.Contrast(im).enhance(1.45)
+    # normalise brightness to the reference luma before the overlays go on
+    cur = max(12.0, ImageStat.Stat(im.convert("L")).mean[0])
+    im = ImageEnhance.Brightness(im).enhance(max(0.42, min(1.5, target_luma / cur)))
+    im = _vignette(im, 0.80)
+    im = _crush_shadows(im)
+    try:
+        _p = style_profile(im)
+        if _p["sat"] < 0.38:                    # grey footage: add the reference grade
+            im = _duotone(im, min(0.62, (0.44 - _p["sat"]) * 1.9))
+            im = ImageEnhance.Color(im).enhance(1.25)
+        elif _p["sat"] > 0.55:                  # neon test footage: pull it back
+            im = ImageEnhance.Color(im).enhance(max(0.44, 0.46 / _p["sat"]))
+    except Exception:
+        pass
+    if face_path:
+        im = _apply_face(im, face_path, width_frac=0.50, bottom=True)
+        # the portrait brings its own brightness: pull the frame back down
+        cur = max(12.0, ImageStat.Stat(im.convert("L")).mean[0])
+        if cur > target_luma:
+            im = ImageEnhance.Brightness(im).enhance(max(0.60, target_luma / cur))
+    im = _draw_hook_center(im, phrase, RED)
+    im = _chrome(im, 2, tag)
+    return im
+
+
+def style_profile(im):
+    """Measure an image the same way the reference channel was measured."""
+    from PIL import ImageStat
+    import numpy as _np
+    small = im.convert("RGB").resize((320, 180))
+    a = _np.asarray(small).astype("float32")
+    L = 0.299 * a[:, :, 0] + 0.587 * a[:, :, 1] + 0.114 * a[:, :, 2]
+    mx, mn = a.max(2), a.min(2)
+    sat = _np.where(mx > 0, (mx - mn) / _np.maximum(mx, 1), 0)
+    return {"luma": round(float(L.mean()), 1), "sat": round(float(sat.mean()), 3),
+            "std": round(float(L.std()), 1),
+            "white": round(float(((L > 225) & (sat < 0.18)).mean() * 100), 1),
+            "red": round(float(((a[:, :, 0] > 150) & (a[:, :, 1] < 80) & (a[:, :, 2] < 80)).mean() * 100), 2),
+            "dark": round(float((L < 45).mean() * 100), 1)}
+
+
+# reference targets from 8 real @airevolutionx thumbnails (2026-11-01)
+REF_TARGET = {"luma": 54.8, "sat": 0.460, "std": 69.5, "white": 5.1, "red": 1.23, "dark": 67.2}
+
+
+def style_distance(prof, target=None):
+    """0 = dead-on the reference look, higher = further away."""
+    t = target or REF_TARGET
+    return round(abs(prof["luma"] - t["luma"]) / 20.0
+                 + abs(prof["sat"] - t["sat"]) / 0.25
+                 + abs(prof["std"] - t["std"]) / 30.0
+                 + abs(prof["white"] - t["white"]) / 6.0
+                 + abs(prof["dark"] - t["dark"]) / 25.0, 2)
+
+
+# ── owner 2026-11-01: a real person in every thumbnail, like the reference ──
+def _face_panel(path, height):
+    """Shoulders-up crop from a free-licensed portrait, softened edges."""
+    from PIL import Image, ImageEnhance
+    face = Image.open(path).convert("RGB")
+    w = int(height * 0.72)
+    sc = max(w / face.width, height / face.height)
+    im = face.resize((round(face.width * sc), round(face.height * sc)), Image.LANCZOS)
+    x = (im.width - w) // 2
+    y = int(im.height * 0.05)
+    im = im.crop((x, y, x + w, y + height))
+    return ImageEnhance.Contrast(im).enhance(1.12)
+
+
+def render_concepts(e, workdir, phrase, clip=None, face_path=None):
     """Render the three alert concepts. Returns [(concept, path, score)]."""
     out = []
     frame = None
@@ -252,12 +450,19 @@ def render_concepts(e, workdir, phrase, clip=None):
         im = _vignette(im, 0.8 if concept != 2 else 0.6)
         if concept in (1, 3):
             im = _grad_left(im, 230)
+            if face_path:                      # person on the right, text left
+                im = _apply_face(im, face_path)
         accent = RED if concept != 3 else CYAN
         _draw_hook(im, phrase, accent, concept)
         im = _chrome(im, concept, tag)
         p = os.path.join(workdir, f"thumb_alert_{concept}.jpg")
         im.convert("RGB").save(p, quality=90)
-        out.append((concept, p, _score(im)))
+        _sc = _score(im)
+        try:
+            _sc -= 6.0 * style_distance(style_profile(im))
+        except Exception:
+            pass
+        out.append((concept, p, round(_sc, 1)))
     if frame and os.path.exists(frame):
         try:
             os.remove(frame)
@@ -285,14 +490,67 @@ def _synthetic_base():
 
 
 def build(e, workdir, clip=None):
-    """Entry point: pick hook phrase, render 3 concepts, keep the best."""
+    """Entry point: pick hook phrase, render the concepts, keep the best."""
     import re
+    from PIL import Image
     title = e.get("title", "")
     words = [w for w in re.findall(r"[A-Za-z0-9'%$]+", title) if w.lower() not in STOP]
     phrase = " ".join(words[:4]).upper() or title.upper()[:28]
-    concepts = render_concepts(e, workdir, phrase, clip)
+    fkey, fpath = None, None
+    try:
+        import sys as _s
+        _fd = os.path.dirname(os.path.abspath(__file__))
+        if _fd not in _s.path:
+            _s.path.insert(0, _fd)
+        import faces as _faces
+        fkey, fpath = _faces.face_for(f"{e.get('title','')} {e.get('subject','')}")
+        if fkey:
+            print(f"thumb-alert: portrait {fkey} (free licence)", flush=True)
+    except Exception as _ex:
+        print("thumb-alert: face lookup skipped:", str(_ex)[:80], flush=True)
+    concepts = render_concepts(e, workdir, phrase, clip, fpath)
+    # add the measured house-style poster to the same comparison
+    try:
+        from PIL import Image as _Im
+        _src = None
+        if clip:
+            try:
+                _src = _pick_frame(clip, workdir)
+            except Exception:
+                _src = None
+            if not _src:
+                _cand = os.path.join(clip.get("dir", ""), clip.get("file", ""))
+                _src = _cand if os.path.exists(_cand) else None
+        _base = _cover(_src) if _src else _synthetic_base()
+        _post = concept_poster(_base, phrase, "AI NEWS", fpath)
+        _p = os.path.join(workdir, "thumb_poster.jpg")
+        _post.convert("RGB").save(_p, quality=90)
+        _prof = style_profile(_post)
+        _sc = _score(_post) - 6.0 * style_distance(_prof)
+        concepts.append((0, _p, round(_sc, 1)))
+        print("thumb-poster:", _prof, "dist", style_distance(_prof), flush=True)
+    except Exception as _ex:
+        print("thumb-poster failed, using alert fallbacks:", str(_ex)[:90], flush=True)
+    try:
+        import json as _j
+        _j.dump({"key": fkey,
+                 "credit": (_faces.credit(fkey) if fkey else "")},
+                open(os.path.join(workdir, "thumb_face.json"), "w"))
+    except Exception:
+        pass
     concepts.sort(key=lambda c: -c[2])
     best = concepts[0][1]
+    _post = next((c for c in concepts if c[0] == 0), None)
+    if _post:
+        try:
+            _dist = style_distance(style_profile(Image.open(_post[1])))
+        except Exception:
+            _dist = 99.0
+        if _dist <= 2.0:            # house style, verified close to the reference
+            best = _post[1]
+            print(f"thumb-alert: house-style poster chosen (dist {_dist})", flush=True)
+        else:
+            print(f"thumb-alert: poster off-reference (dist {_dist}), fallback used", flush=True)
     final = os.path.join(workdir, "thumb.jpg")
     from PIL import Image
     im = Image.open(best).convert("RGB").resize((1280, 720), Image.LANCZOS)

@@ -23,3 +23,4 @@ factory/runs/**/*.mp4
 factory/runs/**/*.mp3
 factory/runs/**/*.wav
 *.tar.gz
+factory/faces_cache/

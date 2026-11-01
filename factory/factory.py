@@ -1362,6 +1362,15 @@ def upload(e, mp4, publish_at=None, playlist_link=None):
         desc = desc + "\n\nRelated searches: " + kw + "\n\n" + hashtags
     if playlist_link:
         desc = desc + "\n\nMore deep dives: " + playlist_link
+    # CC-BY portrait credit: required by the licence when a face is in the thumb
+    try:
+        _tfp = os.path.join(os.path.dirname(mp4), "thumb_face.json")
+        if os.path.exists(_tfp):
+            _credit = (json.load(open(_tfp)) or {}).get("credit") or ""
+            if _credit and _credit not in desc:
+                desc = desc + "\n\n" + _credit
+    except Exception as _ex:
+        print("upload: photo credit skipped:", str(_ex)[:60], flush=True)
     if DISC not in desc:
         desc = (desc + "\n\n" + DISC).strip()
     meta = {"snippet": {

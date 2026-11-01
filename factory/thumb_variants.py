@@ -180,21 +180,15 @@ STYLE_BIAS = {"D_alert": 8.0}
 PREFERRED = [("D_alert", 45.0)]
 
 
-def concept_d_alert(base, hook, tag="AI NEWS"):
+def concept_d_alert(base, hook, tag="AI NEWS", face_path=None):
+    """House style: delegate to the measured poster renderer in thumb_alert."""
     import sys as _sys
     _here = os.path.dirname(os.path.abspath(__file__))
     if _here not in _sys.path:
         _sys.path.insert(0, _here)
     import thumb_alert as TA
-    from PIL import Image as _I
-    im = TA._cover_frame(base) if hasattr(TA, "_cover_frame") else TA._cover_from(base)
-    im = TA._darken(im, 0.38, 1.34, 1.65)
-    im = TA._vignette(im, 0.88)
-    im = TA._grad_left(im, 248)
     phrase = " ".join(hook) if isinstance(hook, (list, tuple)) else str(hook)
-    TA._draw_hook(im, phrase, TA.RED, 1)
-    im = TA._chrome(im, 1, tag)
-    return im
+    return TA.concept_poster(base, phrase, tag, face_path)
 
 
 # ───────────────────────── objective scoring ─────────────────────────
@@ -332,6 +326,13 @@ def generate_three(e, workdir, clip_path, footage_tags=None, hooks=None):
     base = Image.open(best).convert("RGB")
 
     title = str(e.get("title", ""))
+    # owner 2026-11-01: a real, free-licensed person in the thumbnail
+    face_key, face_path = None, None
+    try:
+        import faces as _faces
+        face_key, face_path = _faces.face_for(f"{title} {e.get('subject', '')}")
+    except Exception:
+        pass
     hook = _hook_lines(e.get("headline") or title)
     hooks = [h for h in (hooks or []) if h][:3]
     tag = str(e.get("subject") or "AI NEWS").upper()
@@ -341,7 +342,8 @@ def generate_three(e, workdir, clip_path, footage_tags=None, hooks=None):
     builds = [("A_cinematic", lambda: concept_a_cinematic(base, _hook_lines(copy[0]))),
               ("B_news", lambda: concept_b_news(base, _hook_lines(copy[1]), tag)),
               ("C_curiosity", lambda: concept_c_curiosity(base, _hook_lines(copy[2]))),
-              ("D_alert", lambda: concept_d_alert(base, _hook_lines(copy[2]), tag))]
+              ("D_alert", lambda: concept_d_alert(base, _hook_lines(copy[2]), tag,
+                                                  face_path=face_path))]
     for name, fn in builds:
         try:
             img = fn()
@@ -382,6 +384,15 @@ def generate_three(e, workdir, clip_path, footage_tags=None, hooks=None):
     except Exception as ex:
         res["note"] = f"copy failed: {ex}"
     res["note"] = ("scores are an objective quality screen, not a CTR prediction")
+    if face_key:
+        res["face"] = face_key
+        try:
+            import faces as _faces
+            res["photo_credit"] = _faces.credit(face_key)
+            with open(os.path.join(workdir, "thumb_face.json"), "w") as _f:
+                json.dump({"key": face_key, "credit": res["photo_credit"]}, _f)
+        except Exception:
+            pass
     try:
         with open(os.path.join(workdir, "thumbs_report.json"), "w") as f:
             json.dump(res, f, indent=1)
