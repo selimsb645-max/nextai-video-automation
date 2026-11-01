@@ -167,10 +167,20 @@ def news_headlines(kind="long"):
     for q in queries:
         url = ("https://news.google.com/rss/search?q=" +
                urllib.parse.quote(q) + "+when:7d&hl=en-US&gl=US&ceid=US:en")
-        try:
-            xml = _http(url, timeout=30).decode("utf-8", "replace")
-        except Exception as ex:
-            log(f"rss failed for {q[:30]}: {str(ex)[:80]}")
+        # Google News answers 503 in short bursts; a single bad pass aborted a
+        # whole production run at research (2026-11-01 11:49), so retry with a
+        # short backoff before giving up on the query.
+        xml = None
+        for _try in range(3):
+            try:
+                xml = _http(url, timeout=30).decode("utf-8", "replace")
+                break
+            except Exception as ex:
+                if _try == 2:
+                    log(f"rss failed for {q[:30]} after 3 tries: {str(ex)[:70]}")
+                else:
+                    time.sleep(3 * (_try + 1))
+        if xml is None:
             continue
         for m in re.finditer(r"<item>(.*?)</item>", xml, re.S):
             blk = m.group(1)
