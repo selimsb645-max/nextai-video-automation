@@ -56,9 +56,15 @@ def test_three_distinct_thumbnails(media):
     e = {"title": "Claude Opus 4.5 Just Beat GPT-5.1", "subject": "Claude Opus 4.5",
          "headline": "IT BEAT EVERY BENCHMARK"}
     r = thumb_variants.generate_three(e, media["dir"], media["clip"], ["computer chip"])
-    assert len(r["variants"]) == 3, "three concepts must be produced"
-    paths = [v["path"] for v in r["variants"]]
-    assert len(set(paths)) == 3
+    assert len(r["variants"]) >= 3, "at least three concepts must be produced"
+    names = [v["concept"] for v in r["variants"] if v.get("path")]
+    assert len(set(names)) == len(names), "concepts must be distinct"
+    # owner 2026-11-01: the @airevolutionx alert concept is the house style
+    assert "D_alert" in names, "house-style alert concept missing"
+    assert r["selected"], "a winner must be selected"
+    assert os.path.exists(r["thumb_jpg"]), "thumb.jpg (upload guard name) must exist"
+    paths = [v["path"] for v in r["variants"] if v.get("path")]
+    assert len(set(paths)) == len(paths) >= 3
     # files exist and are real images of the required size
     from PIL import Image
     for p in paths:
@@ -72,8 +78,14 @@ def test_three_distinct_thumbnails(media):
     d_bc = abs(arrs[1] - arrs[2]).mean()
     assert d_ab > 12 and d_bc > 12, f"concepts too similar ({d_ab:.1f}, {d_bc:.1f})"
     # scoring + selection
-    assert set(r["scores"]) == {"A_cinematic", "B_news", "C_curiosity"}
-    assert r["selected"] == max(r["variants"], key=lambda v: v["score"])["path"]
+    assert set(r["scores"]) == {"A_cinematic", "B_news", "C_curiosity", "D_alert"}
+    # owner 2026-11-01: the alert concept is the mandated house style, so the
+    # winner is the highest scorer normally but D_alert wins when it clears 45
+    scores = {v["concept"]: v["score"] for v in r["variants"] if v.get("path")}
+    if scores.get("D_alert", 0) >= 45.0:
+        assert r["selected"].endswith("thumb_D_alert.jpg")
+    else:
+        assert r["selected"] == max(r["variants"], key=lambda v: v["score"])["path"]
     assert os.path.exists(os.path.join(media["dir"], "thumbnail.jpg"))
     assert "not a CTR" in r["note"]
 

@@ -1132,6 +1132,20 @@ def make_thumb(e, workdir, clip):
     by YouTube for Shorts too; the old 1080x1920 vertical short design got
     blur-filled by set_thumbnail into a tiny unreadable center strip. Picks the
     most striking frame from the beat-1 clip, grades it, overlays a BIG hook."""
+    # House style 2026-11-01: the @airevolutionx alert look is the default; the
+    # old v3.1 design remains as THUMB_STYLE=v3 or if the new engine fails.
+    if os.environ.get("THUMB_STYLE", "alert") == "alert":
+        try:
+            import sys as _s
+            _fd = os.path.dirname(os.path.abspath(__file__))
+            if _fd not in _s.path:
+                _s.path.insert(0, _fd)
+            import thumb_alert
+            f = thumb_alert.build(e, workdir, clip)
+            if f and os.path.exists(f):
+                return f
+        except Exception as _ex:
+            print("thumb-alert failed, using v3:", str(_ex)[:110], flush=True)
     import subprocess
     src_f = os.path.join(FOOTAGE, clip["file"])
     from PIL import Image, ImageDraw, ImageEnhance, ImageFont, ImageStat

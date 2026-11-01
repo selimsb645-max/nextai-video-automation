@@ -168,6 +168,35 @@ def concept_c_curiosity(base, hook):
     return im
 
 
+
+
+# ── concept D: the @airevolutionx "news alert" look (owner 2026-11-01) ──────
+# Dark cinematic base, huge ALL-CAPS white text with ONE red accent word, thin
+# red alert chrome and brand tag. This is the reference channel's language, so
+# it carries a small +8 owner-style bias in the score below.
+STYLE_BIAS = {"D_alert": 8.0}
+# Owner mandate 2026-11-01 ("এই চ্যানেল যেমন ভিডিও বানাই"): the @airevolutionx
+# alert look is the house style, so it wins outright unless it scores badly.
+PREFERRED = [("D_alert", 45.0)]
+
+
+def concept_d_alert(base, hook, tag="AI NEWS"):
+    import sys as _sys
+    _here = os.path.dirname(os.path.abspath(__file__))
+    if _here not in _sys.path:
+        _sys.path.insert(0, _here)
+    import thumb_alert as TA
+    from PIL import Image as _I
+    im = TA._cover_frame(base) if hasattr(TA, "_cover_frame") else TA._cover_from(base)
+    im = TA._darken(im, 0.38, 1.34, 1.65)
+    im = TA._vignette(im, 0.88)
+    im = TA._grad_left(im, 248)
+    phrase = " ".join(hook) if isinstance(hook, (list, tuple)) else str(hook)
+    TA._draw_hook(im, phrase, TA.RED, 1)
+    im = TA._chrome(im, 1, tag)
+    return im
+
+
 # ───────────────────────── objective scoring ─────────────────────────
 def _luma(arr):
     return 0.299 * arr[:, :, 0] + 0.587 * arr[:, :, 1] + 0.114 * arr[:, :, 2]
@@ -311,13 +340,17 @@ def generate_three(e, workdir, clip_path, footage_tags=None, hooks=None):
     copy = hooks if len(hooks) == 3 else [hook, hook, hook]
     builds = [("A_cinematic", lambda: concept_a_cinematic(base, _hook_lines(copy[0]))),
               ("B_news", lambda: concept_b_news(base, _hook_lines(copy[1]), tag)),
-              ("C_curiosity", lambda: concept_c_curiosity(base, _hook_lines(copy[2])))]
+              ("C_curiosity", lambda: concept_c_curiosity(base, _hook_lines(copy[2]))),
+              ("D_alert", lambda: concept_d_alert(base, _hook_lines(copy[2]), tag))]
     for name, fn in builds:
         try:
             img = fn()
             path = os.path.join(workdir, f"thumb_{name}.jpg")
             img.save(path, quality=92)
             total, comp = _score(img, hook, footage_tags, title)
+            if STYLE_BIAS.get(name):
+                comp["style_bias"] = STYLE_BIAS[name]
+                total = round(total + STYLE_BIAS[name], 1)
             res["variants"].append({"concept": name, "path": path,
                                     "score": total, "components": comp})
             res["scores"][name] = total
@@ -328,14 +361,21 @@ def generate_three(e, workdir, clip_path, footage_tags=None, hooks=None):
         res["note"] = "all concepts failed"
         return res
     ranked.sort(key=lambda v: v["score"], reverse=True)
-    res["selected"] = ranked[0]["path"]
+    chosen = ranked[0]
+    for name, floor in PREFERRED:
+        pick = next((v for v in ranked if v["concept"] == name), None)
+        if pick and pick["score"] >= floor:
+            chosen = pick
+            res["style_chosen"] = f"{name} (house style, score {pick['score']})"
+            break
+    res["selected"] = chosen["path"]
     final = os.path.join(workdir, "thumbnail.jpg")
     # The rest of the pipeline (factory.set_thumbnail, the upload guard, the
     # render guard) all look for workdir/thumb.jpg - that mismatch is why the
     # thumbnail was generated but never applied to the upload (owner 2026-11-01).
     compat = os.path.join(workdir, "thumb.jpg")
     try:
-        im = Image.open(ranked[0]["path"]).convert("RGB")
+        im = Image.open(chosen["path"]).convert("RGB")
         _save_under_2mb(im, final, compat)
         res["final"] = final
         res["thumb_jpg"] = compat

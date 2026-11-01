@@ -254,8 +254,9 @@ def gemini_json(prompt, models=None):
 
 # ── OWNER 2026-11-01 v2 (Task 4): start with 8-10 minute test longs (~1300 words)
 # and only raise the length once YouTube retention data proves viewers stay.
-# 150 wpm: 1300 words ~ 8-9 min. LONG_TARGET_WORDS=1900/2600 for a longer cut.
-LONG_TARGET_WORDS = int(os.environ.get("LONG_TARGET_WORDS", "1300"))
+# 150 wpm: 1600 words ~ 10-11 min, matching the @airevolutionx reference length
+# (owner standing rule: 10-16 min). LONG_TARGET_WORDS=2200+ for a longer cut.
+LONG_TARGET_WORDS = int(os.environ.get("LONG_TARGET_WORDS", "1600"))
 LONG_MAX_BEATS = int(os.environ.get("LONG_MAX_BEATS", "52"))
 LONG_MIN_WORDS = int(LONG_TARGET_WORDS * 0.65)
 LONG_MAX_WORDS = int(LONG_TARGET_WORDS * 1.15)
@@ -282,7 +283,7 @@ SCRIPT FORMAT — an AI news story told by a real host:
 HARD RULES:
 - Title: MAX 50 CHARACTERS (mobile viewers must read the full message at a glance), must contain "AI" or the platform/company name AND one of these story-drama hook patterns: Banned / Built / Just / Shocking / Warning / Nobody / Truth / Finally / vs.
 - TITLE SEARCHABILITY (owner 2026-10-16: 70% of views come from SEARCH, and drama-only titles rank for nothing): the title MUST contain the exact SEARCHABLE SUBJECT NAME a viewer would actually type into YouTube/Google — the model name (e.g. "GPT-5.1", "Claude Opus 4.5", "Gemini 3"), the company name, the robot name, or the law/event name — spelled EXACTLY as in the headlines. GOOD: "Claude Opus 4.5 Just Beat GPT-5.1", "Tesla Optimus Banned Itself". BAD: "AI Agent Hacked a Government. Nobody Told It To" (no searchable subject, nobody searches this).
-- TITLE PATTERNS that work (pick the best fit, never the same one twice in a row): "<Name> Built an AI. <Company> Banned Him.", "X Just Happened — Here's Why It Matters", "The Truth About X", "X Banned Y. Here's Why.", "Nobody Expected This From X", "X vs Y: It's Not Even Close".
+- TITLE PATTERNS that work (pick the best fit, never the same one twice in a row): "<Name> Built an AI. <Company> Banned Him.", "X Just Happened — Here's Why It Matters", "The Truth About X", "X Banned Y. Here's Why.", "Nobody Expected This From X", "X vs Y: It's Not Even Close", "<Company> Just <Dramatic Claim>" (e.g. "Anthropic Just Dropped DUET: The First AI That Thinks Ahead"), "It's Happening... <Consequence>".
 - TITLE VARIETY: do NOT reuse the same title template (like "AI Warning: ...") that appears in the RECENT TITLES list; at most one title there shares its first two words with yours.
 - FOOTAGE SYNC (OWNER RULE 2026-11-01): the video is narrated sentence by sentence and each sentence is SHOWN. Every beat gets its own DIFFERENT piece of footage that depicts exactly what that sentence says — never a generic clip, never the same clip twice in one video.
 - Each beat gets "kw": a 2-4 word stock-footage search phrase naming a CONCRETE filmable object/place/action that matches what the sentence says (e.g. "server room lights", "robot arm factory", "person typing laptop", "computer chip macro"). NEVER brand or product names (ChatGPT, Claude, OpenAI, Gemini, DeepSeek...) and NEVER abstract words (future, intelligence, innovation) — stock libraries do not have them, so the footage would not match the words.
