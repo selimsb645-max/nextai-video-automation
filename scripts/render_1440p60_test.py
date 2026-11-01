@@ -230,11 +230,18 @@ def render_scene_1440(scene, asset, out, dur, cfg, intermediate=True):
         inputs = ["-loop", "1", "-i", asset["path"], "-t", f"{dur:.3f}"]
     else:
         src_dur = float(asset.get("duration") or 0)
-        need_loop = src_dur and src_dur < dur * 1.2
+        if not src_dur:                      # asset came without a duration
+            src_dur = float((RP.probe_json(asset["path"]).get("format") or {})
+                            .get("duration") or 0)
+        need_loop = (not src_dur) or src_dur < dur * 1.2
         start = 0.0 if need_loop else max(min(src_dur * 0.2,
                                              max(src_dur - dur, 0)), 0.0)
-        inputs = ((["-stream_loop", "-1"] if need_loop else []) +
-                  ["-ss", f"{start:.2f}", "-i", asset["path"], "-t", f"{dur:.3f}"])
+        # always loop the source: on the CI runner a stock clip shorter than the
+        # beat (or an asset with no recorded duration, which used to disable the
+        # loop) silently produced a 9 s clip for an 11.7 s beat, so the finished
+        # video came out 32 s against 46.8 s of narration.
+        inputs = (["-stream_loop", "-1", "-ss", f"{start:.2f}",
+                   "-i", asset["path"], "-t", f"{dur:.3f}"])
     cmd = (["ffmpeg", "-v", "error", "-y"] + inputs +
            ["-vf", vf, "-r", str(cfg.fps)] + enc +
            ["-an", "-pix_fmt", cfg.pix_fmt, out])
@@ -312,10 +319,12 @@ def final_encode(clips, cfg, out, audio=None, ass=None, transitions=None,
     scaler = (f"scale={cfg.width}:{cfg.height}:force_original_aspect_ratio=decrease,"
               f"pad={cfg.width}:{cfg.height}:(ow-iw)/2:(oh-ih)/2:color=black,"
               f"setsar=1")
+    tag = ("setparams=colorspace=bt709:color_primaries=bt709:"
+           "color_trc=bt709:range=tv")
     variants = [
         ("spec", (f"ass={ass_q}," if ass_q else "")
-         + f"{scaler},fps={cfg.fps},format={cfg.pix_fmt}"),
-        ("no-captions", f"{scaler},fps={cfg.fps},format={cfg.pix_fmt}"),
+         + f"{tag},{scaler},fps={cfg.fps},format={cfg.pix_fmt}"),
+        ("no-captions", f"{tag},{scaler},fps={cfg.fps},format={cfg.pix_fmt}"),
         ("bare", None),   # no -vf at all; encoder options still set the spec
     ]
     last = None
