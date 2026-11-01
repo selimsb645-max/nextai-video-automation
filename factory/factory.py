@@ -1132,6 +1132,30 @@ def make_thumb(e, workdir, clip):
     by YouTube for Shorts too; the old 1080x1920 vertical short design got
     blur-filled by set_thumbnail into a tiny unreadable center strip. Picks the
     most striking frame from the beat-1 clip, grades it, overlays a BIG hook."""
+    # Free-GPU path (owner 2026-11-01): when a GPU endpoint credential exists,
+    # the keyart comes from FLUX on a FREE runtime (Cloudflare Workers AI or a
+    # Hugging Face Space) and the typography is composited here with Anton, so
+    # the text is always perfect and no Base44 integration credits are spent.
+    # Without credentials it falls through to the local engines below.
+    if os.environ.get("THUMB_STYLE", "studio") != "v3" and (
+            os.environ.get("CF_API_TOKEN") or os.environ.get("HF_TOKEN")):
+        try:
+            import sys as _s2
+            _fd2 = os.path.dirname(os.path.abspath(__file__))
+            if _fd2 not in _s2.path:
+                _s2.path.insert(0, _fd2)
+            import thumb_gpu
+            title = (e.get("title") or e.get("topic") or "").strip()
+            if title:
+                r = thumb_gpu.build(title, out_paths=(
+                    os.path.join(workdir, "thumb.jpg"),
+                    os.path.join(workdir, "thumbnail.jpg")))
+                if r.get("backend") in ("cloudflare", "hf_space") and os.path.exists(r["paths"][0]):
+                    print(f"thumbnail: free-GPU {r['backend']} {r['bytes']//1024} KB", flush=True)
+                    return r["paths"][0]
+                print("thumbnail: GPU backend empty, using local engine", flush=True)
+        except Exception as _exg:
+            print("thumbnail: free-GPU path failed, using local engine:", str(_exg)[:110], flush=True)
     # House style 2026-11-01: the @airevolutionx alert look is the default; the
     # old v3.1 design remains as THUMB_STYLE=v3 or if the new engine fails.
     if os.environ.get("THUMB_STYLE", "studio") == "studio":

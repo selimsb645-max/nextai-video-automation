@@ -390,3 +390,35 @@ def test_clean_topic_strips_hype_and_dangling_words():
     assert RM.clean_topic("It's over... China's New AI Just Caught Up") == "China's New AI Just Caught Up"
     assert not RM.clean_topic("OpenAI's New GPT-6.1 Terra Is").endswith(" Is")
     assert RM.clean_topic("DeepSeek Fires Again!") == "DeepSeek Fires"
+
+
+# ── free-GPU thumbnail generator (owner 2026-11-01) ────────────────────────
+def test_gpu_type_is_legible_and_on_the_left():
+    import thumb_gpu as G
+    from PIL import Image
+    img = G.grade(G.procedural_fallback())
+    out = G.add_type(img, "GENIE 4", "GOOGLE · AI", "SYNTHETIC REALITY", "cyan", "4")
+    g = out.convert("L").point(lambda v: 255 if v > 235 else 0)
+    bb = g.getbbox()
+    assert bb, "no type drawn"
+    assert (bb[0] + bb[2]) // 2 < G.W // 2, "type must sit in the left half"
+    assert bb[2] - bb[0] > G.W * 0.15, "headline too small to read at 320 px"
+
+
+def test_gpu_backend_chain_falls_back(monkeypatch):
+    import thumb_gpu as G
+    monkeypatch.setattr(G, "BACKENDS",
+                        [("cloudflare", lambda *a, **k: (_ for _ in ()).throw(RuntimeError("no creds"))),
+                         ("hf_space", lambda *a, **k: (_ for _ in ()).throw(RuntimeError("no token")))])
+    img, name = G.gpu_keyart("test prompt")
+    assert img is None and name == "none"
+
+
+def test_gpu_save_caps_size_and_dual_names(tmp_path):
+    import thumb_gpu as G
+    r = G.build("OpenAI's New GPT-6.1 Terra", out_paths=(str(tmp_path / "thumb.jpg"),
+                                                         str(tmp_path / "thumbnail.jpg")))
+    assert r["bytes"] <= G.MAX_BYTES
+    for p in r["paths"]:
+        assert os.path.exists(p) and os.path.getsize(p) <= G.MAX_BYTES
+    assert r["backend"] in ("cloudflare", "hf_space", "procedural")
