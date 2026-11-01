@@ -67,6 +67,7 @@
  "production_style": {
   "version": "reference_channels_2026-10-01",
   "references": [
+   "https://youtube.com/@airevolutionx",
    "https://youtube.com/@natebjones",
    "https://youtube.com/@theneuralnutshell"
   ],
@@ -90,7 +91,9 @@
   "face_rule": "No creator-lookalike presenter or borrowed portraits. Without an approved owner presenter image, prefer a relevant original product/concept subject. Never imply a named expert said or endorsed an unverified claim.",
   "preserve": "Scope: AI updates and new model launches (ChatGPT/OpenAI, Claude/Anthropic, Gemini/Google AI Studio, Grok/xAI, DeepSeek, Qwen) first, plus AI-linked science, robots and technology. Every run ranks topic demand from US headline volume and picks the most-searched story. Do not reupload their videos or modify already-uploaded/scheduled videos unless specifically requested.",
   "account_switches_allowed": false,
-  "thumbnail_delivery": "Pipeline auto-generates the thumbnail (free Gemini image model) and sets it via YouTube API right after upload. Owner no longer needs to create thumbnails; the WhatsApp report still includes the hook text used."
+  "thumbnail_delivery": "Pipeline auto-generates the thumbnail (free Gemini image model) and sets it via YouTube API right after upload. Owner no longer needs to create thumbnails; the WhatsApp report still includes the hook text used.",
+  "owner_reference_2026_11_01": "Style target = youtube.com/@airevolutionx (AI Revolution): cinematic documentary AI news, professional English voice-over, and per-sentence footage sync - every narrated sentence is illustrated by its own distinct clip showing exactly what the sentence says.",
+  "footage_sync_rule": "One unique clip per sentence, matching that sentence's meaning. Never reuse a clip inside a video; cross-video reuse is blocked by the ledger."
  },
  "owner_daily_mode": {
   "effective_date": "2026-10-03",
