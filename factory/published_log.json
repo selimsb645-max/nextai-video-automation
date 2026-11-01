@@ -556,5 +556,14 @@
   "uploaded_at": "2026-10-31T13:01:21+06:00",
   "scheduled_for": "2026-11-01T02:30:00Z",
   "url": "https://www.youtube.com/watch?v=sSNrdi-aMFk"
+ },
+ {
+  "id": "gemini_robotics_reasoning_2026_11_01",
+  "videoId": "CE52Sl-VKQg",
+  "title": "Gemini Just Changed Everything",
+  "kind": "short",
+  "uploaded_at": "2026-11-01T12:06:10+06:00",
+  "scheduled_for": "2026-11-01T20:30:00Z",
+  "url": "https://www.youtube.com/watch?v=CE52Sl-VKQg"
  }
 ]
