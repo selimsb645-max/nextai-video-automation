@@ -38,7 +38,7 @@ concurrency:
 jobs:
   produce:
     runs-on: ubuntu-latest
-    timeout-minutes: 65
+    timeout-minutes: 300
     steps:
       - uses: actions/checkout@v4
 
