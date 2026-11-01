@@ -1,0 +1,40 @@
+name: Reference Topic Mirror
+
+# Owner rule 2026-11-01: whenever AI Revolution (@airevolutionx) publishes a
+# topic, we publish OUR OWN video on the same topic. This job reads their public
+# RSS feed and queues the subject into our pending library. Our script, footage
+# and thumbnail prompt stay entirely ours; we never re-use their video.
+on:
+  schedule:
+    - cron: "0 3 * * *"        # 09:00 Asia/Dhaka
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: reference-mirror
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Mirror new reference topics into the library
+        run: python3 factory/reference_mirror.py --limit 15
+      - name: Commit if the library changed
+        run: |
+          git config user.name  "nextai-mirror"
+          git config user.email "mirror@nextai.local"
+          git add factory/library.json factory/reference_mirror.json
+          if git diff --cached --quiet; then
+            echo "no new topics"
+          else
+            git commit -m "topics: mirror new AI Revolution subjects into the pending library"
+            git push
+          fi

@@ -333,3 +333,60 @@ def test_thumb_prompt_latest_and_message(tmp_path, monkeypatch):
     assert TP.latest("2026-10-31") is None
     msg = TP.format_message(e, TP.build(e["title"]))
     assert "V1" in msg and "প্রম্পট" in msg
+
+
+# ── A-to-Z prompt + reference mirror (owner 2026-11-01) ─────────────────────
+def test_full_prompt_is_complete():
+    import thumb_prompt as TP
+    f = TP.build_full("Google's New Genie 4 Is the Beginning of Synthetic Reality")
+    p = f["full_prompt"]
+    for must in ("16:9", "1280x720", "SCENE", "SUBJECT", "TYPE", "Layout",
+                 "NEVER include", f['headline'], f['kicker'], f['accent_word']):
+        assert must in p, must
+    assert "watermark" in p.lower()
+    # a prompt that asks for type must not forbid text
+    assert "no text" not in p.lower()
+    assert "no text" in f["image_prompt"].lower()      # the fallback does
+    assert 1 <= len(f["headline"].split()) <= 3
+    assert len(f["steps"]) >= 3
+
+
+def test_hooks_pick_the_named_thing():
+    import thumb_prompt as TP
+    cases = {"Google's New Genie 4 Is the Beginning of Synthetic Reality": "GENIE 4",
+             "Anthropic's Opus 6 Ignites a Terrifying AI Theory": "OPUS 6",
+             "Mythos 5 and Google Just Broke Quantum Computing": "MYTHOS 5",
+             "This 89K Robot Is Learning to Babysit in a NYC Park": "89K ROBOT"}
+    for title, want in cases.items():
+        got = TP.short_text(title)
+        assert want.split()[0] in got, f"{got} should carry {want}"
+    assert "$4" in TP.short_text("NVIDIA Hits $4 Trillion and Nobody Is Ready").upper()
+
+
+def test_reference_mirror_creates_pending_topics(tmp_path, monkeypatch):
+    import reference_mirror as RM
+    feed = [{"videoId": "REF1", "title": "It's over... China's New AI Just Caught Up With America's Best",
+             "published": "2026-11-01", "url": "https://www.youtube.com/watch?v=REF1"}]
+    monkeypatch.setattr(RM, "LIBRARY", str(tmp_path / "library.json"))
+    monkeypatch.setattr(RM, "SEEN", str(tmp_path / "seen.json"))
+    monkeypatch.setattr(RM, "fetch_feed", lambda limit=15: feed)
+    import sys
+    monkeypatch.setattr(sys, "argv", ["mirror"])
+    assert RM.main() == 0
+    lib = json.loads((tmp_path / "library.json").read_text())
+    e = lib["entries"][0]
+    assert e["status"] == "pending" and e["origin"] == "reference_mirror"
+    assert e["reference_video"] == "REF1"
+    assert "REF1" in e["verified_sources"][0]
+    assert e["demand_evidence"] and "AI Revolution" in e["demand_evidence"]
+    assert "it's over" not in e["title"].lower()          # their hype is not our topic
+    # a second run must not duplicate it
+    assert RM.main() == 0
+    assert len(json.loads((tmp_path / "library.json").read_text())["entries"]) == 1
+
+
+def test_clean_topic_strips_hype_and_dangling_words():
+    import reference_mirror as RM
+    assert RM.clean_topic("It's over... China's New AI Just Caught Up") == "China's New AI Just Caught Up"
+    assert not RM.clean_topic("OpenAI's New GPT-6.1 Terra Is").endswith(" Is")
+    assert RM.clean_topic("DeepSeek Fires Again!") == "DeepSeek Fires"
