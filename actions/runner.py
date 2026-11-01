@@ -421,8 +421,11 @@ def _anchor_candidates(heads, limit=4):
             score += 2
         if 20 <= len(t) <= 95:
             score += 1
+        # prefer headlines that carry a recent date; undated ones still count
+        # but rank below dated stories from the same feed
         if score >= 4:
-            out.append((score, h, plat))
+            out.append((score + (1 if str(h.get("date") or "").strip() else 0),
+                        h, plat))
     out.sort(key=lambda x: -x[0])
     return [(h, plat) for _s, h, plat in out[:limit]]
 
@@ -683,6 +686,18 @@ def make_entry(kind):
             log("anchored attempt failed: " + str(ex)[:140])
             continue
         if anchored:
+            anchored.update({"kind": kind, "categoryId": "28",
+                             "madeForKids": False,
+                             "content_pillar": "ai_updates",
+                             "scope_reviewed": True,
+                             "content_policy_version": policy["version"],
+                             "seed": int(time.time()) % 1000})
+            for _b in anchored["beats"]:
+                _b.setdefault("tags", [])
+            if not factory.content_eligible(anchored):
+                log("anchored entry failed the scope gate; trying the next "
+                    "headline")
+                continue
             return anchored, None
     return None, "no valid entry from gemini (anchored fallbacks also failed)"
 
