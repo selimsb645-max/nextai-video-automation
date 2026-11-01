@@ -1,0 +1,41 @@
+name: Thumb GPU Smoke
+
+# Manual proof that the free-GPU thumbnail path works end to end:
+# FLUX keyart from Cloudflare Workers AI -> Anton typography -> 1280x720 JPEG.
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: "Video title to build a thumbnail for"
+        default: "Google's New Genie 4 Is the Beginning of Synthetic Reality"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install
+        run: |
+          pip install -q pillow numpy
+          sudo apt-get update -qq && sudo apt-get install -y -qq fonts-dejavu-core >/dev/null
+      - name: Build thumbnail on the free GPU runtime
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          cd factory
+          python3 thumb_gpu.py --title "${{ github.event.inputs.title }}" --out thumb_gpu_out.jpg | tail -20
+          ls -l thumb_gpu_out.jpg
+      - uses: actions/upload-artifact@v4
+        with:
+          name: thumbnail
+          path: factory/thumb_gpu_out.jpg
