@@ -420,9 +420,11 @@ def make_entry(kind):
                     val["beats"] += add
                     val["narration"] = " ".join(b["t"] for b in val["beats"])
                     log(f"continuation: +{len(add)} beats, now {len(val['narration'].split())} words")
-                # still short -> thicken every beat to 30-38 words
+                # still short -> thicken every beat to 30-38 words.
+                # Stop at 90% of the target: expanding a script that already
+                # reached it produced a 1945-word script for a 1300-word target.
                 for _ei in range(2):
-                    if len(val["narration"].split()) >= LONG_TARGET_WORDS:
+                    if len(val["narration"].split()) >= LONG_TARGET_WORDS * 0.9:
                         break
                     _bt = "\n".join(f"- {b['t']} |kw: {b.get('kw', '')}"
                                     for b in val["beats"])
@@ -511,7 +513,16 @@ def make_entry(kind):
                     _why.append("no-robot")
                 if kind == "long" and not ("ai" in tl or any(p in tl for p in ["chatgpt", "openai", "claude", "gemini", "grok", "deepseek", "qwen"])):
                     _why.append("no-ai-keyword")
-                if not any(h in tl for h in HOOKS):
+                # OWNER 2026-11-01: the documentary style uses plain factual
+                # titles ("OpenAI's New Model Explained"), so a drama word is no
+                # longer mandatory. A number, a year, or an AI/money word counts.
+                _title_hook = (any(h in tl for h in HOOKS)
+                               or bool(re.search(r"[0-9]", val["title"]))
+                               or any(w in tl for w in ("revealed", "new", "changes",
+                                                        "future", "inside", "explained",
+                                                        "record", "first", "secret",
+                                                        "billion", "million", "$")))
+                if not _title_hook:
                     _why.append("no-hook-word")
                 if not val.get("verified_sources"):
                     _why.append("no-sources")
