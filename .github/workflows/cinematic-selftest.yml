@@ -1,0 +1,159 @@
+name: Cinematic Engine Selftest
+
+# Phase 10 safe-integration harness for the "Next AI Vision 4" cinematic editor.
+# It NEVER publishes, never touches YouTube credentials, never changes the
+# production schedule and never enables the engine by default: the run happens
+# only when a human dispatches it, and ENABLE_CINEMATIC_EDITOR stays false.
+#
+# What it does: runs the unit tests, synthesises narration for the built-in demo
+# story, renders the film with the new engine, optionally renders the baseline
+# (pre-upgrade) cut from the same storyboard and assets, then uploads the video,
+# storyboard, captions, QC reports and the A/B comparison as artifacts.
+on:
+  workflow_dispatch:
+    inputs:
+      height:
+        description: "Output height (720 or 1080)"
+        type: choice
+        options: ["1080", "720"]
+        default: "1080"
+      quality:
+        description: "Render quality preset"
+        type: choice
+        options: ["standard", "draft", "high"]
+        default: "standard"
+      compare:
+        description: "Also render the baseline (pre-upgrade) cut for A/B"
+        type: boolean
+        default: true
+      run_tests:
+        description: "Run the pytest suite first"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+env:
+  ENABLE_CINEMATIC_EDITOR: "false"   # test mode: production renderer untouched
+  PYTHONUNBUFFERED: "1"
+
+jobs:
+  selftest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: System dependencies (FFmpeg + fonts)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-dejavu-core espeak-ng \
+            fonts-liberation >/dev/null
+          ffmpeg -version | head -1
+
+      - name: Python dependencies
+        run: |
+          python -m pip install -q --upgrade pip
+          python -m pip install -q pillow numpy pytest edge-tts
+
+      - name: Unit + integration tests
+        if: ${{ inputs.run_tests }}
+        env:
+          RENDER_QUALITY: draft
+        run: python -m pytest tests/test_cinematic.py -q --maxfail=2
+
+      - name: Narration for the demo story
+        run: |
+          python - <<'PY'
+          import sys, subprocess, json, pathlib
+          sys.path.insert(0, "factory")
+          from cine.editor import SAMPLE
+          text = SAMPLE["narration"]
+          out = pathlib.Path("narration.mp3")
+          ok = False
+          try:
+              import asyncio, edge_tts
+              async def go():
+                  c = edge_tts.Communicate(text, "en-US-AriaNeural")
+                  await c.save(str(out))
+              asyncio.run(go())
+              ok = out.exists() and out.stat().st_size > 20000
+              print("narration: edge-tts ok", out.stat().st_size, "bytes")
+          except Exception as e:
+              print("narration: edge-tts unavailable ->", str(e)[:120])
+          if not ok:
+              wav = "narration.wav"
+              subprocess.run(["espeak-ng", "-v", "en-us", "-s", "150",
+                              "-w", wav, text], check=True)
+              subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", wav,
+                              "-c:a", "libmp3lame", "-b:a", "192k",
+                              str(out)], check=True)
+              print("narration: espeak-ng fallback ok", out.stat().st_size, "bytes")
+          print(json.dumps({"bytes": out.stat().st_size}))
+          PY
+
+      - name: Render the cinematic film (and baseline for A/B)
+        env:
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+          RENDER_QUALITY: ${{ inputs.quality }}
+        run: |
+          cd factory
+          ARGS="--sample --force --narration ../narration.mp3 \
+                --workdir ../cine_out --height ${{ inputs.height }}"
+          if [ "${{ inputs.height }}" = "720" ]; then
+            ARGS="$ARGS --width 1280"
+          else
+            ARGS="$ARGS --width 1920"
+          fi
+          if [ "${{ inputs.compare }}" = "true" ]; then ARGS="$ARGS --compare"; fi
+          echo "cine args: $ARGS"
+          python -m cine.editor $ARGS
+
+      - name: Show the QC + comparison summary
+        if: always()
+        run: |
+          echo "### Cinematic engine QC" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          python - <<'PY' >> $GITHUB_STEP_SUMMARY
+          import json, os
+          for f, title in (("cine_out/qc_report.json", "NEW ENGINE"),
+                           ("cine_out/qc_report_baseline.json", "BASELINE (pre-upgrade)")):
+              if not os.path.exists(f):
+                  print(f"{title}: not produced\n")
+                  continue
+              r = json.load(open(f))
+              bad = [c for c in r["checks"] if not c["ok"]]
+              print(f"{title}: {'PASS' if r['ok'] else 'FAIL'} "
+                    f"score {r['score']} duration {r['duration_s']}s "
+                    f"size {r['size_bytes']//1024//1024}MB")
+              for c in bad:
+                  print(f"   FAIL {c['check']}: {c['detail']}")
+              print("")
+          if os.path.exists("cine_out/compare.json"):
+              print("A/B:", json.dumps(json.load(open("cine_out/compare.json"))))
+          PY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload the film and every report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cinematic-selftest
+          path: |
+            cine_out/cinematic.mp4
+            cine_out/baseline.mp4
+            cine_out/storyboard.json
+            cine_out/captions.ass
+            cine_out/qc_report.json
+            cine_out/qc_report_baseline.json
+            cine_out/compare.json
+            cine_out/build_report.json
+            cine_out/asset_manifest.json
+          if-no-files-found: warn
+          retention-days: 14

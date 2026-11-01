@@ -26,3 +26,11 @@ factory/runs/**/*.wav
 factory/faces_cache/
 factory/fonts/Inter
 factory/fonts/Oswald
+
+# cinematic editor local artifacts
+cine_out/
+cine_cmp/
+cinematic_out/
+frame_*.jpg
+sample_narration.mp3
+narration.mp3

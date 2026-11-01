@@ -1151,6 +1151,35 @@ def quality_gate(e, mp4, kind="long", narration_path=None):
     return total, sc, notes
 
 
+def render_film(e, workdir, pairs, audio):
+    """SAFE INTEGRATION (owner master upgrade 2026-11-01).
+
+    The cinematic editor is opt-in. With ENABLE_CINEMATIC_EDITOR unset (the
+    default) this is byte-for-byte the old behaviour: factory.render(). When the
+    flag is on we try the new engine, and we only accept its output if its own
+    QC report passes - otherwise we fall straight back to the proven renderer so
+    a slot can never be lost to the new code.
+    """
+    flag = os.environ.get("ENABLE_CINEMATIC_EDITOR", "false").strip().lower()
+    if flag not in ("1", "true", "yes", "on"):
+        return factory.render(e, workdir, pairs, audio)
+    try:
+        from cine import editor as CINE
+        rep = CINE.build(e, os.path.join(workdir, "cine"),
+                         narration_path=audio, force=True)
+        qc = (rep or {}).get("qc") or {}
+        if qc.get("ok") and rep.get("output"):
+            log("cinematic editor: QC PASS (score "
+                + str(qc.get("score")) + ") - using the new render")
+            return rep["output"]
+        log("cinematic editor: QC FAIL (score " + str(qc.get("score"))
+            + ") - falling back to factory.render")
+    except Exception as ex:
+        log("cinematic editor crashed, falling back to factory.render: "
+            + str(ex)[:180])
+    return factory.render(e, workdir, pairs, audio)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--kind", default="long", choices=["long", "short"])
@@ -1290,7 +1319,7 @@ def main():
         except Exception:
             pass
     if not _reused:
-        mp4 = factory.render(e, workdir, pairs, audio)
+        mp4 = render_film(e, workdir, pairs, audio)
         try:
             json.dump({"hash": _want, "duration": _mp4_duration(mp4),
                        "clips": len(pairs), "at": time.time()},
