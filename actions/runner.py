@@ -1180,11 +1180,54 @@ def render_film(e, workdir, pairs, audio):
     return factory.render(e, workdir, pairs, audio)
 
 
+def _explicit_slot(kind, iso):
+    """OWNER OVERRIDE (2026-11-01): publish to an explicitly named slot when a
+    render finished after the automatic 8-10h lead window closed.
+
+    Fail-closed by construction: the slot must be a configured slot time for
+    this kind, must be in the future, and must not already be booked in the repo
+    log. The cross-producer YouTube check still runs right after, so we never
+    double-book a slot another producer already took.
+    """
+    cfg = json.load(open(os.path.join(FACT, "content_policy.json")))["schedules"]
+    bd = ZoneInfo(cfg["timezone"])
+    raw = str(iso).strip().replace("Z", "+00:00")
+    try:
+        when = _dt.datetime.fromisoformat(raw)
+    except ValueError:
+        raise SystemExit("PUBLISH_AT_INVALID: " + str(iso))
+    if when.tzinfo is None:
+        when = when.replace(tzinfo=_dt.timezone.utc)
+    when = when.astimezone(_dt.timezone.utc)
+    local = when.astimezone(bd)
+    legal = cfg.get("slots", {}).get(kind) or []
+    if local.strftime("%H:%M") not in legal:
+        raise SystemExit("PUBLISH_AT_NOT_A_SLOT: "
+                         + local.strftime("%H:%M") + " not in " + str(legal))
+    if when <= _dt.datetime.now(_dt.timezone.utc) + _dt.timedelta(minutes=5):
+        raise SystemExit("PUBLISH_AT_IN_THE_PAST: " + str(iso))
+    log_path = os.path.join(FACT, "published_log.json")
+    if os.path.exists(log_path):
+        for row in json.load(open(log_path)):
+            if row.get("kind") != kind or not row.get("scheduled_for"):
+                continue
+            d = _dt.datetime.fromisoformat(row["scheduled_for"].replace("Z", "+00:00"))
+            if abs((d - when).total_seconds()) < 300:
+                raise SystemExit("PUBLISH_AT_ALREADY_BOOKED: " + row["scheduled_for"])
+    log("OWNER OVERRIDE slot " + local.strftime("%Y-%m-%d %H:%M") + " " + str(bd.key)
+        + " (explicit --publish-at; automatic lead window bypassed on owner request)")
+    return when.strftime("%Y-%m-%dT%H:%M:%SZ"), local
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--kind", default="long", choices=["long", "short"])
     ap.add_argument("--selftest", action="store_true",
                     help="run the full pipeline but never upload")
+    ap.add_argument("--publish-at", default="",
+                    help="OWNER OVERRIDE: explicit slot, ISO8601 UTC (e.g. "
+                         "2026-11-01T15:00:00Z). Validated against the configured "
+                         "slot times and the repo log; never double-books.")
     ap.add_argument("--curate", action="store_true",
                     help="channel About rewrite + topic playlists + file existing videos (no upload)")
     args = ap.parse_args()
@@ -1241,7 +1284,10 @@ def main():
         log(f"selftest: synthetic target slot {slot_local} (upload will NOT happen)")
     else:
         try:
-            publish_at, slot_local = factory.next_bd_slot(kind)
+            if (getattr(args, "publish_at", "") or "").strip():
+                publish_at, slot_local = _explicit_slot(kind, args.publish_at)
+            else:
+                publish_at, slot_local = factory.next_bd_slot(kind)
         except SystemExit:
             # OWNER 2026-10-11 War Plan: a no-Long day is NOT a dead day —
             # the channel published NOTHING on off-days, which kills algo

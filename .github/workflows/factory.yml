@@ -27,6 +27,9 @@ on:
       mode:
         description: "produce or selftest (no upload)"
         default: "produce"
+      publish_at:
+        description: "OWNER OVERRIDE slot (ISO UTC, e.g. 2026-11-01T15:00:00Z). Empty = automatic 8-10h window"
+        default: ""
 
 permissions:
   contents: write
@@ -98,12 +101,14 @@ jobs:
         run: |
           MODE="${{ github.event.inputs.mode || 'produce' }}"
           KIND="${{ github.event.inputs.kind || 'long' }}"
+          PUB="${{ github.event.inputs.publish_at || '' }}"
+          if [ -n "$PUB" ]; then EXTRA="--publish-at $PUB"; else EXTRA=""; fi
           if [ "$MODE" = "curate" ]; then
             python3 actions/runner.py --kind "$KIND" --curate
           elif [ "$MODE" = "selftest" ]; then
             python3 actions/runner.py --kind "$KIND" --selftest
           else
-            python3 actions/runner.py --kind "$KIND"
+            python3 actions/runner.py --kind "$KIND" $EXTRA
           fi
 
       - name: Upload run report artifact
