@@ -720,14 +720,99 @@ def save_used(u):
     json.dump(u, open(USED_F, "w"), indent=1)
 
 
-def fresh_footage(e, workdir, used):
-    """Owner rule 2026-10-04: per-video fresh topic-matched Pexels footage.
+PIXABAY_KEY = os.environ.get("PIXABAY_API_KEY", "").strip()
 
-    Requires PEXELS_API_KEY; on any failure returns None so the caller falls
-    back to the bundled local pool (factory.pick_footage).
+
+def _pexels_pick(kw, orient, used, used_here):
+    url = ("https://api.pexels.com/videos/search?query=" +
+           urllib.parse.quote(kw) + f"&per_page=15&orientation={orient}&size=medium")
+    res = json.loads(_http(url, headers={"Authorization": PEXELS_KEY}, timeout=30))
+    for v in res.get("videos", []):
+        if v["id"] in used["used"] or v["id"] in used_here:
+            continue
+        if (v.get("duration") or 0) < 4:
+            continue
+        files = [f for f in v.get("video_files", [])
+                 if f.get("file_type") == "video/mp4"
+                 and (f.get("width") or 0) >= (720 if orient == "portrait" else 1280)
+                 and (f.get("height") or 0) >= (1280 if orient == "portrait" else 720)]
+        if files:
+            files.sort(key=lambda f: (f.get("width") or 0), reverse=True)
+            return v["id"], files[0]["link"], v.get("duration") or 0
+    raise RuntimeError("no unused relevant pexels clip")
+
+
+def _pixabay_pick(kw, orient, used, used_here):
+    """Pixabay video search with tag-relevance ranking.
+
+    OWNER FIX 2026-11-01: the repo only holds PIXABAY_API_KEY, while fresh
+    footage insisted on PEXELS_API_KEY and therefore fell back to the small
+    bundled pool on every run. That is what produced tonight's 316-second
+    single shot, the black stretches and the frozen frames (QC 84/100).
     """
-    if not PEXELS_KEY:
-        log("footage: no PEXELS_API_KEY — using bundled pool (fallback)")
+    # the videos endpoint has no orientation filter (images only), so the
+    # aspect filter is applied locally below
+    url = ("https://pixabay.com/api/videos/?key=" + PIXABAY_KEY +
+           "&q=" + urllib.parse.quote(kw) + "&per_page=20&video_type=film"
+           "&safesearch=true")
+    data = json.loads(_http(url, timeout=30))
+    qtok = {w for w in re.split(r"[^a-z0-9]+", kw.lower()) if len(w) >= 3}
+    cands = []
+    for h in data.get("hits", []):
+        hid = str(h.get("id"))
+        if hid in {str(x) for x in used.get("used", [])} or hid in used_here:
+            continue
+        if (h.get("duration") or 0) < 4:
+            continue
+        vs = h.get("videos") or {}
+        for name in ("large", "medium", "small"):
+            v = vs.get(name) or {}
+            w = v.get("width") or 0
+            hh = v.get("height") or 0
+            if not v.get("url"):
+                continue
+            if orient == "portrait" and hh >= 1280:
+                cands.append((h, v, hid)); break
+            if orient != "portrait" and w >= 1280:
+                cands.append((h, v, hid)); break
+    if not cands:                       # accept medium if nothing HD came back
+        for h in data.get("hits", []):
+            hid = str(h.get("id"))
+            if hid in {str(x) for x in used.get("used", [])} or hid in used_here:
+                continue
+            v = (h.get("videos") or {}).get("medium") or {}
+            if v.get("url") and (h.get("duration") or 0) >= 4:
+                cands.append((h, v, hid))
+    if not cands:
+        raise RuntimeError("no unused relevant pixabay clip")
+
+    def rel(item):
+        h = item[0]
+        tags = h.get("tags") or ""
+        if not isinstance(tags, str):
+            tags = " ".join(tags)
+        blob = tags.lower() + " " + str(h.get("pageURL") or "").lower()
+        return len(qtok & {w for w in re.split(r"[^a-z0-9]+", blob) if len(w) >= 3})
+
+    cands.sort(key=lambda it: -(rel(it) * 1_000_000 + (it[0].get("views") or 0)))
+    h, v, hid = cands[0]
+    return hid, v["url"], h.get("duration") or 0
+
+
+def fresh_footage(e, workdir, used):
+    """Per-video fresh topic-matched stock footage.
+
+    Pexels when PEXELS_API_KEY is set, otherwise Pixabay (the key this repo
+    actually has), otherwise the bundled pool via the caller's fallback.
+    """
+    orient = "portrait" if e.get("kind") == "short" else "landscape"
+    if PEXELS_KEY:
+        pick, provider = _pexels_pick, "pexels"
+    elif PIXABAY_KEY:
+        pick, provider = _pixabay_pick, "pixabay"
+    else:
+        log("footage: no PEXELS_API_KEY and no PIXABAY_API_KEY — using bundled "
+            "pool (fallback)")
         return None
     beats = factory.derive_beats(e)
     clips = []
@@ -738,40 +823,19 @@ def fresh_footage(e, workdir, used):
         if not kw:
             words = [w for w in re.findall(r"[a-zA-Z]{4,}", txt.lower())]
             kw = " ".join(words[:3])
-        orient = "portrait" if e.get("kind") == "short" else "landscape"
-        url = ("https://api.pexels.com/videos/search?query=" +
-               urllib.parse.quote(kw) + f"&per_page=15&orientation={orient}&size=medium")
         try:
-            res = json.loads(_http(url, headers={"Authorization": PEXELS_KEY}, timeout=30))
-            pick = None
-            for v in res.get("videos", []):
-                vid = v["id"]
-                if vid in used["used"] or vid in used_here:
-                    continue
-                if (v.get("duration") or 0) < 4:
-                    continue
-                files = [f for f in v.get("video_files", [])
-                         if f.get("file_type") == "video/mp4"
-                         and (f.get("width") or 0) >= (720 if orient == "portrait" else 1280)
-                         and (f.get("height") or 0) >= (1280 if orient == "portrait" else 720)]
-                if files:
-                    files.sort(key=lambda f: (f.get("width") or 0), reverse=True)
-                    pick = (v, files[0])
-                    break
-            if not pick:
-                raise RuntimeError("no unused relevant clip")
-            v, f = pick
-            dst = os.path.join(FACT, "footage", "fresh", f"{v['id']}.mp4")
-            data = _http(f["link"], timeout=180)
+            vid, link, dur = pick(kw, orient, used, used_here)
+            dst = os.path.join(FACT, "footage", "fresh", f"{provider}_{vid}.mp4")
             with open(dst, "wb") as fh:
-                fh.write(data)
-            used_here.add(v["id"])
-            used["used"].append(v["id"])
-            clips.append({"file": f"fresh/{v['id']}.mp4", "dur": v["duration"]})
-            log(f"beat {i}: fresh pexels clip {v['id']} for '{kw}' ({v['duration']}s)")
-            time.sleep(0.5)
+                fh.write(_http(link, timeout=180))
+            used_here.add(str(vid))
+            used["used"].append(f"{provider}_{vid}")
+            clips.append({"file": f"fresh/{provider}_{vid}.mp4", "dur": dur})
+            log(f"beat {i}: fresh {provider} clip {vid} for '{kw}' ({dur}s)")
+            time.sleep(0.4)
         except Exception as ex:
-            log(f"fresh footage failed beat {i} ({str(ex)[:100]}) — falling back to pool")
+            log(f"fresh footage failed beat {i} ({str(ex)[:100]}) — falling "
+                "back to the bundled pool")
             return None
     save_used(used)
     return [(c, len(t[0].split())) for c, t in zip(clips, beats)]
@@ -1534,6 +1598,14 @@ def main():
     except Exception as ex:
         _lnk = None
         log("playlist link unavailable for description: " + str(ex)[:100])
+    # Thumbnail FIRST: the QC gate scores the thumbnail (10 pts) and used to
+    # block a video over a file that was only generated after the upload.
+    try:
+        if not _three_thumbs(e, workdir, pairs):
+            if not factory.make_thumb_ai(e, workdir):
+                factory.make_thumb(e, workdir, pairs[0][0])
+    except Exception as ex:
+        log("pre-upload thumbnail failed (continuing): " + str(ex)[:140])
     _qc_total, _qc_sc, _qc_notes = quality_gate(e, mp4, kind, narration_path=audio)
     if _qc_total < QC_MIN_SCORE:
         # Never publish a failed video (owner master prompt §11).
@@ -1559,10 +1631,11 @@ def main():
     # Guarded: upload already succeeded, so a thumbnail failure must never
     # kill the run or lose the scheduled slot.
     try:
-        _tv = _three_thumbs(e, workdir, pairs)
-        if not _tv:
-            if not factory.make_thumb_ai(e, workdir):
-                factory.make_thumb(e, workdir, pairs[0][0])
+        if not (os.path.exists(os.path.join(workdir, "thumbnail.jpg"))
+                or os.path.exists(os.path.join(workdir, "thumb.jpg"))):
+            if not _three_thumbs(e, workdir, pairs):
+                if not factory.make_thumb_ai(e, workdir):
+                    factory.make_thumb(e, workdir, pairs[0][0])
         factory.set_thumbnail(vid, workdir)
     except Exception as ex:
         log("thumbnail step failed (video already uploaded; continuing): " + str(ex)[:140])
