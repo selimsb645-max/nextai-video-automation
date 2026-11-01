@@ -23,7 +23,9 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install deps
-        run: pip install kokoro-onnx soundfile numpy
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          pip install kokoro-onnx soundfile numpy
       - name: Restore Kokoro model
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
