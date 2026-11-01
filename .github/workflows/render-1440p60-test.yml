@@ -66,7 +66,7 @@ jobs:
           RENDER_PRESET: ${{ inputs.quality_preset }}
         run: |
           set -o pipefail
-          ARGS="--mode ${{ inputs.mode }} --workdir ../out_1440p60"
+          ARGS="--mode ${{ inputs.mode }} --workdir out_1440p60"
           if [ "${{ inputs.max_scenes }}" != "0" ]; then
             ARGS="$ARGS --max-scenes ${{ inputs.max_scenes }}"
           fi
