@@ -320,8 +320,9 @@ def final_encode(clips, cfg, out, audio=None, ass=None, transitions=None,
             return out
         except RuntimeError as ex:
             last = ex
-            log(f"final encode attempt '{name}' failed; trying a simpler "
-                f"argument set")
+            _msg = str(ex)
+            log(f"final encode attempt '{name}' failed: "
+                + " | ".join(_msg.splitlines()[-4:])[:700])
             try:
                 if os.path.exists(out):
                     os.remove(out)

@@ -115,6 +115,7 @@ jobs:
             out_1440p60/render_report.json
             out_1440p60/asset_manifest.json
             out_1440p60/captions.ass
+            out_1440p60/encode_error_*.log
             out_1440p60/narration.mp3
             capabilities.json
             render_1440.log
