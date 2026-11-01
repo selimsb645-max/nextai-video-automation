@@ -346,6 +346,160 @@ HEADLINES:
 """
 
 
+def _grow_to_target(val):
+    """Grow a long script to LONG_TARGET_WORDS. Moved out of make_entry
+    on 2026-11-01 so the anchored fallback grows a script identically."""
+    # OWNER MASTER PROMPT 2026-11-01: a long must reach LONG_TARGET_WORDS
+    # (10-16 min). Free lite models cap ~300-400 words per call, so keep
+    # asking for the next beats until the target is reached, then expand
+    # any beat that is still short.
+    if 8 <= len(val.get("beats", [])):
+        for _ci in range(14):
+            _w = len(val["narration"].split())
+            _b = len(val["beats"])
+            if _w >= LONG_TARGET_WORDS or _b >= LONG_MAX_BEATS:
+                break
+            _room = min(10, LONG_MAX_BEATS - _b)
+            if _room <= 0:
+                break
+            so_far = "\n".join(f"- {b['t']}" for b in val["beats"][-12:])
+            val2 = gemini_json(CONTINUE_PROMPT.format(
+                n=_room, title=val["title"], sofar=so_far),
+                models=["gemini-flash-lite-latest", "gemini-3.5-flash-lite"])
+            if not val2 or not isinstance(val2.get("beats"), list):
+                break
+            add = [b for b in val2["beats"] if b.get("t") and b.get("kw")][:_room]
+            if not add:
+                break
+            val["beats"] += add
+            val["narration"] = " ".join(b["t"] for b in val["beats"])
+            log(f"continuation: +{len(add)} beats, now {len(val['narration'].split())} words")
+        # still short -> thicken every beat to 30-38 words.
+        # Stop at 90% of the target: expanding a script that already
+        # reached it produced a 1945-word script for a 1300-word target.
+        for _ei in range(2):
+            if len(val["narration"].split()) >= LONG_TARGET_WORDS * 0.9:
+                break
+            _bt = "\n".join(f"- {b['t']} |kw: {b.get('kw', '')}"
+                            for b in val["beats"])
+            val3 = gemini_json(EXPAND_PROMPT.format(
+                title=val["title"], beats=_bt),
+                models=["gemini-flash-lite-latest", "gemini-3.5-flash-lite",
+                        "gemini-3.5-flash"])
+            if val3 and isinstance(val3.get("beats"), list) \
+                    and len(val3["beats"]) == len(val["beats"]) \
+                    and all(b.get("t") for b in val3["beats"]):
+                val["beats"] = val3["beats"]
+                val["narration"] = " ".join(b["t"] for b in val["beats"])
+                log(f"expand-beats: now {len(val['narration'].split())} words")
+            else:
+                break
+    return val
+
+
+
+ANCHOR_PLATFORMS = [("chatgpt", "ChatGPT"), ("openai", "OpenAI"),
+                    ("claude", "Claude"), ("anthropic", "Anthropic"),
+                    ("gemini", "Gemini"), ("google", "Google"),
+                    ("grok", "Grok"), ("deepseek", "DeepSeek"),
+                    ("qwen", "Qwen"), ("meta", "Meta"),
+                    ("microsoft", "Microsoft"), ("copilot", "Copilot")]
+
+
+def _anchor_candidates(heads, limit=4):
+    """Rank real headlines usable as a hard anchor for the fallback entry."""
+    out = []
+    for h in heads:
+        t = h.get("title") or ""
+        tl = t.lower()
+        plat = next((disp for k, disp in ANCHOR_PLATFORMS if k in tl), None)
+        score = 3 if plat else 0
+        if re.search(r"\d", t):
+            score += 2
+        if re.search(r"launch|release|ban|banned|record|beats|billion|million|"
+                     r"new model|update|price|free|first|cuts|hires", tl):
+            score += 2
+        if 20 <= len(t) <= 95:
+            score += 1
+        if score >= 4:
+            out.append((score, h, plat))
+    out.sort(key=lambda x: -x[0])
+    return [(h, plat) for _s, h, plat in out[:limit]]
+
+
+def _anchor_entry(kind, h, plat, today, demand_txt, recent_txt):
+    """Build a compliant entry around ONE real headline.
+
+    OWNER FIX 2026-11-01: the free lite models kept failing entry validation
+    ("sources-not-in-headlines", and three attempts with no reason at all) and
+    the 21:00 BD Long was lost three days running. When that happens we no
+    longer give up: the topic, the source URL and the searchable subject are
+    taken from a real headline, and the model only writes the script. Title and
+    description are then repaired deterministically so the searchability and
+    citation rules hold by construction.
+    """
+    subj = plat or " ".join((h.get("title") or "").split()[:3])
+    mand = ("MANDATORY TOPIC - use EXACTLY this story, never choose another: "
+            + (h.get("title") or "") + "\n"
+            + "MANDATORY SOURCE URL - copy it exactly into verified_sources: "
+            + h["url"] + "\n"
+            + 'MANDATORY SUBJECT - the exact string "' + subj + '" must appear '
+            "VERBATIM in the title AND in the first line of the description.\n\n")
+    base = SHORT_PROMPT if kind == "short" else ENTRY_PROMPT
+    prompt = mand + base.format(headlines="- " + (h.get("title") or "") + " | " + h["url"],
+                                today=today, demand=demand_txt, recent=recent_txt,
+                                lessons=analytics_lessons(),
+                                words=LONG_TARGET_WORDS,
+                                beats=max(20, LONG_TARGET_WORDS // 30))
+    val = gemini_json(prompt, models=["gemini-3.5-flash", "gemini-flash-latest",
+                                      "gemini-flash-lite-latest"])
+    if not val or not isinstance(val.get("beats"), list) or not val.get("beats"):
+        return None
+    if kind == "long":
+        val = _grow_to_target(val)
+    else:
+        val["narration"] = val.get("narration") or " ".join(
+            b.get("t", "") for b in val["beats"])
+    # deterministic repair: subject in title + description, hook, length limits
+    ttl = " ".join(str(val.get("title") or "").split())
+    hook = next((w for w in ("Banned", "Built", "Just", "New", "Shocking",
+                             "Warning", "Nobody", "Truth", "Finally", "First")
+                 if w.lower() in ttl.lower()), None)
+    if subj.lower() not in ttl.lower() or len(ttl) > 50 or not hook:
+        head = re.sub(r"^[^:]{0,26}:\s*", "", (h.get("title") or ""))
+        cand = [subj + ": " + head, subj + " Just Changed Everything",
+                subj + " Just Got Banned", subj + " Is Not What You Think"]
+        ttl = next((c[:50].strip() for c in cand
+                    if subj.lower() in c.lower() and len(c) <= 50
+                    and any(w.lower() in c.lower() for w in
+                            ("just", "banned", "new", "first", "changed",
+                             "not", "built"))), (subj + " AI News")[:50])
+    val["title"] = ttl
+    val["subject"] = subj
+    desc = " ".join(str(val.get("description") or "").split())
+    if subj.lower() not in desc[:220].lower():
+        val["description"] = (subj + " " + (h.get("title") or "")[:110]
+                              + ". " + desc)[:600]
+    val["verified_sources"] = [h["url"]]
+    val["demand_evidence"] = "anchored to a current verified headline: " \
+        + (h.get("title") or "")[:120]
+    if kind == "short":
+        val.setdefault("headline", ttl.upper()[:24])
+        val.setdefault("specs", [])
+    words = len(str(val.get("narration", "")).split())
+    lo, hi = ((45, 150) if kind == "short"
+              else (int(LONG_TARGET_WORDS * 0.6), int(LONG_TARGET_WORDS * 1.2)))
+    if not (lo <= words <= hi):
+        log(f"anchored entry rejected on length ({words} words)")
+        return None
+    val["id"] = re.sub(r"[^a-z0-9]+", "_",
+                       (val.get("id") or subj + "_" + h["url"].rstrip("/").split("/")[-1]).lower()
+                       ).strip("_")[:60]
+    log(f"anchored entry ACCEPTED from headline: {(h.get('title') or '')[:60]} "
+        f"({words} words, {len(val['beats'])} beats)")
+    return val
+
+
 def make_entry(kind):
     heads = news_headlines(kind)
     if not heads:
@@ -396,51 +550,7 @@ def make_entry(kind):
             log(f"gemini unavailable on {models[0]}+ set; trying next ladder")
             continue
         try:
-            # OWNER MASTER PROMPT 2026-11-01: a long must reach LONG_TARGET_WORDS
-            # (10-16 min). Free lite models cap ~300-400 words per call, so keep
-            # asking for the next beats until the target is reached, then expand
-            # any beat that is still short.
-            if kind == "long" and 8 <= len(val.get("beats", [])):
-                for _ci in range(14):
-                    _w = len(val["narration"].split())
-                    _b = len(val["beats"])
-                    if _w >= LONG_TARGET_WORDS or _b >= LONG_MAX_BEATS:
-                        break
-                    _room = min(10, LONG_MAX_BEATS - _b)
-                    if _room <= 0:
-                        break
-                    so_far = "\n".join(f"- {b['t']}" for b in val["beats"][-12:])
-                    val2 = gemini_json(CONTINUE_PROMPT.format(
-                        n=_room, title=val["title"], sofar=so_far),
-                        models=["gemini-flash-lite-latest", "gemini-3.5-flash-lite"])
-                    if not val2 or not isinstance(val2.get("beats"), list):
-                        break
-                    add = [b for b in val2["beats"] if b.get("t") and b.get("kw")][:_room]
-                    if not add:
-                        break
-                    val["beats"] += add
-                    val["narration"] = " ".join(b["t"] for b in val["beats"])
-                    log(f"continuation: +{len(add)} beats, now {len(val['narration'].split())} words")
-                # still short -> thicken every beat to 30-38 words.
-                # Stop at 90% of the target: expanding a script that already
-                # reached it produced a 1945-word script for a 1300-word target.
-                for _ei in range(2):
-                    if len(val["narration"].split()) >= LONG_TARGET_WORDS * 0.9:
-                        break
-                    _bt = "\n".join(f"- {b['t']} |kw: {b.get('kw', '')}"
-                                    for b in val["beats"])
-                    val3 = gemini_json(EXPAND_PROMPT.format(
-                        title=val["title"], beats=_bt),
-                        models=["gemini-flash-lite-latest", "gemini-3.5-flash-lite",
-                                "gemini-3.5-flash"])
-                    if val3 and isinstance(val3.get("beats"), list) \
-                            and len(val3["beats"]) == len(val["beats"]) \
-                            and all(b.get("t") for b in val3["beats"]):
-                        val["beats"] = val3["beats"]
-                        val["narration"] = " ".join(b["t"] for b in val["beats"])
-                        log(f"expand-beats: now {len(val['narration'].split())} words")
-                    else:
-                        break
+            _grow_to_target(val)
             # OWNER 2026-10-11 War Plan: HARD no-repeat guard. Oct 8 and
             # Oct 10 longs got the IDENTICAL title ("ChatGPT Intelligent UI:
             # Full Beginner Guide") even with the recent-titles feed in the
@@ -564,7 +674,17 @@ def make_entry(kind):
             return e, None
         except Exception as ex:
             log("entry parse error: " + str(ex)[:120])
-    return None, "no valid entry from gemini"
+    # LAST RESORT (owner fix 2026-11-01): anchor to a real headline instead of
+    # ending the run with NO_ELIGIBLE_CONTENT.
+    for h, plat in _anchor_candidates(heads):
+        try:
+            anchored = _anchor_entry(kind, h, plat, today, demand_txt, recent_txt)
+        except (Exception, SystemExit) as ex:
+            log("anchored attempt failed: " + str(ex)[:140])
+            continue
+        if anchored:
+            return anchored, None
+    return None, "no valid entry from gemini (anchored fallbacks also failed)"
 
 
 def append_library(e):
