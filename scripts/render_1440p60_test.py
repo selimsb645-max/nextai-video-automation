@@ -319,12 +319,24 @@ def final_encode(clips, cfg, out, audio=None, ass=None, transitions=None,
     scaler = (f"scale={cfg.width}:{cfg.height}:force_original_aspect_ratio=decrease,"
               f"pad={cfg.width}:{cfg.height}:(ow-iw)/2:(oh-ih)/2:color=black,"
               f"setsar=1")
+    # xfade overlaps shorten the timeline by (n-1)*trans_dur; hold the last shot
+    # by that much so the picture is exactly as long as the narration instead of
+    # cutting the closing seconds of audio.
+    pad = ""
+    if audio:
+        a_dur = float((RP.probe_json(audio).get("format") or {}).get("duration") or 0)
+        v_dur = float((RP.probe_json(base).get("format") or {}).get("duration") or 0)
+        deficit = a_dur - v_dur
+        if a_dur and deficit > 0.05:
+            pad = f"tpad=stop_mode=clone:stop_duration={deficit:.3f},"
+            log(f"timeline: freezing the last shot for {deficit:.2f}s so the "
+                f"picture matches the {a_dur:.2f}s narration")
     tag = ("setparams=colorspace=bt709:color_primaries=bt709:"
            "color_trc=bt709:range=tv")
     variants = [
         ("spec", (f"ass={ass_q}," if ass_q else "")
-         + f"{tag},{scaler},fps={cfg.fps},format={cfg.pix_fmt}"),
-        ("no-captions", f"{tag},{scaler},fps={cfg.fps},format={cfg.pix_fmt}"),
+         + f"{tag},{scaler},{pad}fps={cfg.fps},format={cfg.pix_fmt}"),
+        ("no-captions", f"{tag},{scaler},{pad}fps={cfg.fps},format={cfg.pix_fmt}"),
         ("bare", None),   # no -vf at all; encoder options still set the spec
     ]
     last = None
