@@ -53,7 +53,8 @@ ENV_MAP = {
     "RENDER_MAXRATE": ("maxrate", str), "RENDER_BUFSIZE": ("bufsize", str),
     "RENDER_PRESET": ("preset", str), "RENDER_GOP": ("gop", int),
     "RENDER_BFRAMES": ("bframes", int), "RENDER_AUDIO_BITRATE": ("audio_bitrate", str),
-    "RENDER_AUDIO_RATE": ("audio_rate", int), "RENDER_PROFILE": ("profile", str),
+    "RENDER_AUDIO_RATE": ("audio_rate", int),
+    "RENDER_H264_PROFILE": ("profile", str),   # high / main / baseline only
 }
 
 MIN_SOURCE_FACTOR = 0.75        # below 75% of target width = quality warning
@@ -76,6 +77,11 @@ class RenderConfig:
             raise ValueError("H.264 yuv420p needs even width/height")
         if v["codec"] != "libx264":
             raise ValueError("this build targets libx264 (no GPU on CI)")
+        if str(v["profile"]) not in ("baseline", "main", "high", "high10",
+                                     "high422", "high444"):
+            raise ValueError(f"invalid H.264 profile {v['profile']!r} - use "
+                             "RENDER_H264_PROFILE=high (RENDER_PROFILE only "
+                             "selects a profile map)")
         if int(v["fps"]) > 60:
             self.warnings.append("fps above 60 is outside the requested spec")
 
