@@ -1,0 +1,122 @@
+name: Renderer 1440p60 Test
+
+# Owner request 2026-11-01: prove the 1440p60 pipeline on a GPU-less runner
+# BEFORE it is allowed near production.
+#
+# This workflow NEVER uploads to YouTube, never touches the publishing schedule
+# and never enables the new renderer (ENABLE_1440P60_RENDERER stays false; the
+# production path is still factory.render() behind ENABLE_CINEMATIC_EDITOR).
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "sample (≈45s) or full (9-10 min)"
+        type: choice
+        options: ["sample", "full"]
+        default: "sample"
+      quality_preset:
+        description: "x264 preset for scene intermediates"
+        type: choice
+        options: ["veryfast", "faster", "medium"]
+        default: "veryfast"
+      max_scenes:
+        description: "optional scene cap (0 = no cap; keeps a smoke run cheap)"
+        default: "0"
+
+permissions:
+  contents: read
+
+env:
+  ENABLE_1440P60_RENDERER: "false"
+  ENABLE_CINEMATIC_EDITOR: "false"
+  RENDER_PROFILE: "1440p60"
+  PYTHONUNBUFFERED: "1"
+
+jobs:
+  render-1440p60:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: System dependencies (FFmpeg + talking narrator)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg espeak-ng fonts-dejavu-core >/dev/null
+          ffmpeg -hide_banner -version | head -1
+
+      - name: Python dependencies
+        run: |
+          python -m pip install -q --upgrade pip
+          python -m pip install -q pillow numpy edge-tts
+
+      - name: Capability probe (encoders, filters, GPU)
+        run: |
+          cd factory
+          python render_config.py | tee ../capabilities.json
+
+      - name: Render + verify
+        env:
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+          RENDER_PRESET: ${{ inputs.quality_preset }}
+        run: |
+          set -o pipefail
+          ARGS="--mode ${{ inputs.mode }} --workdir ../out_1440p60"
+          if [ "${{ inputs.max_scenes }}" != "0" ]; then
+            ARGS="$ARGS --max-scenes ${{ inputs.max_scenes }}"
+          fi
+          if [ "${{ inputs.mode }}" = "full" ]; then
+            ARGS="$ARGS --minutes 9.5"
+          fi
+          echo "render args: $ARGS"
+          python scripts/render_1440p60_test.py $ARGS 2>&1 | tee render_1440.log
+
+      - name: Summary (ffprobe + resources)
+        if: always()
+        run: |
+          echo "### 1440p60 renderer test — ${{ inputs.mode }}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          python - <<'PY' >> $GITHUB_STEP_SUMMARY
+          import json, os
+          p = "out_1440p60/ffprobe_report.json"
+          if not os.path.exists(p):
+              print("no ffprobe report produced - render did not finish")
+          else:
+              r = json.load(open(p))
+              print(f"VERIFY {'PASS' if r['ok'] else 'FAIL'} score {r['score']} "
+                    f"duration {r['duration_s']}s size {r['size_bytes']//1024//1024} MB")
+              for c in r["checks"]:
+                  mark = "ok  " if c["ok"] else ("FAIL" if c["blocking"] else "note")
+                  print(f"  {mark} {c['check']}: {c['detail']}")
+              if os.path.exists("out_1440p60/render_report.json"):
+                  rr = json.load(open("out_1440p60/render_report.json"))
+                  print("\nresources:", json.dumps(rr["resources"], indent=1))
+                  print("config:", json.dumps(rr["config"], indent=1)[:1200])
+                  if rr.get("source_warnings"):
+                      print("source quality warnings:", len(rr["source_warnings"]))
+                      for w in rr["source_warnings"][:10]:
+                          print("  !", w)
+          PY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload render + reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: render-1440p60-${{ inputs.mode }}
+          path: |
+            out_1440p60/*.mp4
+            out_1440p60/ffprobe_report.json
+            out_1440p60/render_report.json
+            out_1440p60/asset_manifest.json
+            out_1440p60/captions.ass
+            out_1440p60/narration.mp3
+            capabilities.json
+            render_1440.log
+          if-no-files-found: warn
+          retention-days: 7
