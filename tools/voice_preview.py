@@ -30,8 +30,12 @@ def main(argv):
     os.makedirs(OUT, exist_ok=True)
     with contextlib.redirect_stderr(io.StringIO()):
         from kokoro_onnx import Kokoro
-    kokoro = Kokoro(os.path.join(BASE, "tts_kokoro", "kokoro-v1.0.fp16.onnx"),
-                    os.path.join(BASE, "tts_kokoro", "voices-v1.0.bin"))
+    # the model lives beside factory.py (archive extracts to factory/tts_kokoro)
+    _kd = os.path.join(BASE, "factory", "tts_kokoro")
+    if not os.path.isdir(_kd):
+        _kd = os.path.join(BASE, "tts_kokoro")
+    kokoro = Kokoro(os.path.join(_kd, "kokoro-v1.0.fp16.onnx"),
+                    os.path.join(_kd, "voices-v1.0.bin"))
     import soundfile as sf
     made = []
     for v in voices:
