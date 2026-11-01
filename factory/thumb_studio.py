@@ -497,10 +497,13 @@ def render_keynote(base, story, face=None, accent=CYAN):
         if HERE not in _s.path:
             _s.path.insert(0, HERE)
         import thumb_scene as SC
-        p = SC.build(None, None, story["product"], story.get("brand") or "AI",
+        if not face or not os.path.exists(face):
+            # a keynote needs a presenter; without one, the bell layout is the
+            # honest choice rather than an empty stage
+            return render_bell(base, story, None, accent)
+        p = SC.build(face, None, story["product"], story.get("brand") or "AI",
                      story["product"], story["descriptor"], accent,
-                     out=os.path.join(os.path.dirname(base or ".") if base is None
-                                      else ".", "_keynote.jpg"))
+                     out=os.path.join(".", "_keynote.jpg"))
         return __import__("PIL.Image", fromlist=["Image"]).open(p).convert("RGB")
     except Exception as _e:
         print("studio: keynote fallback:", str(_e)[:80], flush=True)
@@ -514,6 +517,8 @@ def render_all(base, story, face=None, workdir=None, accents=None):
     """Render every composition; returns list of (name, path, profile)."""
     out = []
     for i, (name, fn) in enumerate(COMPOSITIONS.items()):
+        if name == "keynote" and not (face and os.path.exists(face)):
+            continue          # no presenter photo -> skip the keynote scene
         acc = (accents or [CYAN, CYAN, RED])[i % 3]
         try:
             im = fn(base, story, face, acc)
