@@ -269,9 +269,10 @@ def test_studio_three_compositions(media):
     frames = thumb_variants._grab_frames(media["clip"], media["dir"])
     base = TS.stage(Image.open(frames[0]).convert("RGB")) if frames else TS.stage()
     outs = TS.render_all(base, story, None, media["dir"])
-    assert len(outs) >= 3, "three announcement compositions expected"
+    assert len(outs) >= 3, "announcement compositions expected"
     names = [n for n, _, _ in outs]
-    assert len(set(names)) == 3 and set(names) == {"bell", "hero", "stack"}
+    assert len(set(names)) == len(names) >= 3
+    assert {"bell", "hero", "stack"} <= set(names)
     arrs = []
     for n, p, im in outs:
         assert os.path.exists(p) and im.size == (1280, 720)
