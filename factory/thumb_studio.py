@@ -76,9 +76,14 @@ def brand_for(text):
 def parse_story(title, subject=""):
     """Title -> slide elements. Never invents a fake product name."""
     raw = (title or subject or "").strip()
-    m = re.match(r"^\s*([A-Za-z0-9 .&'-]{2,24}?)\s+(?:just\s+)?(?:broke|beats|built|"
-                 r"launched|released|unveiled|introduces|shipped|revealed|warns|"
-                 r"killed|changed|made)\b(.*)$", raw, re.I)
+    VERB = (r"(?:broke|breaks|beat|beats|built|builds|made|makes|"
+            r"launch(?:ed|es|ing)?|release(?:d|s|ing)?|unveil(?:ed|s|ing)?|"
+            r"introduc(?:ed|es|ing)|ship(?:ped|s|ping)?|reveal(?:ed|s|ing)?|"
+            r"warn(?:ed|s|ing)?|kill(?:ed|s|ing)?|chang(?:ed|es|ing)|"
+            r"announc(?:ed|es|ing)|confirm(?:ed|s|ing)?|"
+            r"want(?:s|ed)?|need(?:s|ed)?|has|have|is|are|was|were)")
+    m = re.match(rf"^\s*([A-Za-z0-9 .&'-]{{2,24}}?)\s+(?:just\s+|now\s+)?{VERB}\b(.*)$",
+                 raw, re.I)
     brand = brand_for(raw)
     rest = raw
     if m:
@@ -91,6 +96,12 @@ def parse_story(title, subject=""):
             cut = i
             break
     product = " ".join(words[:cut]).upper().strip(" .,:") or raw.upper()[:22]
+    if brand:
+        for part in (brand.upper(), brand.split()[0].upper()):
+            if product.startswith(part + " "):
+                product = product[len(part) + 1:]
+            if desc.startswith(part + " ") if 'desc' in dir() else False:
+                pass
     desc = " ".join(words[cut:cut + 4]).upper().strip(" .,:-") or (subject or raw).upper()[:26]
     if desc == product:
         desc = (subject or "AI").upper()[:26]
@@ -158,6 +169,8 @@ def conform(im, rounds=3):
 def stage(base=None, glow=(0, 200, 255), horizon=0.62):
     """Dark stage: graded footage (or generated LED wall) + light beams + bloom."""
     from PIL import Image, ImageDraw, ImageFilter, ImageEnhance, ImageStat
+    if base is None:
+        return launch_stage(glow)
     if base is not None:
         im = base.convert("RGB").resize((W, H), Image.LANCZOS)
         im = ImageEnhance.Contrast(ImageEnhance.Color(im).enhance(1.35)).enhance(1.25)
@@ -202,6 +215,111 @@ def stage(base=None, glow=(0, 200, 255), horizon=0.62):
     d.rectangle([0, int(H * horizon), W, H], fill=(2, 3, 6, 150))
     im = Image.alpha_composite(im.convert("RGBA"), fl).convert("RGB")
     return im
+
+
+def launch_stage(glow=(0, 200, 255), screen_hue=None, audience=True):
+    """A renderable product-launch stage: LED wall with abstract AI visuals,
+    spotlight cones, haze, reflective floor and an audience silhouette row.
+
+    Built procedurally on purpose: free AI image models are blocked (Horde 403,
+    Pollinations 402, Gemini image quota 0) and free-licence photo APIs rate
+    limit, so the backdrop must be deterministic and licence-free.
+    """
+    import math
+    import random
+    from PIL import Image, ImageDraw, ImageFilter
+
+    screen_hue = screen_hue or glow
+    im = Image.new("RGB", (W, H), (4, 5, 8))
+    d = ImageDraw.Draw(im)
+    horizon = int(H * 0.68)
+
+    # room gradient
+    for y in range(horizon):
+        k = y / horizon
+        d.line([(0, y), (W, y)], fill=(int(4 + 10 * (1 - k)), int(6 + 22 * (1 - k)),
+                                       int(10 + 40 * (1 - k))))
+
+    # ── LED wall ────────────────────────────────────────────────────────────
+    wx0, wy0, wx1, wy1 = int(W * 0.06), int(H * 0.05), int(W * 0.94), int(H * 0.63)
+    wall = Image.new("RGB", (wx1 - wx0, wy1 - wy0), (2, 6, 12))
+    wd = ImageDraw.Draw(wall)
+    cw, ch = wall.size
+    # abstract AI core: concentric arcs + waveform + nodes
+    cx, cy = cw // 2, int(ch * 0.52)
+    for i in range(26):
+        r = int(cw * 0.030 + i * cw * 0.012)
+        a = max(10, 150 - i * 6)
+        col = tuple(int(c * (0.35 + 0.65 * (1 - i / 26))) for c in screen_hue)
+        wd.arc([cx - r, cy - int(r * 0.62), cx + r, cy + int(r * 0.62)],
+               start=200 + i * 3, end=340 + i, fill=col, width=max(2, 6 - i // 6))
+    wd.ellipse([cx - int(cw * 0.05), cy - int(cw * 0.05),
+                cx + int(cw * 0.05), cy + int(cw * 0.05)],
+               fill=tuple(min(255, int(c * 0.9)) for c in screen_hue))
+    # waveform bars
+    random.seed(11)
+    n = 64
+    bw = cw / n
+    for i in range(n):
+        hgt = int((math.sin(i / 4.0) * 0.5 + 0.5) * ch * 0.22 + random.randint(4, 26))
+        x = i * bw
+        wd.rectangle([x + 2, cy + int(ch * 0.20) - hgt, x + bw - 3, cy + int(ch * 0.20)],
+                     fill=tuple(int(c * 0.55) for c in screen_hue))
+    # node lattice
+    for gx in range(0, cw, cw // 14):
+        for gy in range(0, ch, ch // 6):
+            wd.ellipse([gx, gy, gx + 4, gy + 4],
+                       fill=tuple(min(255, int(c * 0.8)) for c in screen_hue))
+    # LED pixel seams
+    for x in range(0, cw, 6):
+        wd.line([(x, 0), (x, ch)], fill=(0, 0, 0))
+    for y in range(0, ch, 6):
+        wd.line([(0, y), (cw, y)], fill=(0, 0, 0))
+    wall = wall.point(lambda v: int(v * 0.92))
+    im.paste(wall, (wx0, wy0))
+    # screen bloom
+    bl = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    bl.paste(wall, (wx0, wy0))
+    bl = bl.filter(ImageFilter.GaussianBlur(46))
+    bl.putalpha(150)
+    im = Image.alpha_composite(im.convert("RGBA"), bl).convert("RGB")
+
+    ov = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d2 = ImageDraw.Draw(ov)
+    # bezel frame
+    d2.rectangle([wx0 - 8, wy0 - 8, wx1 + 8, wy1 + 8], outline=(12, 14, 18), width=9)
+    # spotlight cones
+    for x0 in (int(W * 0.16), int(W * 0.50), int(W * 0.84)):
+        d2.polygon([(x0 - 26, 0), (x0 + 26, 0), (x0 + 190, horizon), (x0 - 190, horizon)],
+                   fill=(150, 210, 255, 15))
+    # floor
+    d2.rectangle([0, horizon, W, H], fill=(3, 4, 7, 235))
+    for i in range(1, 9):                                   # perspective grid
+        y = horizon + int((H - horizon) * (i / 9.0) ** 1.5)
+        d2.line([(0, y), (W, y)], fill=(90, 140, 190, 26), width=2)
+    for x in range(-W, W * 2, 120):
+        d2.line([(W // 2, horizon), (x, H)], fill=(90, 140, 190, 18), width=2)
+    # screen reflection on the floor
+    ref = im.crop((wx0, wy0, wx1, wy1)).transpose(Image.FLIP_TOP_BOTTOM)
+    ref = ref.resize((wx1 - wx0, int((H - horizon) * 0.55)))
+    ref = ref.filter(ImageFilter.GaussianBlur(9)).point(lambda v: int(v * 0.34))
+    ov.paste(ref, (wx0, horizon), None)
+    # audience silhouettes
+    if audience:
+        random.seed(5)
+        for i in range(26):
+            x = int(i * (W / 25.0) + random.randint(-8, 8))
+            hh = random.randint(46, 92)
+            y = H - hh
+            d2.ellipse([x - 16, y - 26, x + 16, y + 6], fill=(2, 3, 5, 245))
+            d2.rounded_rectangle([x - 26, y, x + 26, H + 40], radius=16, fill=(2, 3, 5, 245))
+    im = Image.alpha_composite(im.convert("RGBA"), ov)
+    # haze
+    hz = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    dh = ImageDraw.Draw(hz)
+    dh.rectangle([0, int(H * 0.34), W, horizon], fill=(120, 190, 235, 18))
+    hz = hz.filter(ImageFilter.GaussianBlur(60))
+    return Image.alpha_composite(im, hz).convert("RGB")
 
 
 # ── type ────────────────────────────────────────────────────────────────────
@@ -464,3 +582,78 @@ def build(e, workdir, clip=None, save_names=("thumb.jpg", "thumbnail.jpg")):
         pass
     print(f"studio: picked {best[1]} ({best[0]}) -> {out}", flush=True)
     return out
+
+
+# ── free-licensed backgrounds (no API key, no AI model needed) ──────────────
+BG_CACHE = os.path.join(HERE, "bg_cache")
+BG_QUERIES = {
+    "stage": "conference stage lights audience dark",
+    "led": "large led screen stage concert blue",
+    "product": "smartphone product launch podium spotlight",
+    "server": "data center servers blue light rows",
+    "city": "city skyline night neon aerial",
+}
+
+
+def _openverse(q, want=6):
+    """Openverse: free-licence images, no key, attribution returned with each."""
+    import json as _j
+    import urllib.parse
+    import urllib.request
+    url = ("https://api.openverse.org/v1/images/?q=" + urllib.parse.quote(q)
+           + f"&page_size={want}&mature=false")
+    req = urllib.request.Request(url, headers={"User-Agent": "nextai-thumbs/1.0"})
+    data = _j.loads(urllib.request.urlopen(req, timeout=40).read())
+    out = []
+    for r in data.get("results", []):
+        u = r.get("url") or ""
+        if not u.lower().split("?")[0].endswith((".jpg", ".jpeg", ".png")):
+            continue
+        out.append({"url": u, "credit": f"Photo: {r.get('creator') or 'unknown'} / "
+                                        f"{(r.get('license') or '').upper()} via Openverse",
+                    "title": (r.get("title") or "")[:60]})
+    return out
+
+
+def free_background(kind="stage", index=0):
+    """Cached free-licensed background frame; returns (path, credit) or (None, '')."""
+    import glob
+    import json as _j
+    import urllib.request
+    os.makedirs(BG_CACHE, exist_ok=True)
+    cached = sorted(glob.glob(os.path.join(BG_CACHE, f"{kind}_*.jpg")))
+    if cached:
+        p = cached[index % len(cached)]
+        cred = ""
+        m = _j.load(open(os.path.join(BG_CACHE, f"{kind}_credits.json"))) \
+            if os.path.exists(os.path.join(BG_CACHE, f"{kind}_credits.json")) else {}
+        cred = m.get(os.path.basename(p), "")
+        return p, cred
+    try:
+        hits = _openverse(BG_QUERIES.get(kind, kind))
+    except Exception as _e:
+        print("studio: background lookup failed:", str(_e)[:80], flush=True)
+        return None, ""
+    if not hits:
+        return None, ""
+    credits = {}
+    saved = []
+    for i, h in enumerate(hits[:6]):
+        try:
+            d = urllib.request.urlopen(urllib.request.Request(
+                h["url"], headers={"User-Agent": "nextai-thumbs/1.0"}), timeout=45).read()
+            from PIL import Image
+            import io
+            im = Image.open(io.BytesIO(d)).convert("RGB")
+            if im.width < 700:
+                continue
+            p = os.path.join(BG_CACHE, f"{kind}_{i}.jpg")
+            im.save(p, quality=90)
+            credits[os.path.basename(p)] = h["credit"]
+            saved.append(p)
+        except Exception:
+            continue
+    if saved:
+        _j.dump(credits, open(os.path.join(BG_CACHE, f"{kind}_credits.json"), "w"), indent=1)
+        return saved[index % len(saved)], credits.get(os.path.basename(saved[index % len(saved)]), "")
+    return None, ""
