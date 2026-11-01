@@ -293,3 +293,43 @@ def test_studio_build_saves_both_names(media):
         assert os.path.exists(os.path.join(media["dir"], name))
         assert os.path.getsize(os.path.join(media["dir"], name)) < 1_900_000
     assert os.path.exists(os.path.join(media["dir"], "thumb_choice.json"))
+
+
+# ── thumbnail PROMPTS (owner 2026-11-01: Solas writes prompts, not images) ──
+def test_thumb_prompt_shape():
+    import thumb_prompt as TP
+    p = TP.build("Google Just Introduced Gemini 4 With Synthetic Reality")
+    for key in ("image_prompt", "text_overlay", "text_spec", "all_in_one", "negative"):
+        assert p[key], f"missing {key}"
+    assert "1280x720" in p["image_prompt"]
+    assert "LEFT THIRD" in p["image_prompt"]          # type area reserved
+    assert "no text" in p["image_prompt"].lower()      # image stays text-free
+    assert len(p["text_overlay"].split()) <= 4
+    assert p["text_overlay"].isupper()
+    # subject inference picks a filmable object, never a brand name
+    assert TP.build("NVIDIA Hits $4 Trillion").get("subject_key") in TP.SUBJECTS
+
+
+def test_thumb_prompt_for_each_subject():
+    import thumb_prompt as TP
+    seen = {}
+    for title in ("A humanoid robot learns to cook", "New AI chip breaks the rules",
+                  "Driverless car crosses the city", "Your job in two years",
+                  "Satellite spots something in orbit", "Data centre burns water"):
+        p = TP.build(title)
+        assert p["subject_key"] in TP.SUBJECTS
+        seen[p["subject_key"]] = seen.get(p["subject_key"], 0) + 1
+        assert p["image_prompt"].startswith("YouTube thumbnail")
+
+
+def test_thumb_prompt_latest_and_message(tmp_path, monkeypatch):
+    import thumb_prompt as TP
+    log = [{"id": "a", "videoId": "V1", "title": "OpenAI Just Warned About Something",
+            "kind": "long", "uploaded_at": "2026-11-01", "url": "https://x/V1"}]
+    monkeypatch.setattr(TP, "LOG", str(tmp_path / "log.json"))
+    (tmp_path / "log.json").write_text(json.dumps(log))
+    e = TP.latest("2026-11-01", "long")
+    assert e and e["videoId"] == "V1"
+    assert TP.latest("2026-10-31") is None
+    msg = TP.format_message(e, TP.build(e["title"]))
+    assert "V1" in msg and "প্রম্পট" in msg
