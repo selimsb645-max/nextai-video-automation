@@ -1362,14 +1362,25 @@ def set_thumbnail(vid, workdir):
         return False
 
 
-def upload(e, mp4, publish_at=None, playlist_link=None):
+def upload(e, mp4, publish_at=None, playlist_link=None, allow_override=False):
     if not content_eligible(e):
         raise SystemExit("CONTENT_SCOPE_BLOCKED: upload refused for " + e["id"])
     if not publish_at:
         raise SystemExit("SCHEDULE_REQUIRED: every future upload must use publishAt")
-    expected, _ = next_bd_slot(e.get("kind", "long"))
-    if publish_at != expected:
-        raise SystemExit("SCHEDULE_WINDOW_MISSED: invalid or already-filled publication slot")
+    if allow_override:
+        # OWNER OVERRIDE (2026-11-01): an explicitly pinned slot skips the
+        # automatic 8-10h lead window. The caller has already proven the slot is
+        # a configured slot time, still in the future, and unbooked in the repo
+        # log (_explicit_slot); the cross-producer YouTube check still runs.
+        when = _dt.datetime.fromisoformat(publish_at.replace("Z", "+00:00"))
+        if when <= _dt.datetime.now(_dt.timezone.utc) + _dt.timedelta(minutes=5):
+            raise SystemExit("PUBLISH_AT_IN_THE_PAST: " + str(publish_at))
+        print("upload: owner-pinned slot " + publish_at + " (lead window bypassed)",
+              flush=True)
+    else:
+        expected, _ = next_bd_slot(e.get("kind", "long"))
+        if publish_at != expected:
+            raise SystemExit("SCHEDULE_WINDOW_MISSED: invalid or already-filled publication slot")
     tok = get_token()
     H = {"Authorization": f"Bearer {tok['access_token']}",
          "Content-Type": "application/json"}

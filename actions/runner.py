@@ -74,9 +74,17 @@ def log(msg):
     print(msg, flush=True)
 
 
+_UA = ("NextAI-Factory/1.0 (+https://github.com/selimsb645-max/"
+       "nextai-video-automation)")
+
+
 def _http(url, headers=None, data=None, method=None, timeout=90):
-    req = urllib.request.Request(url, data=data, method=method,
-                                 headers=headers or {})
+    hdrs = dict(headers or {})
+    # Pixabay answers 403 to a bare python-urllib UA (tonight's footage fell
+    # back to the bundled pool because every search was rejected), so always
+    # identify the client.
+    hdrs.setdefault("User-Agent", _UA)
+    req = urllib.request.Request(url, data=data, method=method, headers=hdrs)
     with urllib.request.urlopen(req, timeout=timeout) as r:
         return r.read()
 
@@ -1612,7 +1620,8 @@ def main():
         log(f"QC BLOCKED upload: {_qc_total}/100 < {QC_MIN_SCORE} for {e['id']} "
             f"({'; '.join(_qc_notes)})")
         raise SystemExit(3)
-    vid = factory.upload(e, mp4, publish_at, playlist_link=_lnk)
+    vid = factory.upload(e, mp4, publish_at, playlist_link=_lnk,
+                         allow_override=bool(args.publish_at))
 
     # 7) Record state (same ledgers the Base44 producer uses)
     st = factory.load_state()
