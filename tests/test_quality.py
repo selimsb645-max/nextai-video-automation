@@ -190,3 +190,32 @@ def test_thumbnail_also_written_as_thumb_jpg(tmp_path=None):
     r = tv.generate_three(e, d, clip, ["server room"], hooks=["IT BEAT GPT-5", "GOOGLE WON", "WHY NOW"])
     assert r.get("final") and os.path.exists(os.path.join(d, "thumb.jpg"))
     assert os.path.getsize(os.path.join(d, "thumb.jpg")) < 2_000_000
+
+
+# ── Kokoro voice chain (owner 2026-11-01) ───────────────────────────────
+def test_narration_filter_chain_is_broadcast_grade():
+    sys.path.insert(0, os.path.join(ROOT, "factory"))
+    import factory as F
+    ch = F.narration_filters()
+    for must in ("highpass", "equalizer", "acompressor", "loudnorm=I=-16",
+                 "aresample=48000"):
+        assert must in ch, f"missing {must} in the voice chain"
+    # loudnorm must leave headroom for the music bed, not hit the final -13
+    assert "I=-13" not in ch
+
+
+def test_post_processing_hits_target_loudness_and_rate(tmp_path):
+    import subprocess, re
+    sys.path.insert(0, os.path.join(ROOT, "factory"))
+    import factory as F
+    src = tmp_path / "in.wav"
+    _ff(["-f", "lavfi", "-i", "sine=f=220:d=4", "-f", "lavfi", "-i",
+         "anoisesrc=color=brown:amplitude=0.02:d=4", "-filter_complex",
+         "[0][1]amix=inputs=2:duration=shortest,volume=0.3", str(src)])
+    out = tmp_path / "out.mp3"
+    assert F._post_narration(str(src), str(out)) is True
+    r = subprocess.run(["ffmpeg", "-i", str(out), "-af", "ebur128", "-f", "null", "-"],
+                       capture_output=True, text=True)
+    lufs = re.findall(r"I:\s*(-?\d+\.\d+)\s*LUFS", r.stderr)
+    assert lufs and -18.5 <= float(lufs[-1]) <= -14.0, f"loudness off: {lufs}"
+    assert "48000 Hz" in r.stderr or "48000" in r.stderr

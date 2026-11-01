@@ -1,0 +1,58 @@
+name: Voice Preview
+
+# Owner 2026-11-01: pick the most natural American English voice by ear.
+# Manual only. Produces one mp3 per candidate (post-processed with the real
+# broadcast chain) and uploads them as a downloadable artifact.
+on:
+  workflow_dispatch:
+    inputs:
+      voices:
+        description: "space-separated Kokoro voices (blank = full shortlist)"
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install deps
+        run: pip install kokoro-onnx soundfile numpy
+      - name: Restore Kokoro model
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          python3 - <<'PY'
+          import json, os, urllib.request
+          tok = os.environ["GITHUB_TOKEN"]
+          req = urllib.request.Request(
+              "https://api.github.com/repos/selimsb645-max/nextai-video-automation/releases",
+              headers={"Authorization": "Bearer " + tok})
+          rels = json.load(urllib.request.urlopen(req, timeout=60))
+          rel = next(r for r in rels if any(a["name"] == "nextai-runtime-assets.tar.gz"
+                                            for a in r.get("assets", [])))
+          a = next(a for a in rel["assets"] if a["name"] == "nextai-runtime-assets.tar.gz")
+          req = urllib.request.Request(a["url"], headers={
+              "Authorization": "Bearer " + tok, "Accept": "application/octet-stream"})
+          with urllib.request.urlopen(req, timeout=900) as r, open("assets.tar.gz", "wb") as f:
+              while True:
+                  chunk = r.read(1 << 20)
+                  if not chunk:
+                      break
+                  f.write(chunk)
+          PY
+          tar -xzf assets.tar.gz -C "$GITHUB_WORKSPACE" factory/tts_kokoro
+      - name: Render samples
+        run: python3 tools/voice_preview.py ${{ inputs.voices }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: voice-samples
+          path: voice_preview/*.mp3
+          if-no-files-found: error

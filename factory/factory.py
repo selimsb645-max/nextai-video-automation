@@ -487,7 +487,20 @@ def pick_footage(e, workdir):
 
 
 # ---- Kokoro TTS (owner-approved 2026-09-22: human-like, emotion-aware) ----
-KOKORO_VOICE = "am_michael"
+# ── Kokoro voice (owner 2026-11-01: pick the most natural American English and
+# keep it switchable). American English candidates in kokoro-v1.0:
+#   am_michael  warm, even, documentary default
+#   am_fenrir   deeper, heavier, dramatic narration
+#   am_onyx     deep, calm, "movie trailer" feel
+#   am_puck     brighter, quicker, news-anchor energy
+#   am_adam     neutral, plain, most "assistant"-like
+# Owner picks by ear with tools/voice_preview.py, then sets KOKORO_VOICE.
+KOKORO_VOICE = os.environ.get("KOKORO_VOICE", "am_michael")
+# delivery knobs: KOKORO_SPEED scales every beat, KOKORO_PAUSE scales the gaps,
+# KOKORO_LEVEL=0 disables the per-beat loudness levelling.
+KOKORO_SPEED = float(os.environ.get("KOKORO_SPEED", "1.0"))
+KOKORO_PAUSE = float(os.environ.get("KOKORO_PAUSE", "1.0"))
+KOKORO_LEVEL = os.environ.get("KOKORO_LEVEL", "1") == "1"
 KOKORO_SR = 24000
 # mood keyword -> (match list, speaking speed). Lower speed = slower/heavier.
 # Owner rule: emotion must fit the story (sad slow, tense tight, exciting bright),
@@ -534,11 +547,16 @@ def _kokoro_voice(e, out):
     pieces, moods = [], []
     try:
         # shorts: keep under the 61s vertical gate; longs: slow steady pace
-        sp_factor = 1.05 if e.get("kind") == "short" else 1.0
+        sp_factor = (1.05 if e.get("kind") == "short" else 1.0) * KOKORO_SPEED
         for i, txt in enumerate(parts):
             sp = _kokoro_speed(txt) * sp_factor
             moods.append(f"{sp:.2f}")
             audio, _sr = kokoro.create(txt, voice=KOKORO_VOICE, speed=sp, lang="en-us")
+            if KOKORO_LEVEL and audio is not None and len(audio):
+                import numpy as _np
+                _rms = float(_np.sqrt(_np.mean(_np.square(audio.astype("float32")))))
+                if _rms > 1e-5:
+                    audio = (audio.astype("float32") * (0.09 / _rms)).astype(audio.dtype)
             pieces.append(audio)
             if i < len(parts) - 1:
                 # natural beat pause: base + longer after question/dramatic dots
@@ -546,29 +564,71 @@ def _kokoro_voice(e, out):
                 # never sounds monotonous - extra beat after the cold-open hook
                 pause = 0.45
                 if i == 0:
-                    pause += 0.45
+                    pause += 0.45           # breath after the cold-open hook
+                elif i % 8 == 0:
+                    pause += 0.30           # section change: a real beat of air
                 if txt.endswith("?"):
                     pause += 0.35
                 elif txt.endswith("..."):
                     pause += 0.30
                 elif txt.endswith("!"):
                     pause += 0.15
+                pause *= KOKORO_PAUSE
                 pieces.append(np.zeros(int(KOKORO_SR * pause), dtype=audio.dtype))
         full = np.concatenate(pieces)
         wav = out.replace(".mp3", ".wav")
         sf.write(wav, full, KOKORO_SR)
-        r = subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", wav,
-                            "-codec:a", "libmp3lame", "-b:a", "192k", out],
-                           capture_output=True, text=True)
+        ok = _post_narration(wav, out)
         if os.path.exists(wav):
             os.remove(wav)
-        if r.returncode or not os.path.exists(out):
+        if not ok:
             return False
         print(f"voice: OK (kokoro {KOKORO_VOICE}, {len(parts)} beats, speeds {','.join(moods[:6])}...)", flush=True)
         return True
     except Exception as ex:
         print("kokoro synthesis failed, falling back:", str(ex)[:150], flush=True)
         return False
+
+
+
+# ── narration post-processing (owner 2026-11-01) ───────────────────────────
+# Clean broadcast-style voice chain, all free ffmpeg filters:
+#   highpass 75Hz      rumble/handling noise out
+#   low-shelf -2dB@120 tames muddiness so the voice sits above the music
+#   +1.5dB @ 3.2kHz    presence/diction lift (documentary clarity)
+#   compand            gentle 2.5:1 levelling, no pumping
+#   loudnorm -16 LUFS  headroom for the music bed (the render then hits -13)
+POST_AUDIO = os.environ.get("POST_AUDIO", "1") == "1"
+
+
+def narration_filters():
+    """The exact ffmpeg filter chain, exported so it can be unit-tested."""
+    return ",".join([
+        "highpass=f=75",
+        "equalizer=f=120:t=q:w=1.0:g=-2",
+        "equalizer=f=3200:t=q:w=1.4:g=1.5",
+        "acompressor=threshold=-18dB:ratio=2.5:attack=12:release=220:makeup=2",
+        "loudnorm=I=-16:TP=-2.0:LRA=11",
+        "aresample=48000",
+    ])
+
+
+def _post_narration(src_wav, out_mp3):
+    """Apply the voice chain, transcode to 192k mp3. Falls back to a plain
+    encode if the filter chain is unsupported by the local ffmpeg build."""
+    if POST_AUDIO:
+        r = subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", src_wav,
+                            "-af", narration_filters(),
+                            "-codec:a", "libmp3lame", "-b:a", "192k", out_mp3],
+                           capture_output=True, text=True)
+        if r.returncode == 0 and os.path.exists(out_mp3):
+            print("voice post: highpass+EQ+compand+loudnorm(-16 LUFS)+48k OK", flush=True)
+            return True
+        print("voice post: chain failed, plain encode:", (r.stderr or "")[-120:], flush=True)
+    r = subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", src_wav,
+                        "-codec:a", "libmp3lame", "-b:a", "192k", out_mp3],
+                       capture_output=True, text=True)
+    return r.returncode == 0 and os.path.exists(out_mp3)
 
 
 def gen_voice(e, workdir):
