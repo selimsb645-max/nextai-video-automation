@@ -1,0 +1,46 @@
+name: Analytics Feedback
+
+# Owner spec Task 5: measure what actually held viewers, then feed it back into
+# the script prompt. Writes factory/analytics_lessons.json and commits it so the
+# production runs read the numbers. If the OAuth token lacks yt-analytics.readonly
+# the job says so and writes nothing (it never invents data).
+
+on:
+  schedule:
+    - cron: "40 3 * * *"        # 09:40 Dhaka, before the production runs
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: analytics-feedback
+  cancel-in-progress: false
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Restore YouTube credentials
+        run: |
+          mkdir -p yt-auth
+          echo "${{ secrets.YT_TOKEN_JSON }}" > yt-auth/token.json || true
+      - name: Pull analytics
+        run: python3 actions/analytics_feedback.py --days 28 --max-videos 15 || true
+      - name: Commit lessons
+        run: |
+          git config user.name "nextai-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add factory/analytics_lessons.json factory/analytics_run.log 2>/dev/null || true
+          if git diff --cached --quiet; then echo "nothing measured - nothing to commit"; else
+            git commit -m "analytics: measured retention/CTR lessons"
+            git push
+          fi
+      - name: Report
+        if: always()
+        run: tail -5 factory/analytics_run.log 2>/dev/null || echo "no analytics log"

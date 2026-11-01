@@ -252,12 +252,11 @@ def gemini_json(prompt, models=None):
     return None
 
 
-# ── OWNER MASTER PROMPT 2026-11-01 (@airevolutionx style): longs are 10-16 min
-# documentary videos (deep dives 16-22). 150 wpm -> ~1500-2400 words. These two
-# knobs drive both the prompt and the continuation loop; raise LONG_TARGET_WORDS
-# for a deep dive. Everything else in the pipeline stays unchanged.
-LONG_TARGET_WORDS = int(os.environ.get("LONG_TARGET_WORDS", "1900"))
-LONG_MAX_BEATS = int(os.environ.get("LONG_MAX_BEATS", "70"))
+# ── OWNER 2026-11-01 v2 (Task 4): start with 8-10 minute test longs (~1300 words)
+# and only raise the length once YouTube retention data proves viewers stay.
+# 150 wpm: 1300 words ~ 8-9 min. LONG_TARGET_WORDS=1900/2600 for a longer cut.
+LONG_TARGET_WORDS = int(os.environ.get("LONG_TARGET_WORDS", "1300"))
+LONG_MAX_BEATS = int(os.environ.get("LONG_MAX_BEATS", "52"))
 LONG_MIN_WORDS = int(LONG_TARGET_WORDS * 0.65)
 LONG_MAX_WORDS = int(LONG_TARGET_WORDS * 1.15)
 
@@ -277,6 +276,7 @@ SCRIPT FORMAT — an AI news story told by a real host:
 - WIT: 1-3 light humorous asides per video — playful, never cruel, never cringe, family-safe.
 - PAYOFF: keep the best twist, reveal or resolution for the FINAL THIRD so viewers stay to the end.
 - Last two beats: a short ironic callback or "one more thing" twist if the story has one, then END with a comment question tied to the story ("Tell me in the comments: ...") and a quick sign-off ("See you in the next one.").
+- {lessons}
 - OWNER DATA 2026-10-11: average view duration on 5-min longs is only 57s — assume viewers decide in the first 30 seconds; nothing slow, nothing generic, no throat-clearing before the surprise.
 
 HARD RULES:
@@ -385,6 +385,7 @@ def make_entry(kind):
         _prompt = SHORT_PROMPT if kind == "short" else ENTRY_PROMPT
         val = gemini_json(_prompt.format(headlines=head_txt, today=today,
                                          demand=demand_txt, recent=recent_txt,
+                                         lessons=analytics_lessons(),
                                          words=LONG_TARGET_WORDS,
                                          beats=max(20, LONG_TARGET_WORDS // 30)),
                           models=models)
@@ -928,88 +929,157 @@ def _mp4_duration(mp4):
         return 0.0
 
 
-def quality_gate(e, mp4, kind="long"):
-    """Deterministic 100-point pre-publish check.
+def analytics_lessons():
+    """One-line summary of the measured analytics, injected into the prompt.
 
-    Rubric (owner master prompt): research 20, script 20, visual relevance 20,
-    voice-over 10, editing 15, thumbnail 10, SEO 5. Publish only at >= QC_MIN_SCORE.
-    Signals are all local, so this costs no API quota.
+    Empty string when nothing has been measured - the prompt then simply says
+    nothing about analytics instead of inventing evidence.
     """
-    sc, notes = {}, []
+    try:
+        d = json.load(open(os.path.join(FACT, "analytics_lessons.json")))
+    except Exception:
+        return ""
+    vids = d.get("videos") or []
+    if not vids:
+        return ""
+    def _avg(key):
+        vals = [v[key] for v in vids if isinstance(v.get(key), (int, float))]
+        return round(sum(vals) / len(vals), 1) if vals else None
+    bits = []
+    for key, label in (("avg_pct_viewed", "average % viewed"),
+                       ("intro_retention_est_pct", "retention at ~30s"),
+                       ("ctr_pct", "impressions CTR"),
+                       ("avd_s", "average view duration s")):
+        val = _avg(key)
+        if val is not None:
+            bits.append(f"{label} {val}")
+    if not bits:
+        return ""
+    return ("MEASURED PERFORMANCE (YouTube Analytics, " + str(d.get("window_days", 28)) +
+            " days, " + str(len(vids)) + " videos): " + ", ".join(bits) +
+            ". Use this to decide Hook length and pacing: if 30s retention is low, the first "
+            "beat must deliver the surprise faster; do not copy numbers into the narration.")
+
+
+def _three_thumbs(e, workdir, pairs):
+    """Task 1: three genuinely different concepts, objectively scored, best wins.
+
+    Saves thumb_A_cinematic.jpg / thumb_B_news.jpg / thumb_C_curiosity.jpg plus
+    thumbnail.jpg (the selected one) and thumbs_report.json. Returns True when a
+    thumbnail.jpg exists. Scores are a quality screen - NOT a CTR guarantee.
+    """
+    try:
+        import thumb_variants
+    except Exception as ex:
+        log("thumb_variants unavailable: " + str(ex)[:120])
+        return False
+    try:
+        clip = pairs[0][0]
+        clip_path = os.path.join(FACT, "footage", clip["file"])
+        tags = []
+        for c in (pairs[:3] if pairs else []):
+            tags += list((c[0] or {}).get("tags") or [])
+        e["_clip_meta"] = [dict((c[0] or {}), tags=(c[0] or {}).get("tags") or []) for c in pairs]
+        res = thumb_variants.generate_three(e, workdir, clip_path, tags)
+        log("thumbs: " + json.dumps(res.get("scores", {})) +
+            " | selected: " + str(os.path.basename(res.get("selected") or "none")) +
+            " | " + str(res.get("note", ""))[:90])
+        return bool(res.get("final") and os.path.exists(res["final"]))
+    except Exception as ex:
+        log("three-thumb step failed: " + str(ex)[:160])
+        return False
+
+
+def quality_gate(e, mp4, kind="long", narration_path=None):
+    """100-point pre-publish gate (owner spec v2, Tasks 2/7).
+
+    objective points                    subjective (reported, never scored)
+      research / sources            15    cinematic taste, pacing feel
+      script structure              15
+      visual QC (factory.qc_visual) 25
+      voice-over                    10
+      editing / duration match      10
+      thumbnail                     10
+      SEO / metadata                 5
+      render integrity              10
+    Below QC_MIN_SCORE nothing is uploaded. Scores are never rounded up and a
+    failed check is never waived.
+    """
+    sc, notes, report = {}, [], {}
     beats = e.get("beats") or []
     narr = e.get("narration", "") or ""
     words = len(narr.split())
     tgt = LONG_TARGET_WORDS if kind == "long" else 110
 
-    # research accuracy (20)
+    # ── research accuracy (15)
     srcs = e.get("verified_sources") or []
     if len(srcs) >= 2 and e.get("demand_evidence"):
-        sc["research"] = 20
+        sc["research"] = 15
     elif srcs:
-        sc["research"] = 12
-        notes.append("only " + str(len(srcs)) + " verified source(s)")
+        sc["research"] = 9
+        notes.append(f"only {len(srcs)} verified source(s)")
     else:
         sc["research"] = 0
         notes.append("no verified sources")
 
-    # script quality (20)
+    # ── script structure (15)
     hook_ok = bool(beats) and len(str(beats[0].get("t", "")).split()) <= 45
     quote_ok = ('"' in narr) or ("quote," in narr.lower())
     end_ok = bool(beats) and any(k in str(beats[-1].get("t", "")).lower()
                                  for k in ("comment", "next one", "subscribe"))
-    sc["script"] = ((9 if words >= tgt * 0.65 else 0)
-                    + (5 if hook_ok else 0)
-                    + (3 if quote_ok else 1)
+    sc["script"] = ((6 if words >= tgt * 0.65 else 0)
+                    + (4 if hook_ok else 0)
+                    + (2 if quote_ok else 1)
                     + (3 if end_ok else 0))
     if words < tgt * 0.65:
         notes.append(f"narration {words}w is short of the {tgt}w target")
     if not hook_ok:
         notes.append("cold-open hook beat is too long")
 
-    # visual relevance (20): every beat needs its own footage keyword
-    missing_kw = [i + 1 for i, b in enumerate(beats) if not b.get("kw")]
-    dup_kw = len(beats) - len({str(b.get("kw", "")).strip().lower() for b in beats if b.get("kw")})
-    if beats and not missing_kw and dup_kw <= max(1, len(beats) // 20):
-        sc["visual"] = 20
-    elif beats and not missing_kw:
-        sc["visual"] = 14
-        notes.append(f"{dup_kw} repeated footage keyword(s)")
-    else:
-        sc["visual"] = 5 if beats else 0
-        notes.append(f"{len(missing_kw)} beat(s) without a footage keyword")
+    # ── measured visual/audio QC (25) - objective checks only
+    try:
+        import qc_visual
+        _parts, report = qc_visual.analyse(e, mp4, os.path.dirname(mp4) or ".", narration_path)
+        sc["visual"] = min(25, int(report.get("total", 0)))
+        for prob in report.get("problems", [])[:12]:
+            notes.append(f"{prob['check']} @{prob.get('t', 0)}s: {prob['detail'][:70]}")
+    except Exception as ex:
+        sc["visual"] = 0
+        notes.append("visual QC could not run: " + str(ex)[:80])
+        report = {}
 
-    # voice-over (10) - an audio track must exist in the render
+    # ── voice-over (10): an audio track must exist in the render
     sc["voice"] = 10 if _mp4_has_audio(mp4) else 0
     if not sc["voice"]:
         notes.append("render has no audio track")
 
-    # editing (15) - duration must match the script (~150 wpm) within tolerance
+    # ── editing (10): duration must match the script (~150 wpm)
     dur = _mp4_duration(mp4)
     expect = max(60.0, words / 2.5)
     if dur <= 0:
         sc["editing"] = 0
         notes.append("render duration unreadable")
     elif 0.6 * expect <= dur <= 1.6 * expect:
-        sc["editing"] = 15
+        sc["editing"] = 10
     else:
-        sc["editing"] = 7
+        sc["editing"] = 4
         notes.append(f"render {int(dur)}s vs expected {int(expect)}s")
 
-    # thumbnail (10)
+    # ── thumbnail (10): the selected concept must exist and be a real image
     thumb_ok = False
     try:
-        tp = mp4.rsplit(".", 1)[0] + "_thumb.jpg"
-        for cand in (tp, mp4.rsplit(".", 1)[0] + ".jpg", os.path.join(os.path.dirname(mp4), "thumb.jpg")):
+        wd = os.path.dirname(mp4) or "."
+        for cand in (os.path.join(wd, "thumbnail.jpg"), mp4.rsplit(".", 1)[0] + "_thumb.jpg"):
             if os.path.exists(cand) and os.path.getsize(cand) > 20000:
                 thumb_ok = True
                 break
     except Exception:
         pass
-    sc["thumbnail"] = 10 if thumb_ok else 4
+    sc["thumbnail"] = 10 if thumb_ok else 3
     if not thumb_ok:
-        notes.append("thumbnail file missing or tiny")
+        notes.append("thumbnail missing or tiny")
 
-    # SEO and metadata (5)
+    # ── SEO / metadata (5)
     title = str(e.get("title", ""))
     subj = str(e.get("subject", "")).lower()
     seo = 0
@@ -1021,10 +1091,31 @@ def quality_gate(e, mp4, kind="long"):
     if seo < 5:
         notes.append("metadata incomplete (title/subject/tags)")
 
+    # ── render integrity (10): never publish a partial render
+    perf = 0
+    try:
+        size = os.path.getsize(mp4)
+        perf += 4 if size > 1_000_000 else 0
+        n_dur = _mp4_duration(narration_path) if narration_path else 0
+        if n_dur and dur >= 0.9 * n_dur:
+            perf += 6
+        elif not n_dur:
+            perf += 3
+        else:
+            notes.append(f"render {int(dur)}s is shorter than the narration {int(n_dur)}s")
+        if size <= 1_000_000:
+            notes.append(f"render only {size} bytes - looks truncated")
+    except Exception as ex:
+        notes.append("render integrity unreadable: " + str(ex)[:60])
+    sc["render"] = perf
+
     total = sum(sc.values())
     log("QC: " + json.dumps(sc) + f" = {total}/100 (publish >= {QC_MIN_SCORE})")
     for n in notes:
         log("QC note: " + n)
+    if report:
+        log("QC report: " + os.path.join(os.path.dirname(mp4) or ".", "visual_qc_report.json"))
+        log("QC subjective (not scored): " + "; ".join(report.get("subjective_checks", [])))
     return total, sc, notes
 
 
@@ -1133,13 +1224,53 @@ def main():
     if pairs is None:
         pairs = pool_footage(e, workdir)
 
+    # Task 3: never ship the same shot twice in one video, and keep a licence
+    # record for everything that ends up on screen.
+    try:
+        import footage_engine
+        _kept, _dup = footage_engine.dedupe_pairs(pairs, workdir)
+        if _dup:
+            log("footage: dropped " + str(len(_dup)) + " near-duplicate clip(s): "
+                + json.dumps([d["file"] for d in _dup])[:200])
+            pairs = _kept if len(_kept) >= max(3, len(pairs) - 2) else pairs
+        e["_licenses"] = [footage_engine.license_record((c[0] or {}), str((c[0] or {}).get("query", "")))
+                          for c in pairs]
+    except Exception as ex:
+        log("footage engine step failed (continuing with raw pairs): " + str(ex)[:140])
+    # let the visual QC read the same clip metadata the render used
+    try:
+        e["_clip_meta"] = [dict((c[0] or {}), tags=(c[0] or {}).get("tags") or []) for c in pairs]
+    except Exception:
+        e["_clip_meta"] = []
+
     # 5) Voice + render (Kokoro am_michael, all quality gates inside)
     audio = factory.gen_voice(e, workdir)
-    mp4 = factory.render(e, workdir, pairs, audio)
+    _ck = os.path.join(workdir, ".render_meta.json")
+    _want = hashlib.sha1((json.dumps([str(b.get("t", "")) for b in e.get("beats", [])])
+                          + json.dumps([c[0].get("file") for c in pairs])).encode()).hexdigest()
+    mp4 = os.path.join(workdir, "final.mp4")
+    _reused = False
+    if os.path.exists(_ck) and os.path.exists(mp4) and os.path.getsize(mp4) > 500000:
+        try:
+            if json.load(open(_ck)).get("hash") == _want:
+                _reused = True
+                log("render checkpoint: inputs unchanged - reusing the existing render")
+        except Exception:
+            pass
+    if not _reused:
+        mp4 = factory.render(e, workdir, pairs, audio)
+        try:
+            json.dump({"hash": _want, "duration": _mp4_duration(mp4),
+                       "clips": len(pairs), "at": time.time()},
+                      open(_ck, "w"), indent=1)
+        except Exception:
+            pass
 
     if args.selftest:
-        tf = factory.make_thumb_ai(e, workdir)
-        log("selftest thumb-ai: " + ("OK " + tf if tf else "FAILED (fallback would cover)"))
+        _sel_thumbs = _three_thumbs(e, workdir, pairs)
+        log("selftest three-thumb: " + ("OK" if _sel_thumbs else "FAILED (AI fallback would cover)"))
+        log("selftest thumb files: " + ", ".join(sorted(
+            f for f in os.listdir(workdir) if f.startswith("thumb_"))))
         thumb = gemini_json(THUMB_PROMPT.format(title=e["title"]))
         rf = write_report(e, None, None, None, "selftest",
                           (thumb or {}).get("prompt", "n/a") if isinstance(thumb, dict) else str(thumb or "n/a"))
@@ -1161,7 +1292,7 @@ def main():
     except Exception as ex:
         _lnk = None
         log("playlist link unavailable for description: " + str(ex)[:100])
-    _qc_total, _qc_sc, _qc_notes = quality_gate(e, mp4, kind)
+    _qc_total, _qc_sc, _qc_notes = quality_gate(e, mp4, kind, narration_path=audio)
     if _qc_total < QC_MIN_SCORE:
         # Never publish a failed video (owner master prompt §11).
         log(f"QC BLOCKED upload: {_qc_total}/100 < {QC_MIN_SCORE} for {e['id']} "
@@ -1186,9 +1317,10 @@ def main():
     # Guarded: upload already succeeded, so a thumbnail failure must never
     # kill the run or lose the scheduled slot.
     try:
-        if not factory.make_thumb_ai(e, workdir):
-            tf_pairs = pairs
-            factory.make_thumb(e, workdir, tf_pairs[0][0])
+        _tv = _three_thumbs(e, workdir, pairs)
+        if not _tv:
+            if not factory.make_thumb_ai(e, workdir):
+                factory.make_thumb(e, workdir, pairs[0][0])
         factory.set_thumbnail(vid, workdir)
     except Exception as ex:
         log("thumbnail step failed (video already uploaded; continuing): " + str(ex)[:140])
