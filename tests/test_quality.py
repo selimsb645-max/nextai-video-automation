@@ -175,3 +175,18 @@ def test_qc_threshold_is_enforced_before_upload():
     assert gate < upload, "the QC gate must run before upload"
     assert "QC BLOCKED" in src[gate:upload]
     assert "raise SystemExit(3)" in src[gate:upload]
+
+
+def test_thumbnail_also_written_as_thumb_jpg(tmp_path=None):
+    """The upload path (factory.set_thumbnail) reads workdir/thumb.jpg - the
+    generator must produce it or the custom thumbnail is silently skipped."""
+    import tempfile, sys
+    sys.path.insert(0, os.path.join(ROOT, "factory"))
+    import thumb_variants as tv
+    d = tempfile.mkdtemp()
+    clip = os.path.join(d, "c.mp4")
+    _ff(["-f", "lavfi", "-i", "testsrc2=size=1280x720:rate=25:duration=3", clip])
+    e = {"title": "Gemini 3 Beats GPT-5", "subject": "Gemini 3", "headline": "IT BEAT GPT-5"}
+    r = tv.generate_three(e, d, clip, ["server room"], hooks=["IT BEAT GPT-5", "GOOGLE WON", "WHY NOW"])
+    assert r.get("final") and os.path.exists(os.path.join(d, "thumb.jpg"))
+    assert os.path.getsize(os.path.join(d, "thumb.jpg")) < 2_000_000

@@ -972,6 +972,25 @@ def analytics_lessons():
             "beat must deliver the surprise faster; do not copy numbers into the narration.")
 
 
+def _llm_hook_copies(e):
+    """Three DIFFERENT thumb-hook texts from the free Gemini text tier.
+
+    Text only: Google removed free image generation, so the pixels come from our
+    own footage + PIL, and the LLM writes the copy (2-4 punchy caps words each).
+    """
+    try:
+        prompt = ('Give 3 different YouTube thumbnail hooks for this video, 2-4 ALL-CAPS words each, '
+                  'no punctuation, no emoji, each a different angle (result / threat / curiosity). '
+                  'Title: "' + str(e.get("title", "")) + '". '
+                  'Return ONLY JSON: {"hooks":["...","...","..."]}')
+        val = gemini_json(prompt, models=["gemini-flash-lite-latest", "gemini-3.5-flash-lite"])
+        hs = [str(h).strip().upper()[:28] for h in (val or {}).get("hooks", []) if str(h).strip()]
+        return hs[:3]
+    except Exception as ex:
+        log("thumb hook copy unavailable (using headline): " + str(ex)[:90])
+        return []
+
+
 def _three_thumbs(e, workdir, pairs):
     """Task 1: three genuinely different concepts, objectively scored, best wins.
 
@@ -991,7 +1010,8 @@ def _three_thumbs(e, workdir, pairs):
         for c in (pairs[:3] if pairs else []):
             tags += list((c[0] or {}).get("tags") or [])
         e["_clip_meta"] = [dict((c[0] or {}), tags=(c[0] or {}).get("tags") or []) for c in pairs]
-        res = thumb_variants.generate_three(e, workdir, clip_path, tags)
+        hooks = _llm_hook_copies(e)
+        res = thumb_variants.generate_three(e, workdir, clip_path, tags, hooks=hooks)
         log("thumbs: " + json.dumps(res.get("scores", {})) +
             " | selected: " + str(os.path.basename(res.get("selected") or "none")) +
             " | " + str(res.get("note", ""))[:90])

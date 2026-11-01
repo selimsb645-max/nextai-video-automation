@@ -217,7 +217,75 @@ def _score(img, hook, footage_tags, title):
     return round(total, 1), comp
 
 
-def generate_three(e, workdir, clip_path, footage_tags=None):
+def _save_under_2mb(im, *paths, limit=1_950_000):
+    """JPEG-encode to every path, stepping quality down until it fits 2 MB."""
+    from PIL import Image
+    for path in paths:
+        q = 92
+        while q >= 60:
+            im.save(path, quality=q, optimize=True)
+            try:
+                if os.path.getsize(path) <= limit:
+                    break
+            except OSError:
+                break
+            q -= 8
+    return paths[0]
+
+
+def horde_backgrounds(prompts, workdir, budget_s=240):
+    """Free crowdsourced diffusion (AI Horde, anonymous key) -> local jpg paths.
+
+    Zero budget: AI Horde is a volunteer GPU network with a free anonymous tier
+    (key "0000000000"). Queues can be minutes long, so this is time-boxed and the
+    caller falls back to a footage frame when nothing lands in time.
+    """
+    import urllib.request as u
+    import json as _json
+    out, ids = [], []
+    for i, p in enumerate(prompts):
+        body = _json.dumps({
+            "prompt": p, "params": {"width": 1280, "height": 720,
+                                    "steps": 20, "sampler_name": "k_euler",
+                                    "cfg_scale": 7, "n": 1},
+            "nsfw": False, "censor_nsfw": True, "r2": True,
+            "models": ["AlbedoBase XL (SDXL)"],
+        }).encode()
+        try:
+            rq = u.Request("https://aihorde.net/api/v2/generate/async", data=body,
+                           headers={"apikey": "0000000000",
+                                    "Content-Type": "application/json",
+                                    "Client-Agent": "nextai-vision:1.0"})
+            jd = _json.loads(u.urlopen(rq, timeout=30).read())
+            if jd.get("id"):
+                ids.append((i, jd["id"]))
+        except Exception:
+            continue
+    import time as _t
+    end = _t.time() + budget_s
+    while ids and _t.time() < end:
+        _t.sleep(12)
+        for i, jid in list(ids):
+            try:
+                st = _json.loads(u.urlopen(
+                    f"https://aihorde.net/api/v2/generate/status/{jid}", timeout=30).read())
+            except Exception:
+                continue
+            gens = st.get("generations") or []
+            if gens and gens[0].get("img"):
+                try:
+                    fp = os.path.join(workdir, f"_horde_bg{i}.jpg")
+                    with open(fp, "wb") as fh:
+                        fh.write(u.urlopen(gens[0]["img"], timeout=90).read())
+                    out.append(fp)
+                except Exception:
+                    pass
+                ids.remove((i, jid))
+            elif st.get("faulted"):
+                ids.remove((i, jid))
+    return out
+
+def generate_three(e, workdir, clip_path, footage_tags=None, hooks=None):
     """Build A/B/C, score them, pick the winner. Returns dict (never raises)."""
     from PIL import Image
     res = {"variants": [], "selected": None, "scores": {}, "note": ""}
@@ -236,11 +304,14 @@ def generate_three(e, workdir, clip_path, footage_tags=None):
 
     title = str(e.get("title", ""))
     hook = _hook_lines(e.get("headline") or title)
+    hooks = [h for h in (hooks or []) if h][:3]
     tag = str(e.get("subject") or "AI NEWS").upper()
 
-    builds = [("A_cinematic", lambda: concept_a_cinematic(base, hook)),
-              ("B_news", lambda: concept_b_news(base, hook, tag)),
-              ("C_curiosity", lambda: concept_c_curiosity(base, hook))]
+    # each concept gets its OWN copy when the LLM supplied three angles
+    copy = hooks if len(hooks) == 3 else [hook, hook, hook]
+    builds = [("A_cinematic", lambda: concept_a_cinematic(base, _hook_lines(copy[0]))),
+              ("B_news", lambda: concept_b_news(base, _hook_lines(copy[1]), tag)),
+              ("C_curiosity", lambda: concept_c_curiosity(base, _hook_lines(copy[2])))]
     for name, fn in builds:
         try:
             img = fn()
@@ -259,9 +330,15 @@ def generate_three(e, workdir, clip_path, footage_tags=None):
     ranked.sort(key=lambda v: v["score"], reverse=True)
     res["selected"] = ranked[0]["path"]
     final = os.path.join(workdir, "thumbnail.jpg")
+    # The rest of the pipeline (factory.set_thumbnail, the upload guard, the
+    # render guard) all look for workdir/thumb.jpg - that mismatch is why the
+    # thumbnail was generated but never applied to the upload (owner 2026-11-01).
+    compat = os.path.join(workdir, "thumb.jpg")
     try:
-        Image.open(ranked[0]["path"]).save(final, quality=92)
+        im = Image.open(ranked[0]["path"]).convert("RGB")
+        _save_under_2mb(im, final, compat)
         res["final"] = final
+        res["thumb_jpg"] = compat
     except Exception as ex:
         res["note"] = f"copy failed: {ex}"
     res["note"] = ("scores are an objective quality screen, not a CTR prediction")

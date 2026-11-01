@@ -1241,10 +1241,17 @@ def set_thumbnail(vid, workdir):
             "Authorization": f"Bearer {tok['access_token']}",
             "Content-Type": "image/jpeg"})
         urllib.request.urlopen(req, timeout=60)
-        print("thumbnail: OK", flush=True)
+        print("thumbnail: OK (%d KB)" % (len(data) // 1024), flush=True)
         return True
     except Exception as ex:
-        print("thumbnail: failed (video stays up):", str(ex)[:120], flush=True)
+        # the API body says WHY (403 = channel not verified for custom thumbnails,
+        # 400 = image too big / bad format). Log it instead of hiding it.
+        body = ""
+        try:
+            body = ex.read()[:200].decode("utf-8", "replace")
+        except Exception:
+            pass
+        print("thumbnail: failed (video stays up):", str(ex)[:110], body, flush=True)
         return False
 
 
