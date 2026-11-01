@@ -5706,70 +5706,75 @@
    "seed": 545
   },
   {
-   "id": "gemini_robotics_reasoning_2026_11_01",
-   "subject": "Gemini",
-   "title": "Gemini Just Changed Everything",
-   "headline": "REASONING 2.0",
+   "id": "agility_digit_100k_totes_2026_11_01_2026-11-01",
+   "subject": "Agility Digit",
+   "title": "Robot Moves 100,000 Totes With Zero Rest",
+   "headline": "100,000 TOTES",
    "specs": [
-    "EMBODIED AI",
-    "GOOGLE CLOUD",
-    "REAL-TIME AI"
+    "1.75 METERS",
+    "100K TOTES",
+    "24/7 SHIFTS"
    ],
-   "description": "Gemini Robotics Embodied Reasoning 2 is now available on Google Cloud to power real-world machines. This new release lets physical robots analyze complex surroundings and adapt to unpredictable tasks without pre-programmed scripts. Related searches: Gemini robotics, Google Cloud AI, embodied reasoning 2, humanoid AI brains, real world robotics",
+   "description": "Agility Digit just crossed a massive milestone by moving over 100,000 totes in real commercial warehouses. The bipedal humanoid robot is now expanding into major fulfillment centers across the United States. This marks one of the largest real-world deployments of humanoid robotics in logistics history.\nRelated searches: Agility Digit, humanoid robot warehouse, GXO logistics robot, bipedal humanoid, warehouse automation",
    "tags": [
-    "Gemini",
-    "Gemini Robotics",
-    "Google Cloud",
-    "Embodied AI",
-    "Humanoid Robot",
-    "AI Brain",
-    "Robotics 2026",
-    "Tech News"
+    "Agility Digit",
+    "humanoid robot",
+    "warehouse automation",
+    "bipedal robot",
+    "GXO logistics",
+    "robotics milestone",
+    "industrial robots",
+    "future of work"
    ],
-   "narration": "Google just plugged Gemini 2 directly into physical robots. Inside Google Cloud, this embodied reasoning engine lets metal arms think like humans. Instead of pre-programmed code, robots now analyze messy rooms and solve problems live. Drop a tool, break a cup, or change the task—Gemini adapts instantly. Thousands of industrial machines can now upgrade their brains over the cloud in seconds. Is this the future of robotics, or are you terrified that...",
+   "narration": "One humanoid robot just moved 100,000 warehouse totes. Meet Agility Digit, the two-legged worker automating real logistics. Inside massive fulfillment centers, Digit lifts heavy plastic bins with extreme precision. Human workers used to bend thousands of times daily, risking severe physical fatigue. Digit ran marathon shifts back-to-back, reaching 100,000 totes moved without stopping. Major logistics giants are now deploying this humanoid robot across entire warehouse facilities. Is this the future of physical work? Comment below, because right now...",
    "beats": [
     {
-     "t": "Google just plugged Gemini 2 directly into physical robots.",
-     "kw": "humanoid robot eyes glowing in dark laboratory",
+     "t": "One humanoid robot just moved 100,000 warehouse totes.",
+     "kw": "bipedal humanoid robot walking through bright warehouse aisle carrying plastic tote box",
      "tags": []
     },
     {
-     "t": "Inside Google Cloud, this embodied reasoning engine lets metal arms think like humans.",
-     "kw": "robotic arm reaching for objects on factory table",
+     "t": "Meet Agility Digit, the two-legged worker automating real logistics.",
+     "kw": "bipedal humanoid robot standing upright near conveyor belt moving mechanical arms",
      "tags": []
     },
     {
-     "t": "Instead of pre-programmed code, robots now analyze messy rooms and solve problems live.",
-     "kw": "humanoid robot scanning cluttered room with camera sensor",
+     "t": "Inside massive fulfillment centers, Digit lifts heavy plastic bins with extreme precision.",
+     "kw": "bipedal humanoid robot picking up yellow storage bin from shelf carefully",
      "tags": []
     },
     {
-     "t": "Drop a tool, break a cup, or change the task—Gemini adapts instantly.",
-     "kw": "robot hand grabbing dropped tools smoothly on floor",
+     "t": "Human workers used to bend thousands of times daily, risking severe physical fatigue.",
+     "kw": "bipedal humanoid robot placing heavy storage tote onto moving conveyor line",
      "tags": []
     },
     {
-     "t": "Thousands of industrial machines can now upgrade their brains over the cloud in seconds.",
-     "kw": "factory floor filled with autonomous working robots",
+     "t": "Digit ran marathon shifts back-to-back, reaching 100,000 totes moved without stopping.",
+     "kw": "bipedal humanoid robot working continuously side by side with industrial machinery",
      "tags": []
     },
     {
-     "t": "Is this the future of robotics, or are you terrified that...",
-     "kw": "close up humanoid robot turning head to camera",
+     "t": "Major logistics giants are now deploying this humanoid robot across entire warehouse facilities.",
+     "kw": "bipedal humanoid robot walking down long logistics warehouse hallway surrounded by boxes",
+     "tags": []
+    },
+    {
+     "t": "Is this the future of physical work? Comment below, because right now...",
+     "kw": "bipedal humanoid robot turning toward camera in high tech automated facility",
      "tags": []
     }
    ],
    "verified_sources": [
-    "https://news.google.com/rss/articles/CBMixwFBVV95cUxPYmFHdjgxSllxUXBrQTBJSEJXWXdqLUYzcHM1TTRkZEpMeEwxMHZmVGNkd0hCMVlHb0VrdHhwUzJLQnEydFBvLTZvcVU1TVdaVlFVUllxQ2NQM1pmY24yRFRubjViLU9ONkpDUEhPVUMyU0pRX1hBRzVrOWtrTXFCRDZkcDl1Nnp0bmVqT0NTMGxZYVZ4Z29WSmh3V1A3NGRsYzBDWTNSVm9leV80cTlnYk9Ib2JQX3RzRlB6dUVNUGtUZVM1NThz?oc=5"
+    "https://news.google.com/rss/articles/CBMi1wFBVV95cUxNQ2Rpd3BMc2pWZ1U1QllRbzNORmlETUNMN3NQOFQxN1RFTDVFdk1BM1hna1RiNjI2QS1GYVZaUEt3NHVkamgtQzl6VTJiNmFoUFR2R2VYQmZld3BsOWVGOXNoYXlrOHNCeUpLcl9oVUlGZHE1UjZHWDFaVFVydXdwOHdFd2kwc2h3eVN5N240dTlNdDU1M0Exb2RkeThUQW9LX1Bjb2Q4dFlDNTRmU0tqUXYxZVotS1VldEhZZXBOd25WcUlnLXhMcERkYk16WktmbHhoa2hfUQ?oc=5"
    ],
-   "demand_evidence": "anchored to a current verified headline: Gemini Robotics Embodied Reasoning 2 is now available on Google Cloud - Google Cloud",
+   "demand_evidence": "GXO Extends Digit Humanoid Robot after reaching 100,000-tote milestone headline shows immediate public interest in commercial humanoid deployment.",
    "kind": "short",
    "categoryId": "28",
    "madeForKids": false,
    "content_pillar": "ai_updates",
    "scope_reviewed": true,
    "content_policy_version": "2026-10-01",
-   "seed": 149
+   "seed": 879
   }
  ]
 }
