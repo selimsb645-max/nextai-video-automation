@@ -21,7 +21,7 @@ LINE = ("In the last six months, three labs shipped models that were supposed to
         "arrive in 2027. Nobody outside those buildings saw it coming, and the "
         "numbers behind that claim are stranger than the headlines.")
 
-SHORTLIST = ["am_michael", "am_fenrir", "am_onyx", "am_puck", "am_adam", "af_heart"]
+SHORTLIST = ["af_heart", "am_michael", "am_fenrir", "am_onyx", "am_puck", "am_adam"]
 
 
 def main(argv):

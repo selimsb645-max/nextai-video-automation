@@ -4,7 +4,7 @@
 Runs a full production turn on free infrastructure only:
 Google News RSS + Gemini free-tier API (topic + script), Pexels free API
 (fresh per-video footage, owner rule 2026-10-04; bundled pool as fallback),
-local Kokoro TTS (am_michael, emotion-aware), ffmpeg render with quality
+local Kokoro TTS (af_heart, emotion-aware), ffmpeg render with quality
 gates, YouTube Data API v3 private publishAt upload 8-10h ahead.
 No Base44 credits involved: keeps videos running when the agent is gone.
 
@@ -1274,7 +1274,7 @@ def main():
     except Exception:
         e["_clip_meta"] = []
 
-    # 5) Voice + render (Kokoro am_michael, all quality gates inside)
+    # 5) Voice + render (Kokoro af_heart, all quality gates inside)
     audio = factory.gen_voice(e, workdir)
     _ck = os.path.join(workdir, ".render_meta.json")
     _want = hashlib.sha1((json.dumps([str(b.get("t", "")) for b in e.get("beats", [])])

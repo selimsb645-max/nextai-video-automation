@@ -489,13 +489,14 @@ def pick_footage(e, workdir):
 # ---- Kokoro TTS (owner-approved 2026-09-22: human-like, emotion-aware) ----
 # ── Kokoro voice (owner 2026-11-01: pick the most natural American English and
 # keep it switchable). American English candidates in kokoro-v1.0:
-#   am_michael  warm, even, documentary default
+#   af_heart    warm American female, bright and natural  <-- OWNER CHOICE 2026-11-01
+#   am_michael  warm, even, male documentary
 #   am_fenrir   deeper, heavier, dramatic narration
 #   am_onyx     deep, calm, "movie trailer" feel
 #   am_puck     brighter, quicker, news-anchor energy
 #   am_adam     neutral, plain, most "assistant"-like
 # Owner picks by ear with tools/voice_preview.py, then sets KOKORO_VOICE.
-KOKORO_VOICE = os.environ.get("KOKORO_VOICE", "am_michael")
+KOKORO_VOICE = os.environ.get("KOKORO_VOICE", "af_heart")
 # delivery knobs: KOKORO_SPEED scales every beat, KOKORO_PAUSE scales the gaps,
 # KOKORO_LEVEL=0 disables the per-beat loudness levelling.
 KOKORO_SPEED = float(os.environ.get("KOKORO_SPEED", "1.0"))

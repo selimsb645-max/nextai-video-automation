@@ -83,7 +83,7 @@
    "Explain limitations, uncertainty and tradeoffs",
    "End with a useful takeaway and short subscribe CTA"
   ],
-  "video_tone": "Nate-inspired calm, analytical, concrete English explanation plus Neural-inspired documentary tension where supported. Use original Kokoro am_michael narration and own semantically matched licensed footage. No borrowed creator interviews, likeness, voice, shots, music, thumbnail files, logos or scripts. Never falsely say we tested a product or measured a benchmark.",
+  "video_tone": "Nate-inspired calm, analytical, concrete English explanation plus Neural-inspired documentary tension where supported. Use original Kokoro af_heart narration (owner choice 2026-11-01) and own semantically matched licensed footage. No borrowed creator interviews, likeness, voice, shots, music, thumbnail files, logos or scripts. Never falsely say we tested a product or measured a benchmark.",
   "editing": "Evidence-led relevant B-roll, clean readable information, restrained transitions and clear narration. Keep existing render, audio and safety gates. Any new captions/infographic renderer must be separately implemented/tested before claiming that feature is live; channel reference alone does not add graphics.",
   "thumbnail_generator": "Gemini image API, automatic (footage-frame PIL fallback)",
   "thumbnail_default": "Original Neural-inspired clean black/dark background, one clear topic-appropriate focal subject, large flat white condensed sans-serif hook text of 2-5 words and one factual red emphasis word. Keep plenty of negative space and phone readability. No mandatory arrows, yellow 3D type, fake shocked presenter, visual clutter or sensational danger unsupported by the actual video.",
@@ -93,7 +93,13 @@
   "account_switches_allowed": false,
   "thumbnail_delivery": "Pipeline auto-generates the thumbnail (free Gemini image model) and sets it via YouTube API right after upload. Owner no longer needs to create thumbnails; the WhatsApp report still includes the hook text used.",
   "owner_reference_2026_11_01": "Style target = youtube.com/@airevolutionx (AI Revolution): cinematic documentary AI news, professional English voice-over, and per-sentence footage sync - every narrated sentence is illustrated by its own distinct clip showing exactly what the sentence says.",
-  "footage_sync_rule": "One unique clip per sentence, matching that sentence's meaning. Never reuse a clip inside a video; cross-video reuse is blocked by the ledger."
+  "footage_sync_rule": "One unique clip per sentence, matching that sentence's meaning. Never reuse a clip inside a video; cross-video reuse is blocked by the ledger.",
+  "voice": {
+   "engine": "Kokoro v1.0 (local, free)",
+   "voice": "af_heart",
+   "env_switch": "KOKORO_VOICE",
+   "post_chain": "highpass 75Hz, -2dB@120Hz, +1.5dB@3.2kHz, 2.5:1 compand, loudnorm -16 LUFS, 48kHz"
+  }
  },
  "owner_daily_mode": {
   "effective_date": "2026-10-03",
