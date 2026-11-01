@@ -14,3 +14,16 @@
 10. budget: Comment Booster paused; Guard09:45/19:45 only; গবেষণার24hcache ব্যবহার; repeated login/subagent/browser/routine report নয়। guard চালালেও AI credits লাগে।
 11. repo issue/fix আগে মালিককে জানাও; প্রতিটি individual fix এবং file add/remove-এর অনুমতি নাও। Source-এর জানা অসঙ্গতি docs/KNOWN_LIMITATIONS.md-তে আছে, লুকিয়ে fix করো না।
 12. একবার dry/offline যাচাই করে মালিককে সত্যিকারের প্রস্তুতির অবস্থা জানাও। নতুন producer কেবল cutover অনুমতির পর শুরু হবে।
+
+
+## 2026-11-01 — AI Revolution style upgrade (owner master prompt)
+
+- Reference channel is now youtube.com/@airevolutionx (cinematic AI documentary, per-sentence footage sync).
+- LONGS ARE DAILY from today: `long_min_gap_days` 3 -> 1, slot stays 21:00 BD. Shorts unchanged (02:30/08:30/18:30).
+- Long length target: `LONG_TARGET_WORDS` (default 1900, ~12-13 min) / `LONG_MAX_BEATS` (70).
+  The continuation loop keeps asking for beats until the target is reached, then thickens beats.
+  Set LONG_TARGET_WORDS=2600 for a 16-22 min deep dive.
+- New pre-publish gate: `quality_gate()` in actions/runner.py scores 100 points
+  (research 20 / script 20 / visual 20 / voice 10 / editing 15 / thumbnail 10 / SEO 5).
+  Below `QC_MIN_SCORE` (85) the run exits with code 3 and publishes NOTHING.
+- Per-sentence footage sync is a hard prompt rule (one distinct clip per beat, never reused in a video).

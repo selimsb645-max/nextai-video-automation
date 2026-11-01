@@ -49,7 +49,7 @@
    "videoId": "OISJ6w_gFKE",
    "publishAt": "2026-10-01T12:30:00Z"
   },
-  "rule": "Owner rule 2026-10-13 (supersedes 10-11): SHORTS-FIRST growth, earnings urgency. Exactly 3 Shorts every day (18:30 BD standalone Short + 02:30 BD hook-cut of same-day Long on Long days / standalone Short on off-days + 08:30 BD standalone Short). 2-3 Longs per week: Long slot 21:00 BD with a 3-day minimum gap. Never publish immediately or move already-uploaded videos.",
+  "rule": "OWNER 2026-11-01: one LONG every day at 21:00 BD (was every 3 days) in the @airevolutionx documentary style, 10-16 min, plus the 3 daily Shorts (02:30/08:30/18:30 BD) unchanged.",
   "daily_long_limit": 1,
   "production_times": {
    "long": [
@@ -114,5 +114,16 @@
    "11:00"
   ],
   "rule": "1 Long per 2 days + 1 Short daily (owner review 2026-10-06)"
+ },
+ "long_min_gap_days": 1,
+ "production_targets": {
+  "long_minutes_standard": "10-16",
+  "long_minutes_deepdive": "16-22",
+  "long_target_words": 1900,
+  "long_max_beats": 70,
+  "resolution": "1920x1080",
+  "fps": 30,
+  "qc_min_score": 85,
+  "source": "owner master prompt 2026-11-01 (AI Revolution style upgrade)"
  }
 }

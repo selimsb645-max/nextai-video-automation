@@ -25,6 +25,7 @@ import hashlib
 import json
 import os
 import re
+import subprocess
 import sys
 import time
 import urllib.error
@@ -251,6 +252,15 @@ def gemini_json(prompt, models=None):
     return None
 
 
+# ── OWNER MASTER PROMPT 2026-11-01 (@airevolutionx style): longs are 10-16 min
+# documentary videos (deep dives 16-22). 150 wpm -> ~1500-2400 words. These two
+# knobs drive both the prompt and the continuation loop; raise LONG_TARGET_WORDS
+# for a deep dive. Everything else in the pipeline stays unchanged.
+LONG_TARGET_WORDS = int(os.environ.get("LONG_TARGET_WORDS", "1900"))
+LONG_MAX_BEATS = int(os.environ.get("LONG_MAX_BEATS", "70"))
+LONG_MIN_WORDS = int(LONG_TARGET_WORDS * 0.65)
+LONG_MAX_WORDS = int(LONG_TARGET_WORDS * 1.15)
+
 ENTRY_PROMPT = """You are the topic researcher and script writer for a US-audience English YouTube channel about AI (NextAI Vision). OWNER RULE 2026-10-12: the TOPICS stay the same — videos cover ALL types of AI: ChatGPT/OpenAI, Claude/Anthropic, Gemini/Google AI Studio, Grok/xAI, DeepSeek, Qwen, and EVERY other AI company, platform, tool, model or AI technology; also AI-linked science discoveries and robots. ONLY the PRESENTATION STYLE follows the channel "AI Revolution" (youtube.com/@airevolutionx, OWNER REFERENCE 2026-11-01, ~576K subs): cinematic DOCUMENTARY-style AI news storytelling — a confident professional English voice-over that explains each breakthrough, and EVERY SENTENCE is illustrated by its own distinctive real footage / cinematic B-roll of exactly what is being said at that moment. Momentum and tension throughout, no filler, no tutorial tone, no listicle.
 From the headlines below pick exactly ONE real, currently-trending topic (last 7 days, US-interest). Allowed pillars, in priority order: (1) AI updates and NEW MODEL LAUNCHES from ChatGPT/OpenAI, Claude/Anthropic, Gemini/Google AI Studio, Grok/xAI, DeepSeek, Qwen — ANY AI update from ANY AI company counts; (2) AI-linked science discoveries; (3) robots and new AI technology. NEVER medical advice, no politics, no tragedy exploitation.
 SELECTION RULE: the DEMAND COUNTS below show how many US headlines each topic cluster got in the last 7 days — this is the search-demand evidence. Pick a topic from the cluster with the HIGHEST count that still has one strong, specific story. PREFER stories with NARRATIVE DRAMA: someone built/released something bold, a ban, a feud, a record, an exposure, a plot twist, a big name doing something unexpected (e.g. "a YouTuber built an uncensored AI and OpenAI banned him twice"). Plain feature launches are second choice.
@@ -258,7 +268,7 @@ OWNER DATA 2026-10-11: robotics real-test/lab-demo stories and side-by-side AI m
 
 SCRIPT FORMAT — an AI news story told by a real host:
 - First-person, conversational, contractions everywhere, short punchy sentences, occasional wit. Talk TO one viewer ("you"), react to the story ("Here's the funny part", "Now this is where it gets weird", "And yes, you heard that right").
-- Narration: total 780-860 words, split into 22-27 beats.
+- Narration: total {words} words, split into about {beats} beats (each 26-38 words). This is a 10-16 minute documentary: go deep, never pad or repeat.
 - Beat 1 (10-14 seconds, cold open): the hook in one breath — the boldest concrete fact or number AND the name at the center of the drama. No greetings, no "in this video".
 - Beats 2-3 (fast hook zone, max ~50 words total): what just happened + the single most surprising fact. Then the ROADMAP in one curiosity-framed sentence: "Today we'll look at what X actually is, why Y happened, and what it means for you."
 - Beat 4 (channel stamp, ~12 words): one line naming today's real date and the channel, e.g. "It's October 12th, and you're watching NextAI Vision."
@@ -374,37 +384,45 @@ def make_entry(kind):
     for models in ladder:
         _prompt = SHORT_PROMPT if kind == "short" else ENTRY_PROMPT
         val = gemini_json(_prompt.format(headlines=head_txt, today=today,
-                                         demand=demand_txt, recent=recent_txt), models=models)
+                                         demand=demand_txt, recent=recent_txt,
+                                         words=LONG_TARGET_WORDS,
+                                         beats=max(20, LONG_TARGET_WORDS // 30)),
+                          models=models)
         if not val:
             # model set exhausted (quota/overload) — try the next ladder entry
             # instead of giving up (fixes premature "gemini unavailable").
             log(f"gemini unavailable on {models[0]}+ set; trying next ladder")
             continue
         try:
-            # OWNER FIX 2026-10-08: lite models cap ~300 words/call and
-            # 3.5-flash is often 503 — expand a short draft by asking for
-            # the next beats until the 600-700 word target is reached.
-            if kind == "long" and 120 <= len(val["narration"].split()) < 560 \
-                    and 8 <= len(val.get("beats", [])) <= 20:
-                for _ci in range(3):
+            # OWNER MASTER PROMPT 2026-11-01: a long must reach LONG_TARGET_WORDS
+            # (10-16 min). Free lite models cap ~300-400 words per call, so keep
+            # asking for the next beats until the target is reached, then expand
+            # any beat that is still short.
+            if kind == "long" and 8 <= len(val.get("beats", [])):
+                for _ci in range(14):
                     _w = len(val["narration"].split())
                     _b = len(val["beats"])
-                    if _w >= 560 or _b >= 24:
+                    if _w >= LONG_TARGET_WORDS or _b >= LONG_MAX_BEATS:
                         break
-                    so_far = "\n".join(f"- {b['t']}" for b in val["beats"])
+                    _room = min(10, LONG_MAX_BEATS - _b)
+                    if _room <= 0:
+                        break
+                    so_far = "\n".join(f"- {b['t']}" for b in val["beats"][-12:])
                     val2 = gemini_json(CONTINUE_PROMPT.format(
-                        n=min(8, 24 - _b), title=val["title"], sofar=so_far),
+                        n=_room, title=val["title"], sofar=so_far),
                         models=["gemini-flash-lite-latest", "gemini-3.5-flash-lite"])
                     if not val2 or not isinstance(val2.get("beats"), list):
                         break
-                    add = [b for b in val2["beats"] if b.get("t")][:min(8, 24 - _b)]
+                    add = [b for b in val2["beats"] if b.get("t") and b.get("kw")][:_room]
                     if not add:
                         break
                     val["beats"] += add
                     val["narration"] = " ".join(b["t"] for b in val["beats"])
                     log(f"continuation: +{len(add)} beats, now {len(val['narration'].split())} words")
-                # still short on words -> expand every beat to 30-38 words
-                if len(val["narration"].split()) < 560 and 16 <= len(val["beats"]) <= 24:
+                # still short -> thicken every beat to 30-38 words
+                for _ei in range(2):
+                    if len(val["narration"].split()) >= LONG_TARGET_WORDS:
+                        break
                     _bt = "\n".join(f"- {b['t']} |kw: {b.get('kw', '')}"
                                     for b in val["beats"])
                     val3 = gemini_json(EXPAND_PROMPT.format(
@@ -412,11 +430,13 @@ def make_entry(kind):
                         models=["gemini-flash-lite-latest", "gemini-3.5-flash-lite",
                                 "gemini-3.5-flash"])
                     if val3 and isinstance(val3.get("beats"), list) \
-                            and 16 <= len(val3["beats"]) <= 24 \
+                            and len(val3["beats"]) == len(val["beats"]) \
                             and all(b.get("t") for b in val3["beats"]):
                         val["beats"] = val3["beats"]
                         val["narration"] = " ".join(b["t"] for b in val["beats"])
                         log(f"expand-beats: now {len(val['narration'].split())} words")
+                    else:
+                        break
             # OWNER 2026-10-11 War Plan: HARD no-repeat guard. Oct 8 and
             # Oct 10 longs got the IDENTICAL title ("ChatGPT Intelligent UI:
             # Full Beginner Guide") even with the recent-titles feed in the
@@ -439,7 +459,8 @@ def make_entry(kind):
             srcs = {h["url"] for h in heads}
             _wlen_ok = ((70 <= words <= 150 and 4 <= len(beats) <= 8)
                         if kind == "short" else
-                        (560 <= words <= 720 and 16 <= len(beats) <= 24))
+                        (LONG_MIN_WORDS <= words <= LONG_MAX_WORDS
+                         and 30 <= len(beats) <= LONG_MAX_BEATS + 10))
             # OWNER 2026-10-16 SEARCHABILITY GUARD: 70% of views come from
             # search; a drama-only title no one searches gets zero reach.
             # The model must emit "subject" (the exact searchable name) and
@@ -883,6 +904,130 @@ THUMB_PROMPT = """Write ONE ready-to-use image-generation prompt (6-8 lines, Eng
 
 
 # ---------------------------------------------------------------- main
+# ═══════════ QUALITY GATE (owner master prompt 2026-11-01, §11) ═══════════
+QC_MIN_SCORE = int(os.environ.get("QC_MIN_SCORE", "85"))
+
+
+def _mp4_has_audio(mp4):
+    try:
+        out = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "a",
+                              "-show_entries", "stream=codec_type", "-of",
+                              "csv=p=0", mp4], capture_output=True, text=True, timeout=60)
+        return "audio" in (out.stdout or "")
+    except Exception:
+        return False
+
+
+def _mp4_duration(mp4):
+    try:
+        out = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
+                              "format=duration", "-of", "csv=p=0", mp4],
+                             capture_output=True, text=True, timeout=60)
+        return float((out.stdout or "0").strip() or 0)
+    except Exception:
+        return 0.0
+
+
+def quality_gate(e, mp4, kind="long"):
+    """Deterministic 100-point pre-publish check.
+
+    Rubric (owner master prompt): research 20, script 20, visual relevance 20,
+    voice-over 10, editing 15, thumbnail 10, SEO 5. Publish only at >= QC_MIN_SCORE.
+    Signals are all local, so this costs no API quota.
+    """
+    sc, notes = {}, []
+    beats = e.get("beats") or []
+    narr = e.get("narration", "") or ""
+    words = len(narr.split())
+    tgt = LONG_TARGET_WORDS if kind == "long" else 110
+
+    # research accuracy (20)
+    srcs = e.get("verified_sources") or []
+    if len(srcs) >= 2 and e.get("demand_evidence"):
+        sc["research"] = 20
+    elif srcs:
+        sc["research"] = 12
+        notes.append("only " + str(len(srcs)) + " verified source(s)")
+    else:
+        sc["research"] = 0
+        notes.append("no verified sources")
+
+    # script quality (20)
+    hook_ok = bool(beats) and len(str(beats[0].get("t", "")).split()) <= 45
+    quote_ok = ('"' in narr) or ("quote," in narr.lower())
+    end_ok = bool(beats) and any(k in str(beats[-1].get("t", "")).lower()
+                                 for k in ("comment", "next one", "subscribe"))
+    sc["script"] = ((9 if words >= tgt * 0.65 else 0)
+                    + (5 if hook_ok else 0)
+                    + (3 if quote_ok else 1)
+                    + (3 if end_ok else 0))
+    if words < tgt * 0.65:
+        notes.append(f"narration {words}w is short of the {tgt}w target")
+    if not hook_ok:
+        notes.append("cold-open hook beat is too long")
+
+    # visual relevance (20): every beat needs its own footage keyword
+    missing_kw = [i + 1 for i, b in enumerate(beats) if not b.get("kw")]
+    dup_kw = len(beats) - len({str(b.get("kw", "")).strip().lower() for b in beats if b.get("kw")})
+    if beats and not missing_kw and dup_kw <= max(1, len(beats) // 20):
+        sc["visual"] = 20
+    elif beats and not missing_kw:
+        sc["visual"] = 14
+        notes.append(f"{dup_kw} repeated footage keyword(s)")
+    else:
+        sc["visual"] = 5 if beats else 0
+        notes.append(f"{len(missing_kw)} beat(s) without a footage keyword")
+
+    # voice-over (10) - an audio track must exist in the render
+    sc["voice"] = 10 if _mp4_has_audio(mp4) else 0
+    if not sc["voice"]:
+        notes.append("render has no audio track")
+
+    # editing (15) - duration must match the script (~150 wpm) within tolerance
+    dur = _mp4_duration(mp4)
+    expect = max(60.0, words / 2.5)
+    if dur <= 0:
+        sc["editing"] = 0
+        notes.append("render duration unreadable")
+    elif 0.6 * expect <= dur <= 1.6 * expect:
+        sc["editing"] = 15
+    else:
+        sc["editing"] = 7
+        notes.append(f"render {int(dur)}s vs expected {int(expect)}s")
+
+    # thumbnail (10)
+    thumb_ok = False
+    try:
+        tp = mp4.rsplit(".", 1)[0] + "_thumb.jpg"
+        for cand in (tp, mp4.rsplit(".", 1)[0] + ".jpg", os.path.join(os.path.dirname(mp4), "thumb.jpg")):
+            if os.path.exists(cand) and os.path.getsize(cand) > 20000:
+                thumb_ok = True
+                break
+    except Exception:
+        pass
+    sc["thumbnail"] = 10 if thumb_ok else 4
+    if not thumb_ok:
+        notes.append("thumbnail file missing or tiny")
+
+    # SEO and metadata (5)
+    title = str(e.get("title", ""))
+    subj = str(e.get("subject", "")).lower()
+    seo = 0
+    seo += 2 if 0 < len(title) <= 52 else 0
+    seo += 2 if (subj and subj in title.lower()
+                 and subj in str(e.get("description", "")).lower()) else 0
+    seo += 1 if len(e.get("tags") or []) >= 8 else 0
+    sc["seo"] = seo
+    if seo < 5:
+        notes.append("metadata incomplete (title/subject/tags)")
+
+    total = sum(sc.values())
+    log("QC: " + json.dumps(sc) + f" = {total}/100 (publish >= {QC_MIN_SCORE})")
+    for n in notes:
+        log("QC note: " + n)
+    return total, sc, notes
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--kind", default="long", choices=["long", "short"])
@@ -1016,6 +1161,12 @@ def main():
     except Exception as ex:
         _lnk = None
         log("playlist link unavailable for description: " + str(ex)[:100])
+    _qc_total, _qc_sc, _qc_notes = quality_gate(e, mp4, kind)
+    if _qc_total < QC_MIN_SCORE:
+        # Never publish a failed video (owner master prompt §11).
+        log(f"QC BLOCKED upload: {_qc_total}/100 < {QC_MIN_SCORE} for {e['id']} "
+            f"({'; '.join(_qc_notes)})")
+        raise SystemExit(3)
     vid = factory.upload(e, mp4, publish_at, playlist_link=_lnk)
 
     # 7) Record state (same ledgers the Base44 producer uses)
