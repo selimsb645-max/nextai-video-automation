@@ -133,10 +133,17 @@ def log(msg):
     print(msg, flush=True)
 
 
-def run(cmd, what="ffmpeg"):
+def run(cmd, what="ffmpeg", logfile=None):
     r = subprocess.run(cmd, capture_output=True, text=True)
     if r.returncode:
-        raise RuntimeError(f"{what} failed: " + (r.stderr or "")[-500:])
+        err = (r.stderr or "")
+        if logfile:
+            try:
+                with open(logfile, "w", encoding="utf-8") as f:
+                    f.write(" ".join(cmd) + "\n\n" + err)
+            except OSError:
+                pass
+        raise RuntimeError(f"{what} failed: " + err[-1800:])
     return r
 
 
@@ -279,12 +286,48 @@ def final_encode(clips, cfg, out, audio=None, ass=None, transitions=None,
         cmd += ["-map", f"{len(clips)}:a"] + cfg.audio_args() + ["-shortest"]
     else:
         cmd += ["-an"]
-    cmd += [out]
+    base = list(cmd)
     t0 = time.time()
-    run(cmd, "final encode")
-    log(f"final encode: {time.time() - t0:.1f}s -> {out} "
-        f"({os.path.getsize(out) // 1024 // 1024} MB)")
-    return out
+    attempts = [
+        ("spec", []),
+        # ffmpeg >= 8 builds can reject -fps_mode/-level combinations that
+        # ffmpeg 5/6 accept; retry without them, keeping the encoder spec.
+        ("no-fps_mode", ["-fps_mode"]),
+        ("no-level", ["-fps_mode", "-level:v"]),
+        ("minimal", ["-fps_mode", "-level:v", "-keyint_min", "-sc_threshold",
+                     "-refs", "-color_range"]),
+    ]
+    last = None
+    for name, drop in attempts:
+        args = []
+        skip = False
+        for tok in base:
+            if drop and tok in drop:
+                skip = True
+                continue
+            if skip:
+                skip = False
+                continue
+            args.append(tok)
+        try:
+            run(args, f"final encode ({name})",
+                logfile=os.path.join(os.path.dirname(out) or ".",
+                                     f"encode_error_{name}.log"))
+            if name != "spec":
+                log(f"final encode: spec failed on this ffmpeg, used '{name}' args")
+            log(f"final encode: {time.time() - t0:.1f}s -> {out} "
+                f"({os.path.getsize(out) // 1024 // 1024} MB)")
+            return out
+        except RuntimeError as ex:
+            last = ex
+            log(f"final encode attempt '{name}' failed; trying a simpler "
+                f"argument set")
+            try:
+                if os.path.exists(out):
+                    os.remove(out)
+            except OSError:
+                pass
+    raise last
 
 
 def build(mode, workdir, minutes=9.5, script_file=None, narration=None,
@@ -325,7 +368,9 @@ def build(mode, workdir, minutes=9.5, script_file=None, narration=None,
                        if s.strip()][:40]}
     sb = SB.build(entry, narration_path=nar, duration=ndur, announce=log)
     errs = SB.validate(sb)
-    scenes = expand_scenes(sb, max_len=(60.0 if mode == "sample" else 14.0))
+    # a single 47 s scene is a useless sample: split into ~12 s chunks so the
+    # run exercises several motions, xfade transitions and caption cues
+    scenes = expand_scenes(sb, max_len=(12.0 if mode == "sample" else 14.0))
     if max_scenes and len(scenes) > max_scenes:
         log(f"storyboard: capping {len(scenes)} scenes at {max_scenes} for this run")
         bad = scenes[max_scenes:]
