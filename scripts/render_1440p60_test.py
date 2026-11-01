@@ -250,95 +250,99 @@ def render_scene_1440(scene, asset, out, dur, cfg, intermediate=True):
     return out
 
 
+def _assemble(clips, transitions, trans_dur, wd):
+    """Join the scenes into one timeline before the final encode.
+
+    Two-stage on purpose: the Ubuntu ffmpeg 8.0.1 runner refuses graph label
+    binding when xfade/concat and a mapped output share one -filter_complex, so
+    the timeline is built here first and the final pass then uses a plain -vf
+    chain. xfade is attempted first (nicer), hard-cut concat is the fallback.
+    """
+    if len(clips) == 1:
+        return clips[0]
+    base = os.path.join(wd, "timeline.mp4")
+    if transitions:
+        fc, cur = [], "[0:v]"
+        durs = [float((RP.probe_json(c).get("format") or {}).get("duration") or 0)
+                for c in clips]
+        off = 0.0
+        for i in range(1, len(clips)):
+            off += durs[i - 1] - trans_dur
+            tr = transitions[i - 1] if i - 1 < len(transitions) else "dissolve"
+            fc.append(f"{cur}[{i}:v]xfade=transition={tr}:duration={trans_dur:.2f}:"
+                      f"offset={max(off, 0):.3f}[x{i}]")
+            cur = f"[x{i}]"
+        inputs = []
+        for c in clips:
+            inputs += ["-i", c]
+        cmd = (["ffmpeg", "-v", "error", "-y"] + inputs +
+               ["-filter_complex", ";".join(fc), "-map", cur,
+                "-c:v", "libx264", "-preset", "veryfast", "-crf", "16",
+                "-pix_fmt", "yuv420p", base])
+        try:
+            run(cmd, "timeline (xfade)",
+                logfile=os.path.join(wd, "encode_error_timeline.log"))
+            log("timeline: xfade chain built")
+            return base
+        except RuntimeError as ex:
+            log("timeline: xfade failed (" + str(ex).splitlines()[-1][:90]
+                + ") - falling back to hard-cut concat")
+    lst = os.path.join(wd, "concat.txt")
+    with open(lst, "w", encoding="utf-8") as f:
+        for c in clips:
+            f.write("file '" + os.path.abspath(c).replace("'", "") + "'\n")
+    run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst,
+         "-c", "copy", base], "timeline (concat)",
+        logfile=os.path.join(wd, "encode_error_concat.log"))
+    log("timeline: hard-cut concat built")
+    return base
+
+
 def final_encode(clips, cfg, out, audio=None, ass=None, transitions=None,
                  trans_dur=0.55, fade=(0.8, 1.2)):
-    """One encode pass: concat (optionally xfade), burned captions, audio, spec.
-
-    Robustness note (2026-11-01): ffmpeg 8.0.1 on the Ubuntu runner refused the
-    filtergraph with "Filter 'format:output 0 (vout) unconnected" whenever the
-    burn-in chain was present, while the same command succeeded locally. Rather
-    than guessing at that build's behaviour, the graph is rebuilt per attempt and
-    the last attempts drop the caption chain entirely, so captions can never cost
-    a finished render. The ass path is absolute to remove any cwd ambiguity.
-    """
-    inputs = []
-    for c in clips:
-        inputs += ["-i", c]
+    """Final spec encode of the assembled timeline (plain -vf, no graph labels)."""
+    wd = os.path.dirname(out) or "."
+    base = _assemble(clips, transitions, trans_dur, wd)
+    inputs = ["-i", base]
     if audio:
         inputs += ["-i", audio]
-
-    def mk_graph(with_caps):
-        fc, cur = [], "[0:v]"
-        if transitions and len(clips) > 1:
-            durs = [float((RP.probe_json(c).get("format") or {}).get("duration") or 0)
-                    for c in clips]
-            off = 0.0
-            for i in range(1, len(clips)):
-                off += durs[i - 1] - trans_dur
-                tr = transitions[i - 1] if i - 1 < len(transitions) else "dissolve"
-                fc.append(f"{cur}[{i}:v]xfade=transition={tr}:duration={trans_dur:.2f}:"
-                          f"offset={max(off, 0):.3f}[x{i}]")
-                cur = f"[x{i}]"
-        else:
-            for i in range(1, len(clips)):
-                fc.append(f"{cur}[{i}:v]concat=n=2:v=1:a=0[x{i}]")
-                cur = f"[x{i}]"
-        tail = []
-        if with_caps and ass:
-            q = os.path.abspath(ass).replace("\\", "/").replace(":", "\\:").replace("'", "")
-            tail.append(f"ass='{q}'")
-        tail += [f"fps={cfg.fps}", f"format={cfg.pix_fmt}"]
-        fc.append(f"{cur}" + ",".join(tail) + "[vout]")
-        return ";".join(fc)
-
-    def mk_cmd(graph):
-        cmd = (["ffmpeg", "-v", "error", "-y"] + inputs +
-               ["-filter_complex", graph, "-map", "[vout]"] + cfg.video_args())
+    ass_q = ""
+    if ass:
+        ass_q = os.path.abspath(ass).replace("\\", "/").replace(":", "\\:").replace("'", "")
+    scaler = (f"scale={cfg.width}:{cfg.height}:force_original_aspect_ratio=decrease,"
+              f"pad={cfg.width}:{cfg.height}:(ow-iw)/2:(oh-ih)/2:color=black,"
+              f"setsar=1")
+    variants = [
+        ("spec", (f"ass={ass_q}," if ass_q else "")
+         + f"{scaler},fps={cfg.fps},format={cfg.pix_fmt}"),
+        ("no-captions", f"{scaler},fps={cfg.fps},format={cfg.pix_fmt}"),
+        ("bare", None),   # no -vf at all; encoder options still set the spec
+    ]
+    last = None
+    t0 = time.time()
+    for name, vf in variants:
+        cmd = ["ffmpeg", "-v", "error", "-y"] + inputs
+        if vf:
+            cmd += ["-vf", vf]
+        cmd += ["-map", "0:v"]
         if audio:
-            cmd += ["-map", f"{len(clips)}:a"] + cfg.audio_args() + ["-shortest"]
+            cmd += ["-map", "1:a"] + cfg.audio_args() + ["-shortest"]
         else:
             cmd += ["-an"]
-        return cmd
-
-    attempts = [
-        ("spec", [], True),
-        ("no-fps_mode", ["-fps_mode"], True),
-        ("no-level", ["-fps_mode", "-level:v"], True),
-        ("minimal", ["-fps_mode", "-level:v", "-keyint_min", "-sc_threshold",
-                     "-refs", "-color_range"], True),
-        # captions are cosmetic: a build that cannot burn them still ships video
-        ("no-captions", ["-fps_mode"], False),
-        ("bare", ["-fps_mode", "-level:v", "-keyint_min", "-sc_threshold",
-                  "-refs", "-color_range", "-bf"], False),
-    ]
-    log("final encode graph: " + mk_graph(bool(ass)))
-    t0 = time.time()
-    last = None
-    for name, drop, with_caps in attempts:
-        base = mk_cmd(mk_graph(with_caps))
-        args, skip = [], False
-        for tok in base:
-            if drop and tok in drop:
-                skip = True
-                continue
-            if skip:
-                skip = False
-                continue
-            args.append(tok)
+        cmd += cfg.video_args() + [out]
         try:
-            run(args, f"final encode ({name})",
-                logfile=os.path.join(os.path.dirname(out) or ".",
-                                     f"encode_error_{name}.log"))
+            run(cmd, f"final encode ({name})",
+                logfile=os.path.join(wd, f"encode_error_{name}.log"))
             if name != "spec":
-                log(f"final encode: '{name}' argument set used"
-                    + ("" if with_caps else " (CAPTIONS SKIPPED on this build)"))
+                log(f"final encode: '{name}' variant used"
+                    + ("" if name == "spec" else " (captions may be missing)"))
             log(f"final encode: {time.time() - t0:.1f}s -> {out} "
                 f"({os.path.getsize(out) // 1024 // 1024} MB)")
             return out
         except RuntimeError as ex:
             last = ex
             log(f"final encode attempt '{name}' failed: "
-                + " | ".join(str(ex).splitlines()[-4:])[:700])
+                + " | ".join(str(ex).splitlines()[-3:])[:400])
             try:
                 if os.path.exists(out):
                     os.remove(out)

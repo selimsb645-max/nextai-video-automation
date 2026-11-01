@@ -205,7 +205,7 @@ def save(rep, path):
 
 
 def summary(rep):
-    bad = [c for c in rep.get("checks", []) if not c["ok"]]
+    bad = [c for c in rep.get("checks", []) if not c["ok"] and c["blocking"]]
     out = [f"VERIFY {'PASS' if rep.get('ok') else 'FAIL'} — score {rep.get('score')}"
            f", {rep.get('duration_s')}s, {rep.get('size_bytes', 0) // 1024 // 1024} MB"]
     for c in rep.get("checks", []):
@@ -214,6 +214,8 @@ def summary(rep):
             out.append(f"  {mark} {c['check']}: {c['detail']}")
     if bad:
         out.append(f"  blocking failures: {[c['check'] for c in bad]}")
+    else:
+        out.append("  no blocking failures")
     return "\n".join(out)
 
 
