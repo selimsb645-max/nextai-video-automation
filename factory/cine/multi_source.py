@@ -357,6 +357,11 @@ class MultiSourceMatcher:
                     "duration": dur, "width": w, "height": h,
                     "query": query, "relevance": round(rel, 3),
                     "creator": cand.creator, "page": cand.page_url,
+                    "provider": cand.provider,
+                    "license_url": cand.license_url,
+                    "commercial_ok": bool(LIC.validate(cand)["ok"]),
+                    "attribution_required": bool(
+                        LIC.validate(cand).get("attribution_required")),
                     "sha256": sha,
                     "rejects": self.stats["rejects"][-6:],
                 }

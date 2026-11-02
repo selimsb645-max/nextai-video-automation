@@ -153,13 +153,33 @@ def main(argv=None):
     rep = ED.build(entry, wd, narration_path=nar, W=args.width, H=args.height,
                    fps=args.fps, force=True, log=log)
     out = rep["output"]
+    sample = os.path.join(wd, "multisource_sample.mp4")
+    try:
+        import shutil
+        shutil.copyfile(out, sample)
+    except Exception as ex:
+        log(f"  sample copy failed: {str(ex)[:100]}")
+        sample = out
     dur = float((rep.get("qc") or {}).get("duration_s")
                 or (rep.get("stages", {}).get("audio", {}).get("duration") or 0))
 
     # 4) licence + attribution artefacts ------------------------------------
     assets = rep.get("assets") or []
-    rows = [a for a in assets if a.get("provider")
-            and a.get("license") != "original (generated locally)"]
+    provenance = []
+    try:
+        from cine import multi_source as MS
+        provenance = (MS.load_manifest(MS.MANIFEST_PATH).get("assets") or [])
+    except Exception as ex:
+        log(f"  manifest read failed: {str(ex)[:100]}")
+    by_id = {a.get("asset_id"): a for a in provenance if a.get("asset_id")}
+    rows = []
+    for a in assets:
+        src = a.get("source") or ""
+        if src in ("generated", "", None):
+            continue
+        merged = dict(by_id.get(a.get("asset_id")) or {})
+        merged.update({k: v for k, v in a.items() if v not in (None, "")})
+        rows.append(merged)
     checks = []
     for a in rows:
         v = LIC.validate(type("C", (), {
@@ -187,15 +207,17 @@ def main(argv=None):
             fh.write(open(manifest_path).read())
 
     summary = {
-        "output": out,
+        "output": sample,
+        "render_output": out,
         "duration_s": round(dur, 2),
         "inside_target_band": 60.0 <= dur <= args.max_seconds,
         "scenes": len(assets),
         "clips_by_provider": {p: sum(1 for a in rows if a.get("provider") == p)
-                              for p in {a.get("provider") for a in rows}},
-        "fallback_cards": sum(1 for a in assets
-                              if a.get("source") == "generated"
-                              or a.get("provider") in (None, "", "generated")),
+                              for p in sorted({a.get("provider") for a in rows if a.get("provider")})},
+        "fallback_cards": (rep.get("stages", {}).get("visuals", {})
+                           .get("generated_cards", 0)),
+        "distinct_sources": (rep.get("stages", {}).get("visuals", {})
+                             .get("distinct_sources", 0)),
         "licence_checks": {"assets": report["assets"],
                            "validated": report["validated"],
                            "rejected": len(report["rejected"])},

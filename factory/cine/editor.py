@@ -204,7 +204,9 @@ def build(entry, workdir, narration_path=None, music=None, W=1920, H=1080,
             MO.render_scene(sc, asset, out, dur, W=W, H=H, fps=fps, log=log)
         assets.append({**{k: asset.get(k) for k in
                           ("kind", "path", "source", "asset_id", "url", "license",
-                           "attribution", "query", "relevance")},
+                           "attribution", "query", "relevance", "provider",
+                           "creator", "page", "license_url", "commercial_ok",
+                           "attribution_required", "width", "height", "sha256")},
                        "scene_id": sc["scene_id"]})
         clips.append(out)
 
