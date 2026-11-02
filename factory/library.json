@@ -6303,6 +6303,67 @@
    "origin": "reference_mirror",
    "reference_video": "e6OzutRXvTs",
    "added": "2026-11-02"
+  },
+  {
+   "id": "humanoid_robots_mount_taishan_2026_11_02_2026-11-02",
+   "subject": "humanoid robot",
+   "title": "Humanoid Robots Stumble on Steep Mount Taishan Steps",
+   "headline": "STUMBLE ON STEEP STEPS",
+   "specs": [
+    "7000+ STEPS",
+    "STEEP CLIFFS",
+    "HUMANOID RACE"
+   ],
+   "description": "Humanoid robots take on Mount Taishan in a brutal mountain climbing competition, facing over 7,000 steep steps. Discover how the latest bipedal machines handled the extreme incline. Related searches: humanoid robot climbing, Mount Taishan robot race, bipedal robot stability, robot stairs test, AgiBot Unitree competition.",
+   "tags": [
+    "humanoid robot",
+    "robot stairs",
+    "robot competition",
+    "Mount Taishan",
+    "bipedal robot",
+    "robot test",
+    "tech news",
+    "robotics 2026"
+   ],
+   "narration": "Humanoid robots just tackled over 7,000 brutal stone steps on Mount Taishan. These advanced bipedal machines raced up steep mountain cliffs in a high-stakes public showdown. While robot dogs scrambled up with ease, the humanoids struggled hard on the incline. Balance algorithms were pushed to absolute breaking points as joints locked up under pressure. Can bipedal humanoids ever truly master natural terrain, or are legs just too complicated? Real or hype? Comment below.",
+   "beats": [
+    {
+     "t": "Humanoid robots just tackled over 7,000 brutal stone steps on Mount Taishan.",
+     "kw": "bipedal humanoid robot standing at the base of a massive steep stone mountain staircase",
+     "tags": []
+    },
+    {
+     "t": "These advanced bipedal machines raced up steep mountain cliffs in a high-stakes public showdown.",
+     "kw": "humanoid robot walking upward on an outdoor mountain trail surrounded by tourists",
+     "tags": []
+    },
+    {
+     "t": "While robot dogs scrambled up with ease, the humanoids struggled hard on the incline.",
+     "kw": "humanoid robot wobbling and struggling to maintain balance on a steep stone step",
+     "tags": []
+    },
+    {
+     "t": "Balance algorithms were pushed to absolute breaking points as joints locked up under pressure.",
+     "kw": "close up of humanoid robot leg joints moving mechanically and stiffly on rough terrain",
+     "tags": []
+    },
+    {
+     "t": "Can bipedal humanoids ever truly master natural terrain, or are legs just too complicated? Real or hype? Comment below.",
+     "kw": "humanoid robot standing atop a scenic mountain peak looking out over the landscape",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMizAFBVV95cUxNaVdPM0NLQmRQN3JQRmllTUNKVGp0aTZ5QVZEYUNEOHpnNmh5eTJ2QXNra01ZMlpkVmJwWHVXWjl4SGM4cGZ2am5GMk5xQmI0MVJncTNGdV9YNkhlMzJUYkR3OE9QcVkzenMzbW9jM3prVzNOX3k4UGxjaTNwdGc3VFg0RmZuNTVYWF84VmdXaGxnMW5EdmdBaXF1TlhRc3ZwTHZSSHFrRl9obXk1VUUxYmtXejRHNEpLMmI1SEI4TEZHczZoMElwZlY4UlU?oc=5"
+   ],
+   "demand_evidence": "Battle on Mount Taishan: Humanoid robots stumble on steep steps as robot dog climbs with ease - CGTN",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 556
   }
  ]
 }
