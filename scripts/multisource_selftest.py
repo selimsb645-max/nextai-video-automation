@@ -271,6 +271,12 @@ def main(argv=None):
         with open(os.path.join(wd, "multi_asset_manifest.json"), "w") as fh:
             fh.write(open(manifest_path).read())
 
+    matcher = {}
+    try:
+        from cine import multi_source as MS
+        matcher = MS.last_stats() or {}
+    except Exception:
+        pass
     summary = {
         "output": sample,
         "render_output": out,
@@ -292,11 +298,6 @@ def main(argv=None):
         "provider_errors": [{"provider": p["provider"], "errors": p.get("errors")}
                             for p in status["providers"] if p.get("errors")],
     }
-    try:
-        from cine import multi_source as MS
-        matcher = MS.last_stats()
-    except Exception:
-        matcher = {}
     if matcher:
         summary["duplicates_rejected"] = matcher.get("duplicates_rejected", 0)
         summary["rejects_sample"] = (matcher.get("rejects") or [])[:12]

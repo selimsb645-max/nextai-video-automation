@@ -103,10 +103,15 @@ def render_scene(scene, asset, out_path, dur, W=1920, H=1080, fps=25, log=print)
                "-c:v", "libx264", "-preset", q["preset"], "-crf", str(q["inter"]),
                "-pix_fmt", "yuv420p", "-an", out_path]
     else:
-        # use the middle of the source clip so we rarely hit a fade-in/out
+        # Use a quarter into the clip (past any fade-in) and LOOP the source:
+        # a 9.5s stock clip under a 12s beat used to come out 9.5s long, and the
+        # editor then replaced the scene with a motion card (2026-11-02 selftest,
+        # scene 3). -stream_loop keeps the scene exactly as long as its narration
+        # while -t still bounds the output.
         src_dur = float(asset.get("duration") or 0)
-        start = max(min(src_dur * 0.25, max(src_dur - dur, 0)), 0.0)
-        cmd = ["ffmpeg", "-v", "error", "-y", "-ss", f"{start:.2f}",
+        start = max(min(src_dur * 0.25, max(src_dur - dur, 0)), 0.0) if src_dur else 0.0
+        cmd = ["ffmpeg", "-v", "error", "-y", "-stream_loop", "-1",
+               "-ss", f"{start:.2f}",
                "-i", asset["path"], "-t", f"{dur:.3f}", "-vf", vf,
                "-r", str(fps), "-c:v", "libx264", "-preset", q["preset"],
                "-crf", str(q["inter"]), "-pix_fmt", "yuv420p", "-an", out_path]
