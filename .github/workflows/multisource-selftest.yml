@@ -1,0 +1,120 @@
+name: Multi-Source Footage Selftest
+
+# TEST MODE for the Next AI Vision 4 multi-source footage engine.
+# It NEVER publishes, never uses YouTube credentials and never changes a
+# production flag: ENABLE_MULTI_SOURCE_FOOTAGE is set true for THIS job only, so
+# the production workflow keeps its own value (all flags off).
+#
+# It checks provider availability, API authentication, scene relevance, licence
+# validation, download integrity, duplicate detection, resolution/duration rules,
+# the attribution report, cache behaviour and rate-limit handling, then renders a
+# 60-90 second sample film with several scenes and uploads the artefacts.
+on:
+  workflow_dispatch:
+    inputs:
+      height:
+        description: "Output height (720 or 1080)"
+        type: choice
+        options: ["1080", "720"]
+        default: "1080"
+      enable_pexels:
+        description: "Also try Pexels (needs the PEXELS_API_KEY secret)"
+        type: boolean
+        default: false
+      run_tests:
+        description: "Run the pytest suite first"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUNBUFFERED: "1"
+  ENABLE_MULTI_SOURCE_FOOTAGE: "true"   # test job only
+  ENABLE_PIXABAY_PROVIDER: "true"
+  ENABLE_NASA_PROVIDER: "true"
+  ENABLE_CINEMATIC_EDITOR: "false"      # production renderer untouched
+  RENDER_QUALITY: "draft"
+
+jobs:
+  selftest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: System dependencies (FFmpeg + fonts)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-dejavu-core espeak-ng \
+            fonts-liberation >/dev/null
+          ffmpeg -version | head -1
+
+      - name: Python dependencies
+        run: |
+          python -m pip install -q --upgrade pip
+          python -m pip install -q pillow numpy pytest edge-tts
+
+      - name: Unit + integration tests
+        if: ${{ inputs.run_tests }}
+        run: python -m pytest tests/ -q --maxfail=3
+
+      - name: Provider status (no keys in output)
+        env:
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+        run: |
+          python - <<'PY'
+          import sys, json
+          sys.path.insert(0, "factory")
+          from cine.providers import provider_status
+          st = provider_status(log=lambda *_: None)
+          print(json.dumps({"flags": st["flags"],
+                            "providers": [{k: p[k] for k in
+                                           ("provider", "available", "reason")}
+                                          for p in st["providers"]]}, indent=1))
+          PY
+
+      - name: Render the multi-source sample (never uploads)
+        env:
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          ENABLE_PEXELS_PROVIDER: ${{ inputs.enable_pexels }}
+        run: |
+          H="${{ inputs.height }}"
+          if [ "$H" = "720" ]; then W=1280; else W=1920; fi
+          python scripts/multisource_selftest.py \
+            --workdir cine_out_multisource --width "$W" --height "$H"
+
+      - name: Show the summary
+        if: always()
+        run: |
+          for f in cine_out_multisource/selftest_summary.json \
+                   cine_out_multisource/license_report.json; do
+            [ -f "$f" ] && { echo "--- $f"; cat "$f"; }
+          done
+          [ -f cine_out_multisource/attribution.txt ] && \
+            { echo "--- attribution.txt"; cat cine_out_multisource/attribution.txt; }
+
+      - name: Upload artefacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: multisource-selftest
+          retention-days: 14
+          if-no-files-found: warn
+          path: |
+            cine_out_multisource/multisource_sample.mp4
+            cine_out_multisource/selftest_summary.json
+            cine_out_multisource/providers.json
+            cine_out_multisource/license_report.json
+            cine_out_multisource/attribution.txt
+            cine_out_multisource/multi_asset_manifest.json
+            cine_out_multisource/storyboard.json
+            cine_out_multisource/qc_report.json

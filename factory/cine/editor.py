@@ -34,6 +34,26 @@ except ImportError:                   # direct script use (factory/cine on path)
 FACTORY_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FLAG = "ENABLE_CINEMATIC_EDITOR"
 
+
+# ── footage matcher selection (Next AI Vision 4) ───────────────────────────
+def _matcher():
+    """ENABLE_MULTI_SOURCE_FOOTAGE=true swaps in the multi-provider matcher.
+
+    Default (flag unset/false) returns visual_match.match_scene unchanged, so the
+    production path is byte-for-byte what it was before the upgrade. The
+    multi-provider matcher is itself fail-open per scene: any provider error just
+    removes that provider's candidates and the scene falls back to the old
+    Pixabay -> Commons -> Archive chain, then to a motion card.
+    """
+    if os.environ.get("ENABLE_MULTI_SOURCE_FOOTAGE", "false").strip().lower() in ("1", "true", "yes", "on"):
+        try:
+            from . import multi_source as MS
+            return MS.match_scene_multi
+        except Exception as ex:                       # pragma: no cover
+            print(f"multi-source matcher unavailable, using visual_match: {str(ex)[:120]}")
+    return VM.match_scene
+
+
 SAMPLE = {
     "title": "Google's New Genie 4 Is the Beginning of Synthetic Reality",
     "kind": "long",
@@ -158,8 +178,8 @@ def build(entry, workdir, narration_path=None, music=None, W=1920, H=1080,
         # transition, so the finished film matches the narration to the frame
         dur = max(sc["duration"], 1.2) + (XF if idx < n_scenes - 1 else 0.0)
         try:
-            asset = VM.match_scene(sc, os.path.join(workdir, "assets"), manifest,
-                                   used_hashes, used_hues, used_ids)
+            asset = _matcher()(sc, os.path.join(workdir, "assets"), manifest,
+                               used_hashes, used_hues, used_ids)
         except Exception as e:
             asset = {"kind": "image", "path": VM.make_card(
                 sc, os.path.join(workdir, "assets", f"s{sc['scene_id']:02d}_card.png")),

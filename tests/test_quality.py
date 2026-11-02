@@ -173,7 +173,7 @@ if __name__ == "__main__":
 def test_selftest_mode_returns_before_any_upload():
     src = open(os.path.join(ROOT, "actions", "runner.py"), encoding="utf-8").read()
     sel = src.index("if args.selftest:", src.index("SELFTEST PASS") - 3000)
-    upload = src.index("vid = factory.upload(e, mp4, publish_at, playlist_link=_lnk)")
+    upload = src.index("factory.upload(e, mp4, publish_at, playlist_link=_lnk")
     # the selftest branch must be reached and return before the upload call
     assert sel < upload, "selftest branch must come before the upload"
     branch = src[sel:upload]
@@ -184,7 +184,7 @@ def test_selftest_mode_returns_before_any_upload():
 def test_qc_threshold_is_enforced_before_upload():
     src = open(os.path.join(ROOT, "actions", "runner.py"), encoding="utf-8").read()
     gate = src.index("_qc_total, _qc_sc, _qc_notes = quality_gate(")
-    upload = src.index("vid = factory.upload(e, mp4, publish_at, playlist_link=_lnk)")
+    upload = src.index("factory.upload(e, mp4, publish_at, playlist_link=_lnk")
     assert gate < upload, "the QC gate must run before upload"
     assert "QC BLOCKED" in src[gate:upload]
     assert "raise SystemExit(3)" in src[gate:upload]

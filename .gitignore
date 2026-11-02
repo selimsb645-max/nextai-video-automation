@@ -34,3 +34,5 @@ cinematic_out/
 frame_*.jpg
 sample_narration.mp3
 narration.mp3
+factory/footage/_cache/
+cine_out_multisource/
