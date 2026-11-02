@@ -110,6 +110,65 @@ def make_narration(text, out):
     return out
 
 
+
+PROBE_QUERIES = {
+    "pixabay": "server room technology",
+    "pexels": "data center servers",
+    "nasa": "earth from space",
+    "mixkit": "office desk",
+}
+
+
+def probe_providers(wd, status, do_download=True):
+    """Per-provider integration check: authentication, normalisation, licence,
+    and (for auto-download providers) one real download verified with ffprobe."""
+    from cine.providers import rebuild_provider
+    from cine import licensing as LIC, visual_match as VM
+
+    out = []
+    for p in status["providers"]:
+        name = p["provider"]
+        row = {"provider": name, "available": p["available"],
+               "reason": p.get("reason", ""), "license": p.get("license", ""),
+               "query": PROBE_QUERIES.get(name, "technology"),
+               "candidates": 0, "top": None, "download": None,
+               "license_verdict": None}
+        if not p["available"]:
+            out.append(row)
+            continue
+        prov = rebuild_provider(name)
+        cands = prov.search(row["query"], limit=6) if prov else []
+        row["candidates"] = len(cands)
+        if cands:
+            c = cands[0]
+            v = LIC.validate(c)
+            row["top"] = {"asset_id": c.asset_id, "title": (c.title or "")[:70],
+                          "creator": c.creator, "width": c.width, "height": c.height,
+                          "duration": round(float(c.duration or 0), 1),
+                          "page": c.page_url}
+            row["license_verdict"] = {"ok": v["ok"], "reason": v["reason"],
+                                      "commercial": v.get("commercial"),
+                                      "attribution_required": v.get("attribution_required")}
+            if do_download and prov.auto_download:
+                dest = os.path.join(wd, f"probe_{name}.mp4")
+                ok = prov.download(c, dest)
+                pr = VM.probe(dest) if ok else None
+                row["download"] = {"ok": bool(ok and pr),
+                                   "bytes": os.path.getsize(dest) if os.path.exists(dest) else 0,
+                                   "probe": pr}
+                if os.path.exists(dest):
+                    try:
+                        os.remove(dest)
+                    except OSError:
+                        pass
+        out.append(row)
+    json.dump(out, open(os.path.join(wd, "provider_probe.json"), "w"), indent=1)
+    for r in out:
+        log(f"  probe {r['provider']:8s} avail={r['available']} cands={r['candidates']}"
+            f" dl={ (r['download'] or {}).get('ok') } lic={ (r['license_verdict'] or {}).get('ok') }")
+    return out
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--workdir", default="cine_out_multisource")
@@ -117,6 +176,8 @@ def main(argv=None):
     ap.add_argument("--width", type=int, default=1920)
     ap.add_argument("--fps", type=int, default=25)
     ap.add_argument("--max-seconds", type=float, default=95.0)
+    ap.add_argument("--skip-probe", action="store_true")
+    ap.add_argument("--skip-probe-download", action="store_true")
     args = ap.parse_args(argv)
 
     wd = os.path.abspath(args.workdir)
@@ -133,6 +194,10 @@ def main(argv=None):
     for p in status["providers"]:
         state = "READY" if p["available"] else "SKIPPED"
         log(f"  {state:8s} {p['provider']:8s} {p['reason'] or p['license']}")
+
+    # 1b) per-provider integration probe -----------------------------------
+    if not args.skip_probe:
+        probe_providers(wd, status, do_download=not args.skip_probe_download)
 
     # 2) narration ----------------------------------------------------------
     nar = make_narration(STORY, os.path.join(wd, "narration.mp3"))

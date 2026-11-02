@@ -67,6 +67,14 @@ def enabled_providers(log=None) -> List[FootageProvider]:
     return [p for p in all_providers(log=log) if p.available()]
 
 
+def rebuild_provider(name: str, log=None):
+    """Build one named provider regardless of the flags (test harness only)."""
+    for p in all_providers(log=log):
+        if p.name == name:
+            return p
+    return None
+
+
 def provider_status(log=None) -> Dict[str, Any]:
     """Everything the test workflow prints: flags, per-provider availability."""
     provs = all_providers(log=log)

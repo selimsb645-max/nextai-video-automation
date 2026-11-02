@@ -113,6 +113,7 @@ jobs:
             cine_out_multisource/multisource_sample.mp4
             cine_out_multisource/selftest_summary.json
             cine_out_multisource/providers.json
+            cine_out_multisource/provider_probe.json
             cine_out_multisource/license_report.json
             cine_out_multisource/attribution.txt
             cine_out_multisource/multi_asset_manifest.json
