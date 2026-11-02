@@ -223,6 +223,9 @@ def main(argv=None):
                            "rejected": len(report["rejected"])},
         "qc": (rep.get("qc") or {}).get("score"),
         "wall_seconds": round(time.time() - t0, 1),
+        "provider_searches": (matcher or {}).get("per_provider") or {},
+        "provider_errors": [{"provider": p["provider"], "errors": p.get("errors")}
+                            for p in status["providers"] if p.get("errors")],
     }
     try:
         from cine import multi_source as MS
