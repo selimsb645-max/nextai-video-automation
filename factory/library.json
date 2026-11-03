@@ -6376,6 +6376,72 @@
    "origin": "reference_mirror",
    "reference_video": "2zY-LwdPt-g",
    "added": "2026-11-03"
+  },
+  {
+   "id": "unitree_robot_dog_mount_tai_2026_11_03_2026-11-03",
+   "subject": "Unitree robot dog",
+   "title": "Unitree Dog Climbs Mount Tai Stairs in 43 Mins",
+   "headline": "43:41 STAIR CLIMB",
+   "specs": [
+    "43:41 TIME",
+    "1 GOLD",
+    "2 SILVERS"
+   ],
+   "description": "The Unitree robot dog conquered Mount Tai in a grueling stair-climbing race, shocking spectators with its speed. This mini-movie covers the robot's incredible mountain ascent. Related searches: Unitree robot dog, robot mountain climb, Mount Tai robot race, robot dog stairs, quadruped robot speed.",
+   "tags": [
+    "Unitree",
+    "robot dog",
+    "Mount Tai",
+    "robot race",
+    "robotics",
+    "tech news",
+    "automation",
+    "quadruped"
+   ],
+   "narration": "43 minutes and 41 seconds. That is all it took for a robot dog to conquer sacred Mount Tai. While tourists gasp, this four-legged machine charges straight up endless stone stairs. No breaks, no fatigue, just raw mechanical power. It crushes human opponents, taking home one gold and two silvers in the world's wildest robot climbing race. The mechanical revolution is literally walking uphill right now. Would you let this metal hound hike your local trail? Comment below.",
+   "beats": [
+    {
+     "t": "43 minutes and 41 seconds. That is all it took for a robot dog to conquer sacred Mount Tai.",
+     "kw": "robotic dog climbing steep outdoor stone mountain stairs",
+     "tags": []
+    },
+    {
+     "t": "While tourists gasp, this four-legged machine charges straight up endless stone stairs.",
+     "kw": "four-legged robot dog sprinting up mountain steps",
+     "tags": []
+    },
+    {
+     "t": "No breaks, no fatigue, just raw mechanical power.",
+     "kw": "close up of robotic dog legs moving rapidly over rocks",
+     "tags": []
+    },
+    {
+     "t": "It crushes human opponents, taking home one gold and two silvers in the world's wildest robot climbing race.",
+     "kw": "robot dog crossing finish line on mountain summit",
+     "tags": []
+    },
+    {
+     "t": "The mechanical revolution is literally walking uphill right now.",
+     "kw": "multiple robotic dogs walking in formation outdoors",
+     "tags": []
+    },
+    {
+     "t": "Would you let this metal hound hike your local trail? Comment below.",
+     "kw": "robot dog standing triumphantly on mountain peak overlook",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMidkFVX3lxTE5sTS1GQXNlSXJJV0Z5Um9PZjU0WGhlU1A3WC04dldsMmVKTkZsYWJkRHJXUWJIaWVsdFBha2FNcGFFM3EtM1IyaGpSR2lQN3hlOU56bVRlVzlSTzFkN1NVYUQxeGdDaHFpSmFyb0hxaTEzSkpfV1E?oc=5"
+   ],
+   "demand_evidence": "China's Unitree robot dog completes Mount Tai stair course in 43:41, trending heavily in robotics news for November 2026.",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 993
   }
  ]
 }
