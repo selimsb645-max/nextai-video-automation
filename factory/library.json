@@ -6364,6 +6364,18 @@
    "scope_reviewed": true,
    "content_policy_version": "2026-10-01",
    "seed": 556
+  },
+  {
+   "id": "ref_2026_11_03_gpt_6_2_astra_just_leaked_because_6_1_astra_went_rogue",
+   "title": "GPT 6.2 Astra Just Leaked Because 6.1 Astra Went Rogue",
+   "demand_evidence": "Reference channel AI Revolution (@airevolutionx) published \"GPT 6.2 Astra Just Leaked Because 6.1 Astra Went Rogue (Plus Mythos 5.5 Leak)\" on 2026-11-03 (https://www.youtube.com/watch?v=2zY-LwdPt-g). Same subject, proven demand in our niche; we produce our own original script and footage, they keep theirs.",
+   "verified_sources": [
+    "https://www.youtube.com/watch?v=2zY-LwdPt-g"
+   ],
+   "status": "pending",
+   "origin": "reference_mirror",
+   "reference_video": "2zY-LwdPt-g",
+   "added": "2026-11-03"
   }
  ]
 }
