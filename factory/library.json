@@ -6454,6 +6454,72 @@
    "origin": "reference_mirror",
    "reference_video": "pm7qRMBwPw4",
    "added": "2026-11-05"
+  },
+  {
+   "id": "xiaomi_humanoid_8hr_shift_2026_11_05_2026-11-05",
+   "subject": "Xiaomi humanoid robot",
+   "title": "This Humanoid Robot Worked an 8-Hour Shift",
+   "headline": "8-HOUR SHIFT",
+   "specs": [
+    "8 HOURS",
+    "0 BREAKS",
+    "100 ACCURACY"
+   ],
+   "description": "Xiaomi humanoid robot completes a non-stop 8-hour shift at an EV manufacturing plant. The bipedal machine handled assembly line tasks without human assistance. Related searches: Xiaomi humanoid robot, EV factory robot, humanoid worker, industrial AI, bipedal automation",
+   "tags": [
+    "Xiaomi humanoid robot",
+    "humanoid robot",
+    "factory robot",
+    "AI robotics",
+    "bipedal robot",
+    "industrial automation",
+    "EV plant robot",
+    "robot workforce"
+   ],
+   "narration": "A humanoid robot just finished an eight hour factory shift. No coffee breaks, no bathroom stops, and zero human interference. Inside an active car plant, it aligned precision parts for eight straight hours. Thermal sensors tracked its battery systems to prevent overheating during heavy lifting. Automakers claim this test proves bipedal machines can run production lines right now. Would you trust a robot coworker, or is this hype? Comment below, because...",
+   "beats": [
+    {
+     "t": "A humanoid robot just finished an eight hour factory shift.",
+     "kw": "futuristic humanoid robot walking through automotive manufacturing factory floor",
+     "tags": []
+    },
+    {
+     "t": "No coffee breaks, no bathroom stops, and zero human interference.",
+     "kw": "humanoid robot picking up industrial metal auto parts with robotic hands",
+     "tags": []
+    },
+    {
+     "t": "Inside an active car plant, it aligned precision parts for eight straight hours.",
+     "kw": "humanoid robot precisely positioning mechanical component on assembly line",
+     "tags": []
+    },
+    {
+     "t": "Thermal sensors tracked its battery systems to prevent overheating during heavy lifting.",
+     "kw": "close up shot of glowing sensor nodes on humanoid robot torso operating in factory",
+     "tags": []
+    },
+    {
+     "t": "Automakers claim this test proves bipedal machines can run production lines right now.",
+     "kw": "fleet of metallic humanoid robots standing along industrial assembly line",
+     "tags": []
+    },
+    {
+     "t": "Would you trust a robot coworker, or is this hype? Comment below, because...",
+     "kw": "humanoid robot looking directly into camera inside modern factory setting",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMipwFBVV95cUxQMWQ2ZFNUNGJuOGJGNXhKUGJ0NUUtaXZYS2FNMVpIQW01TTNFOHRodHlKZGsyYV9nMVZQdmNkOVliSGI1OGJNRjlEVTNTVXYtZTRCWEdoRXRsRWdQMFRyZ1dwWlNLVkRGSXBXTlhUeUFEZm5hd0Y0dnAyRzF5WDltU185NjN0V0IxTGQ3QjR5REIzX0Z5LVdHRVUxaWZIVUt6OXEybmxHZw?oc=5"
+   ],
+   "demand_evidence": "Trending story of Xiaomi humanoid robot completing an eight-hour non-stop shift at an automotive assembly plant.",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 347
   }
  ]
 }
