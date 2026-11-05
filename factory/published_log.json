@@ -601,5 +601,14 @@
   "uploaded_at": "2026-11-03T13:12:52+06:00",
   "scheduled_for": "2026-11-03T20:30:00Z",
   "url": "https://www.youtube.com/watch?v=ClixQvN1ewY"
+ },
+ {
+  "id": "xiaomi_humanoid_8hr_shift_2026_11_05_2026-11-05",
+  "videoId": "MHDSM6BsAuY",
+  "title": "This Humanoid Robot Worked an 8-Hour Shift",
+  "kind": "short",
+  "uploaded_at": "2026-11-05T15:31:03+06:00",
+  "scheduled_for": "2026-11-05T20:30:00Z",
+  "url": "https://www.youtube.com/watch?v=MHDSM6BsAuY"
  }
 ]
