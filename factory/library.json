@@ -6599,6 +6599,78 @@
    "scope_reviewed": true,
    "content_policy_version": "2026-10-01",
    "seed": 186
+  },
+  {
+   "id": "agility_digit_ipo_2026_11_06_2026-11-06",
+   "subject": "Agility Digit humanoid robot",
+   "title": "This Robot Lost $138 Million in 1 Year",
+   "headline": "$138M LOSS",
+   "specs": [
+    "1.8M REVENUE",
+    "138M LOSSES",
+    "2.5B VALUE"
+   ],
+   "description": "Agility Digit humanoid robot went public on Nasdaq despite filing $138 million in losses on $1.8 million revenue. Wall Street is placing massive bets on physical AI warehouse automation. Will humanoid robots transform factory work?\n\nRelated searches: Agility Digit, humanoid robot, physical AI, warehouse robots, robot stock IPO",
+   "tags": [
+    "Agility Digit",
+    "humanoid robot",
+    "robotics news",
+    "physical AI",
+    "warehouse robot",
+    "robot IPO",
+    "future tech",
+    "AI automation"
+   ],
+   "narration": "A humanoid robot company just lost $138 million. Agility built Digit to haul heavy warehouse packages without taking a single break. Major factory giants tested the robot live on real assembly lines. But high tech production burnt cash, bringing in just $1.8 million in sales. Instead of backing down, they hit Nasdaq with a massive two billion dollar valuation. Now Wall Street is gambling huge on physical AI replacing human labor fast. Is this pure physical AI hype, or real tech revolution? Real or hype? Comment below.",
+   "beats": [
+    {
+     "t": "A humanoid robot company just lost $138 million.",
+     "kw": "bipedal humanoid robot digit walking in warehouse carrying yellow box",
+     "tags": []
+    },
+    {
+     "t": "Agility built Digit to haul heavy warehouse packages without taking a single break.",
+     "kw": "humanoid robot lifting cardboard box onto conveyor belt",
+     "tags": []
+    },
+    {
+     "t": "Major factory giants tested the robot live on real assembly lines.",
+     "kw": "bipedal robot moving through modern industrial factory floor",
+     "tags": []
+    },
+    {
+     "t": "But high tech production burnt cash, bringing in just $1.8 million in sales.",
+     "kw": "close up shot of humanoid robot legs walking on concrete floor",
+     "tags": []
+    },
+    {
+     "t": "Instead of backing down, they hit Nasdaq with a massive two billion dollar valuation.",
+     "kw": "humanoid robot standing lit up under dramatic blue lights",
+     "tags": []
+    },
+    {
+     "t": "Now Wall Street is gambling huge on physical AI replacing human labor fast.",
+     "kw": "futuristic bipedal humanoid robot turning head toward camera",
+     "tags": []
+    },
+    {
+     "t": "Is this pure physical AI hype, or real tech revolution? Real or hype? Comment below.",
+     "kw": "bipedal humanoid robot walking directly forward into dark studio camera",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMilwFBVV95cUxOOVhuTGZYdlNoSW9GdDNDYXhldl9ycTRNbFFPcERydDJpeExteEV6R091UDRlVzY5ZUFQY05JU2Z1ZHpSX0loTlduUDBJVjhOUVBfYjdIY0M3V19UeV9IeEtzZk9jemFaS2JnamlQTHNCcGNSbjF6OVBpSWpCNmFSclhZSVNHaG5Ld2V2NkJhRkQyVTVsUWNj?oc=5",
+    "https://news.google.com/rss/articles/CBMimgFBVV95cUxObVZvM2ltdDFRcEFzdHJaSkhuTHl1eTlReVlQaGtyX2dyS0JJeHh4b2xESXZJeUx1Vjd5VUYxYzVaTnlMaXJFcl8zWGtOWXliRW1VbmhpN2xMTFo2OGctRDVCVDdXTzNwV1pPeldGZkdEMW4xeUJSVFVNSEN6TkRRSDladnRBWW41ZWlmalBfNURsaGwyNEl3aEJB?oc=5"
+   ],
+   "demand_evidence": "Agility Robotics listed on Nasdaq as the first U.S. pure-play humanoid robot stock with financial filings showing $1.8M in revenue against $138M in losses, spiking intense trending search volume.",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 69
   }
  ]
 }
