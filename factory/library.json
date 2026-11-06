@@ -6532,6 +6532,73 @@
    "origin": "reference_mirror",
    "reference_video": "YE2hf9WjUME",
    "added": "2026-11-06"
+  },
+  {
+   "id": "agility_robotics_nasdaq_2026_11_06_2026-11-06",
+   "subject": "Agility Robotics Digit humanoid robot",
+   "title": "Agility Robotics Just Hit Wall Street at $2.5B",
+   "headline": "$2.5B VALUATION",
+   "specs": [
+    "2.5B VALUE",
+    "NASDAQ:AGLT",
+    "30+ CLIENTS"
+   ],
+   "description": "Agility Robotics and its bipedal humanoid robot Digit just made history by going public on Nasdaq with a massive $2.5 billion valuation. Watch how this milestone is changing the physical AI industry forever. Related searches: Agility Robotics IPO, Digit humanoid robot, AGLT stock, physical AI market, humanoid robots on Wall Street.",
+   "tags": [
+    "Agility Robotics",
+    "Digit robot",
+    "Humanoid",
+    "Nasdaq",
+    "AGLT",
+    "Physical AI",
+    "Tech IPO",
+    "Robotics"
+   ],
+   "narration": "Wall Street just welcomed its very first pure-play humanoid robot maker! Agility Robotics officially hit the Nasdaq with a stunning $2.5 billion valuation. Backed by tech giants, the creators of the bipedal Digit robot are scaling up fast. Over thirty major companies are lining up to deploy these mechanical workers into real warehouses. Physical AI officially has legs on the stock market. Are humanoid stocks a buy or a massive bubble? Comment below and let me know!",
+   "beats": [
+    {
+     "t": "Wall Street just welcomed its very first pure-play humanoid robot maker!",
+     "kw": "humanoid robot walking inside modern corporate stock exchange floor",
+     "tags": []
+    },
+    {
+     "t": "Agility Robotics officially hit the Nasdaq with a stunning $2.5 billion valuation.",
+     "kw": "bipedal humanoid robot walking confidently past financial trading screens",
+     "tags": []
+    },
+    {
+     "t": "Backed by tech giants, the creators of the bipedal Digit robot are scaling up fast.",
+     "kw": "two-legged humanoid robot walking through bright automated warehouse aisle",
+     "tags": []
+    },
+    {
+     "t": "Over thirty major companies are lining up to deploy these mechanical workers into real warehouses.",
+     "kw": "humanoid robot lifting package and placing it onto warehouse conveyor belt",
+     "tags": []
+    },
+    {
+     "t": "Physical AI officially has legs on the stock market.",
+     "kw": "bipedal robot standing tall under glowing digital ticker symbols",
+     "tags": []
+    },
+    {
+     "t": "Are humanoid stocks a buy or a massive bubble? Comment below and let me know!",
+     "kw": "close up of advanced humanoid robot face looking directly at camera",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMimgFBVV95cUxObVZvM2ltdDFRcEFzdHJaSkhuTHl1eTlReVlQaGtyX2dyS0JJeHh4b2xESXZJeUx1Vjd5VUYxYzVaTnlMaXJFcl8zWGtOWXliRW1VbmhwN2xMTFo2OGctRDVCVDdXTzNwV1pPeldGZkdEMW4xeUJSVFVNSEN6TkRRSDladnRBWW41ZWlmalBfNURsaGwyNEl3aEJB?oc=5",
+    "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPNEFfTDRRc2FDSEtON0h2MDNVTUszdjVCSk9YX3BDQ092VEQ5Qm12SzBJbnczWWxxY1F3R2NNZEVBMDFzbDNRVEhGamxPWnRqVWlfdV8wbktCUHlSV3lSMnBfbFc0djBack5mOWlLZzloOEMtbmktWDFjc0p5Nm12Z2ZiUlVOREU3MWlfUGVzMENPOXVtRlRkOG13YVlHRWZDX0Z4ME5YVlNMUHAyZFJ6djRYVDBGWTNvU21n?oc=5"
+   ],
+   "demand_evidence": "Agility Robotics going public on Nasdaq at $2.5B is the top trending AI robot business milestone this week.",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 186
   }
  ]
 }
