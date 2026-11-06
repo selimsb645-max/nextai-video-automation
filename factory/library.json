@@ -6671,6 +6671,68 @@
    "scope_reviewed": true,
    "content_policy_version": "2026-10-01",
    "seed": 69
+  },
+  {
+   "id": "agility_robotics_ipo_2026_11_06_2026-11-06",
+   "subject": "Agility Robotics Digit",
+   "title": "Nvidia-Backed Robot Maker Hits Wall Street at $2.5B",
+   "headline": "$2.5 BILLION VALUATION",
+   "specs": [
+    "1.8M SALES",
+    "138M LOSS",
+    "NASDAQ:AGIL"
+   ],
+   "description": "Agility Robotics and its Digit humanoid robot just hit Wall Street with a massive valuation in a historic US market debut. Watch how physical AI is changing the future of work. Related searches: Agility Robotics IPO, Digit humanoid robot, Nvidia backed robots, humanoid stocks, robot workforce 2026.",
+   "tags": [
+    "Agility Robotics",
+    "Digit robot",
+    "Humanoid IPO",
+    "Nvidia robotics",
+    "Wall Street",
+    "Tech news",
+    "Future of work",
+    "Physical AI"
+   ],
+   "narration": "A humanoid robot maker just hit Wall Street with a massive two point five billion dollar valuation. Agility Robotics is officially trading on Nasdaq, backed by heavy hitters like Nvidia. But behind the hype lie stark numbers: one point eight million in sales versus a hundred thirty-eight million in losses. Over thirty major companies are already testing their bipedal Digit robots for real warehouse labor. Are humanoid stocks the ultimate gold rush, or a massive bubble waiting to pop? Real or hype? Comment below.",
+   "beats": [
+    {
+     "t": "A humanoid robot maker just hit Wall Street with a massive two point five billion dollar valuation.",
+     "kw": "humanoid robot walking in modern corporate lobby",
+     "tags": []
+    },
+    {
+     "t": "Agility Robotics is officially trading on Nasdaq, backed by heavy hitters like Nvidia.",
+     "kw": "robotics company stock market opening bell screen",
+     "tags": []
+    },
+    {
+     "t": "But behind the hype lie stark numbers: one point eight million in sales versus a hundred thirty-eight million in losses.",
+     "kw": "bipedal humanoid robot walking down warehouse aisle",
+     "tags": []
+    },
+    {
+     "t": "Over thirty major companies are already testing their bipedal Digit robots for real warehouse labor.",
+     "kw": "humanoid robot lifting package in distribution center",
+     "tags": []
+    },
+    {
+     "t": "Are humanoid stocks the ultimate gold rush, or a massive bubble waiting to pop? Real or hype? Comment below.",
+     "kw": "humanoid robot waving to camera in tech lab",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMimgFBVV95cUxObVZvM2ltdDFRcEFzdHJaSkhuTHl1eTlReVlQaGtyX2dyS0JJeHh4b2xESXZJeUx1Vjd5VUYxYzVaTnlMaXJFcl8zWGtOWXliRW1VbmhwN2xMTFo2OGctRDVCVDdXTzNwV1pPeldGZkdEMW4xeUJSVFVNSEN6TkRRSDladnRBWW41ZWlmalBfNURsaGwyNEl3aEJB?oc=5",
+    "https://news.google.com/rss/articles/CBMilwFBVV95cUxOOVhuTGZYdlNoSW9GdDNDYXhldl9ycTRNbFFPcERydDJpeExteEV6R091UDRlVzY5ZUFQY05JU2Z1ZHpSX0loTlduUDBJVjhOUVBfYjdIY0M3V19UeV9IeEtzZk9jemFaS2JnamlQTHNCcGNSbjF6OVBpSWpCNmFSclhZSVNHaG5Ld2V2NkJhRkQyVTVsUWNj?oc=5"
+   ],
+   "demand_evidence": "Selected Nvidia-Backed Agility Robotics Goes Public at $2.5B in Humanoid Robot Milestone from TechRepublic as it represents a massive trending financial and technological milestone for humanoid robots on Wall Street.",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 296
   }
  ]
 }
