@@ -6733,6 +6733,18 @@
    "scope_reviewed": true,
    "content_policy_version": "2026-10-01",
    "seed": 296
+  },
+  {
+   "id": "ref_2026_11_07_ai_went_crazy_again_google_omni_1_2_claude_s_2x_accelerati",
+   "title": "AI Went Crazy Again: Google Omni 1.2, Claude's 2X Acceleration, GPT-6.2",
+   "demand_evidence": "Reference channel AI Revolution (@airevolutionx) published \"AI Went Crazy Again: Google Omni 1.2, Claude's 2X Acceleration, GPT-6.2\" on 2026-11-07 (https://www.youtube.com/watch?v=Zze_PoI_xh0). Same subject, proven demand in our niche; we produce our own original script and footage, they keep theirs.",
+   "verified_sources": [
+    "https://www.youtube.com/watch?v=Zze_PoI_xh0"
+   ],
+   "status": "pending",
+   "origin": "reference_mirror",
+   "reference_video": "Zze_PoI_xh0",
+   "added": "2026-11-07"
   }
  ]
 }
