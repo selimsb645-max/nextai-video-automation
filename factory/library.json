@@ -6745,6 +6745,77 @@
    "origin": "reference_mirror",
    "reference_video": "Zze_PoI_xh0",
    "added": "2026-11-07"
+  },
+  {
+   "id": "unitree_g1_mount_tai_2026_11_07_2026-11-07",
+   "subject": "Unitree G1",
+   "title": "This Humanoid Collapsed on 3,000 Mountain Steps",
+   "headline": "3,000 MOUNTAIN STEPS",
+   "specs": [
+    "3000 STEPS",
+    "UNITREE G1",
+    "HEATSTROKE"
+   ],
+   "description": "Unitree G1 humanoid robot suffered mechanical heatstroke and collapsed while climbing 3,000 steep stone steps on Mount Tai. Engineers faced extreme heat and motor failures during the robotics endurance test. Related searches: Unitree G1 humanoid, Mount Tai robot race, robot climbing stairs, humanoid endurance test, humanoid fails",
+   "tags": [
+    "Unitree G1",
+    "Humanoid Robot",
+    "Robot Fail",
+    "Mount Tai",
+    "Robot Climbing",
+    "Robotics News",
+    "Tech Fail",
+    "Future Tech"
+   ],
+   "narration": "3,000 vertical mountain steps just crushed a humanoid robot. China sent the Unitree G1 to conquer Mount Tai’s brutal stone staircase. Leg motors pushed to maximum torque while climbing the steep incline. Friction built up fast, spiking core temperatures past critical limits. Mid-climb, the robot suffered mechanical heatstroke, locked its limbs, and collapsed. Engineers rushed to carry the shutdown android down the mountain. Heroic fail or tech hype? Comment below, because...",
+   "beats": [
+    {
+     "t": "3,000 vertical mountain steps just crushed a humanoid robot.",
+     "kw": "humanoid robot standing at bottom of massive steep stone mountain steps",
+     "tags": []
+    },
+    {
+     "t": "China sent the Unitree G1 to conquer Mount Tai’s brutal stone staircase.",
+     "kw": "humanoid robot taking first steps onto steep ancient stone outdoor staircase",
+     "tags": []
+    },
+    {
+     "t": "Leg motors pushed to maximum torque while climbing the steep incline.",
+     "kw": "close up of humanoid robot mechanical legs climbing stone steps",
+     "tags": []
+    },
+    {
+     "t": "Friction built up fast, spiking core temperatures past critical limits.",
+     "kw": "humanoid robot shaking and struggling mid-step on mountain trail",
+     "tags": []
+    },
+    {
+     "t": "Mid-climb, the robot suffered mechanical heatstroke, locked its limbs, and collapsed.",
+     "kw": "humanoid robot powering down and collapsing onto stone steps",
+     "tags": []
+    },
+    {
+     "t": "Engineers rushed to carry the shutdown android down the mountain.",
+     "kw": "tech engineers carrying fallen humanoid robot down steep outdoor stairs",
+     "tags": []
+    },
+    {
+     "t": "Heroic fail or tech hype? Comment below, because...",
+     "kw": "humanoid robot torso resting on ground on mountain peak",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMimgFBVV95cUxPd1U4Y0RCS3RzeTRsUFdKOExQVlZjTW83aERGcGo0WmJ1aFd5b0xSanhvd1R3SlVnV0xuUW5DVGxxZ3VVVV9ZNGNXUW4ySUJiNVdqM1gwN25SeTNhb0tYWl9HVDR6WHhjbkdmRDEyVzI2aVNXSkNrN0Y2WnZlUDNoQTRRbzItX3RZMFc0UjRNNlBWSWM5aE10bHln?oc=5"
+   ],
+   "demand_evidence": "Trending headline regarding Unitree G1 humanoid robot collapsing from heatstroke during the Mount Tai climbing challenge.",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 182
   }
  ]
 }
