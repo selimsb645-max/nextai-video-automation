@@ -6816,6 +6816,67 @@
    "scope_reviewed": true,
    "content_policy_version": "2026-10-01",
    "seed": 352
+  },
+  {
+   "id": "unitree_mount_tai_stair_climb_2026_11_07_2026-11-07",
+   "subject": "Unitree robot dog",
+   "title": "Robot Climbs 3,000 Stairs in 43 Minutes",
+   "headline": "3,000 STAIRS IN 43 MINS",
+   "specs": [
+    "3000 STEPS",
+    "43:41 MIN",
+    "1 GOLD"
+   ],
+   "description": "A Unitree robot dog conquered over 3,000 stairs on China's Mount Tai in 43 minutes, taking home gold and silver medals. Watch how this quadruped machine powered through the extreme natural obstacle course. Related searches: Unitree robot dog, Mount Tai robot race, quadruped robot stairs, robot climbing competition, Unitree milestone",
+   "tags": [
+    "Unitree robot dog",
+    "Mount Tai",
+    "robot stairs",
+    "robot climbing",
+    "robot race",
+    "quadruped robot",
+    "Unitree",
+    "robot competition"
+   ],
+   "narration": "This robot dog just climbed over 3,000 jagged stairs on Mount Tai in forty-three minutes. Facing the ultimate natural obstacle course, the quadruped machine scrambled up the sacred mountain path without missing a beat, hauling home gold and silver medals. While human climbers struggle with the grueling elevation, this mechanical beast treats thousands of steps like a morning jog. Is this the end of human mountaineering records, or just a cool stunt? Real or hype? Comment below, and loop back to see it climb again.",
+   "beats": [
+    {
+     "t": "This robot dog just climbed over 3,000 jagged stairs on Mount Tai in forty-three minutes.",
+     "kw": "metallic robot dog climbing steep stone mountain stairs outdoors",
+     "tags": []
+    },
+    {
+     "t": "Facing the ultimate natural obstacle course, the quadruped machine scrambled up the sacred mountain path without missing a beat.",
+     "kw": "four-legged robot dog sprinting up rocky outdoor mountain steps",
+     "tags": []
+    },
+    {
+     "t": "Hauling home gold and silver medals, it proved its endurance in extreme terrain.",
+     "kw": "close-up of robotic joints flexing rapidly while climbing stairs",
+     "tags": []
+    },
+    {
+     "t": "While human climbers struggle with the grueling elevation, this mechanical beast treats thousands of steps like a morning jog.",
+     "kw": "robot dog navigating steep mountain edge with scenic background",
+     "tags": []
+    },
+    {
+     "t": "Real or hype? Comment below, and watch it climb again.",
+     "kw": "robot dog crossing finish line on mountain peak",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMidkFVX3lxTE5sTS1GQXNlSXJJV0Z5Um9PZjU0WGhlU1A3WC04dldsMmVKTkZsYWJkRHJXUWJIaWVsdFBha2FNcGFFM3EtM1IyaGpSR2lQN3hlOU56bVRlVzlSTzFkN1NVYUQxeGdDaHFpSmFyb0hxaTEzSkpfV1E?oc=5"
+   ],
+   "demand_evidence": "Unitree robot dog completing the Mount Tai stair climbing race in 43:41 is a top trending story this week.",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 720
   }
  ]
 }
