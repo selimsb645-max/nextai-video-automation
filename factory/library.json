@@ -6901,6 +6901,72 @@
    "origin": "reference_mirror",
    "reference_video": "AsLMxRjV9QQ",
    "added": "2026-11-11"
+  },
+  {
+   "id": "xiaomi_humanoid_8hr_shift_2026_11_11_2026-11-11",
+   "subject": "Xiaomi humanoid robot",
+   "title": "Robots Now Work 8-Hour Factory Shifts",
+   "headline": "8-HOUR SHIFT",
+   "specs": [
+    "8 HOUR SHIFT",
+    "100 AUTOMATED",
+    "EV FACTORY"
+   ],
+   "description": "The Xiaomi humanoid robot just completed a full 8-hour shift inside an electric vehicle factory. Engineers monitored the robot as it handled continuous assembly line tasks with zero human intervention. This marks a massive leap forward for industrial humanoid automation. Related searches: Xiaomi humanoid robot, factory humanoid robot, AI manufacturing, EV factory automation, robotics revolution.",
+   "tags": [
+    "humanoid robot",
+    "factory robot",
+    "robot shift",
+    "AI robotics",
+    "automation",
+    "EV factory",
+    "future of work",
+    "robot tech"
+   ],
+   "narration": "This humanoid robot just worked a full eight-hour shift. Inside a massive EV factory, engineers stepped aside and let the robot take over. It grabbed metal parts, aligned heavy components, and welded joints without stopping once. No coffee breaks, no bathroom runs, just pure mechanical precision for eight straight hours. When its battery ran low, it docked itself, swapped power, and got right back to work. Humanoid workers are officially here—would you work alongside one? Real or hype? Comment below.",
+   "beats": [
+    {
+     "t": "This humanoid robot just worked a full eight-hour shift.",
+     "kw": "humanoid robot standing on industrial assembly line",
+     "tags": []
+    },
+    {
+     "t": "Inside a massive EV factory, engineers stepped aside and let the robot take over.",
+     "kw": "sleek metallic humanoid robot walking through automated factory floor",
+     "tags": []
+    },
+    {
+     "t": "It grabbed metal parts, aligned heavy components, and welded joints without stopping once.",
+     "kw": "humanoid robot grabbing metal car parts with robotic fingers",
+     "tags": []
+    },
+    {
+     "t": "No coffee breaks, no bathroom runs, just pure mechanical precision for eight straight hours.",
+     "kw": "humanoid robot precision welding automotive chassis with sparks",
+     "tags": []
+    },
+    {
+     "t": "When its battery ran low, it docked itself, swapped power, and got right back to work.",
+     "kw": "humanoid robot plugging into automated charging station",
+     "tags": []
+    },
+    {
+     "t": "Humanoid workers are officially here—would you work alongside one? Real or hype? Comment below.",
+     "kw": "humanoid robot operating side by side with factory worker",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMigwFBVV95cUxPRHlsVE02aUd1U3ozeUxFNi1BdFljTU1FOVNtbXNXd0dmYnRSYUZiYUFkQXlpc0ZtZG8xOTFjc3V6aEZ5aklYd3Y5d3ZYTnExR2RsbnpEU1pIbWluWC1IZDhIYWowaWtBM1dGa3FydkNkZUxTWURWaHV5ZHlhU2lkY0NXUQ?oc=5"
+   ],
+   "demand_evidence": "Headline 'Xiaomi’s humanoid robots work a full 8-hour shift in its EV factory' demonstrates high interest in commercial real-world humanoid deployment.",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 461
   }
  ]
 }
