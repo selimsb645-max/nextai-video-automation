@@ -7034,6 +7034,78 @@
    "scope_reviewed": true,
    "content_policy_version": "2026-10-01",
    "seed": 368
+  },
+  {
+   "id": "agility_digit_wall_street_2026_11_12_2026-11-12",
+   "subject": "Agility Digit",
+   "title": "Humanoid Robot Hits Wall St With $138M Loss",
+   "headline": "$138M LOSS",
+   "specs": [
+    "1.8M SALES",
+    "138M LOSSES",
+    "NASDAQ LISTED"
+   ],
+   "description": "Agility Robotics made history taking its Digit humanoid robot public on Nasdaq despite showing $138 million in losses. Is physical AI a brilliant leap or Wall Street hype? Related searches: Agility Digit humanoid robot, Agility Robotics IPO, humanoid robot market 2026, warehouse automation robots, Agility Digit Nasdaq listing.",
+   "tags": [
+    "Agility Digit",
+    "humanoid robot",
+    "Agility Robotics",
+    "robotics IPO",
+    "Digit robot",
+    "warehouse robot",
+    "physical AI",
+    "robot stocks"
+   ],
+   "narration": "A humanoid robot just landed on Wall Street carrying a hundred thirty-eight million dollar loss. Digit is officially the first pure-play humanoid robot trading publicly on Nasdaq. Inside giant logistics centers, this robot works beside humans picking up heavy boxes. Financial filings show it made under two million dollars while burning over a hundred million. Yet investors still poured four hundred sixty-five million dollars of fresh cash into it. Is this the ultimate robotics stock bubble or the future of physical work? Real or hype? Comment below.",
+   "beats": [
+    {
+     "t": "A humanoid robot just landed on Wall Street carrying a hundred thirty-eight million dollar loss.",
+     "kw": "bipedal humanoid robot walking onto stock market floor neon screens",
+     "tags": []
+    },
+    {
+     "t": "Digit is officially the first pure-play humanoid robot trading publicly on Nasdaq.",
+     "kw": "bipedal humanoid robot standing under bright corporate lights moving arms",
+     "tags": []
+    },
+    {
+     "t": "Inside giant logistics centers, this robot works beside humans picking up heavy boxes.",
+     "kw": "bipedal humanoid robot lifting yellow plastic bin inside warehouse",
+     "tags": []
+    },
+    {
+     "t": "Financial filings show it made under two million dollars while burning over a hundred million.",
+     "kw": "bipedal humanoid robot stepping backwards near conveyer belt",
+     "tags": []
+    },
+    {
+     "t": "Yet investors still poured four hundred sixty-five million dollars of fresh cash into it.",
+     "kw": "bipedal humanoid robot walking forward smoothly in industrial test lab",
+     "tags": []
+    },
+    {
+     "t": "Is this the ultimate robotics stock bubble or the future of physical work?",
+     "kw": "bipedal humanoid robot placing package onto warehouse shelf",
+     "tags": []
+    },
+    {
+     "t": "Real or hype? Comment below.",
+     "kw": "bipedal humanoid robot turning head towards camera in warehouse",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMixAFBVV95cUxNZUhIZWxaQW9pMEsyOWUwQldtNE9tMTdYVklPOXc2RWFyVzlpb2RtOVZDZnZaOEFEU0xwTk84dFdYQVZOQ18wVE5abGpqaTdQdWYtMUdrbjZiNEhJbHNxQVkwampYM2p3Y2hsci10RzRGdllwME4wRlZfRks0NFJIU2lMSVItNXFPZmdPMTZCQ29MeVUxTzNLRHRyVG5QMVBLakhyNFMwSG5NOWxVcENXQU8xVkZZZDVmMHVXSnh6dHp2cUpy?oc=5",
+    "https://news.google.com/rss/articles/CBMi4wFBVV95cUxNWFY5Z2pNTXBneGdERERGbUxuNnRIa2hOVEUwMWZHOXpyVkJlVF9HcWNQM1lteXZ3d1E3WTBpUWRqZEdueVlQSWd5eng2UGRpV0pOODZWN3kyTE9GN3ZQY0R3bVJTdzdrcjJJX2s3M0dzREFjR19FTklfWjEzRmVaNGFCM0NnMUdRMWtoaXNoMkY5YU5kNENuaDd3VEpoZnZNSFk5QTZGS1drZXFkYkFGR1M0UE85dzA0c1NjcFRuaUpiVU82X2hOT2RiU1VoNmFITkNjT2hoZkJZS1prMWtEVkpuYw?oc=5"
+   ],
+   "demand_evidence": "Agility Robotics went public on Nasdaq with $465M raised and $138M in losses against $1.8M revenue.",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 994
   }
  ]
 }
