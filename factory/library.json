@@ -6967,6 +6967,73 @@
    "scope_reviewed": true,
    "content_policy_version": "2026-10-01",
    "seed": 461
+  },
+  {
+   "id": "agility_digit_humanoid_short_2026_11_12_2026-11-12",
+   "subject": "Agility Digit",
+   "title": "This Humanoid Lost $138M to Make $1.8M",
+   "headline": "LOST $138M",
+   "specs": [
+    "2.5B VALUE",
+    "1.8M SALES",
+    "138M LOSS"
+   ],
+   "description": "Agility Robotics Digit went public at a $2.5B valuation despite $138M in losses and $1.8M in revenue. Humanoid robotics is entering public markets with high stakes. Related searches: Agility Digit, humanoid robot IPO, Agility Robotics Nasdaq, commercial humanoid robots, warehouse robot automation",
+   "tags": [
+    "Agility Digit",
+    "Agility Robotics",
+    "humanoid robot",
+    "robotics stock",
+    "warehouse robot",
+    "AI robotics",
+    "tech news",
+    "future tech"
+   ],
+   "narration": "This humanoid robot company just lost 138 million dollars. Agility Robotics just listed on Nasdaq with a two point five billion dollar valuation. Their bipedal robot Digit carries plastic totes inside busy logistics warehouses. Financial filings show the company made only one point eight million in sales. Investors are betting massive capital that robotic labor replaces human warehouse workers. Is a multibillion valuation crazy for a box-carrying bot? Real or hype? Comment below.",
+   "beats": [
+    {
+     "t": "This humanoid robot company just lost 138 million dollars.",
+     "kw": "bipedal humanoid robot walking down a brightly lit hallway",
+     "tags": []
+    },
+    {
+     "t": "Agility Robotics just listed on Nasdaq with a two point five billion dollar valuation.",
+     "kw": "bipedal humanoid robot standing still under spotlight stage lights",
+     "tags": []
+    },
+    {
+     "t": "Their bipedal robot Digit carries plastic totes inside busy logistics warehouses.",
+     "kw": "bipedal humanoid robot lifting yellow plastic bin from warehouse shelf",
+     "tags": []
+    },
+    {
+     "t": "Financial filings show the company made only one point eight million in sales.",
+     "kw": "bipedal humanoid robot walking backward while carrying heavy cargo box",
+     "tags": []
+    },
+    {
+     "t": "Investors are betting massive capital that robotic labor replaces human warehouse workers.",
+     "kw": "bipedal humanoid robot placing cardboard box onto automated conveyer belt",
+     "tags": []
+    },
+    {
+     "t": "Is a multibillion valuation crazy for a box-carrying bot? Real or hype? Comment below.",
+     "kw": "bipedal humanoid robot turning head toward camera in modern factory",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMixAFBVV95cUxNZUhIZWxaQW9pMEsyOWUwQldtNE9tMTdYVklPOXc2RWFyVzlpb2RtOVZDZnZaOEFEU0xwTk84dFdYQVZOQ18wVE5abGpqaTdQdWYtMUdrbjZiNEhJbHNxQVkwampYM2p3Y2hsci10RzRGdllwME4wRlZfRks0NFJIU2lMSVItNXFPZmdPMTZCQ29MeVUxTzNLRHRyVG5QMVBLakhyNFMwSG5NOWxVcENXQU8xVkZZZDVmMHVXSnh6dHp2cUpy?oc=5",
+    "https://news.google.com/rss/articles/CBMimgFBVV95cUxObVZvM2ltdDFRcEFzdHJaSkhuTHl1eTlReVlQaGtyX2dyS0JJeHh4b2xESXZJeUx1Vjd5VUYxYzVaTnlMaXJFcl8zWGtOWXliRW1VbmhwN2xMTFo2OGctRDVCVDdXTzNwV1pPeldGZkdEMW4xeUJSVFVNSEN6TkRRSDladnRBWW41ZWlmalBfNURsaGwyNEl3aEJB?oc=5"
+   ],
+   "demand_evidence": "Agility Robotics listed on Nasdaq at a $2.5B market valuation despite generating $1.8M in revenue against $138M in losses, creating massive trending intrigue around public humanoid robotics companies.",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 368
   }
  ]
 }
