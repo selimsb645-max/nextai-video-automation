@@ -7184,6 +7184,72 @@
    "scope_reviewed": true,
    "content_policy_version": "2026-10-01",
    "seed": 547
+  },
+  {
+   "id": "figure_03_100k_robots_2026_11_13_2026-11-13",
+   "subject": "Figure 03 humanoid robot",
+   "title": "100,000 Humanoid Robots Just Hit Production",
+   "headline": "100,000 BOTS",
+   "specs": [
+    "100K UNITS",
+    "BOTQ FACTORY",
+    "AUTONOMOUS"
+   ],
+   "description": "Figure 03 humanoid robots just walked out of the BotQ factory as Figure AI scales mass manufacturing toward 100,000 autonomous units. Watch how next-generation bipedal humanoids are rapidly reshaping factory automation worldwide.\nRelated searches: figure 03 robot, figure ai humanoid, mass production robots, botq factory, autonomous factory robots",
+   "tags": [
+    "figure 03",
+    "figure ai",
+    "humanoid robot",
+    "botq factory",
+    "robotics news",
+    "ai factory",
+    "bipedal robot",
+    "future tech"
+   ],
+   "narration": "One hundred thousand humanoid robots just entered mass production today. Inside a massive automated megafactory, Figure 03 humanoids are assembling themselves. They pack boxes, carry metal crates, and handle heavy warehouse tools without stopping. Artificial intelligence coordinates every step, learning complex physical tasks in real time. As production scales exponentially, human factory workers are being replaced faster than expected. Will these bots take over your job next? Real or hype? Comment below because...",
+   "beats": [
+    {
+     "t": "One hundred thousand humanoid robots just entered mass production today.",
+     "kw": "futuristic humanoid robot walking off high tech assembly line floor",
+     "tags": []
+    },
+    {
+     "t": "Inside a massive automated megafactory, Figure 03 humanoids are assembling themselves.",
+     "kw": "robotic arm attaching leg piece onto sleek metallic humanoid robot body",
+     "tags": []
+    },
+    {
+     "t": "They pack boxes, carry metal crates, and handle heavy warehouse tools without stopping.",
+     "kw": "bipedal humanoid robot picking up heavy plastic crate in industrial warehouse",
+     "tags": []
+    },
+    {
+     "t": "Artificial intelligence coordinates every step, learning complex physical tasks in real time.",
+     "kw": "close up humanoid robot face sensor glowing blue in modern tech lab",
+     "tags": []
+    },
+    {
+     "t": "As production scales exponentially, human factory workers are being replaced faster than expected.",
+     "kw": "fleet of metallic humanoid robots walking in sync inside spacious modern factory",
+     "tags": []
+    },
+    {
+     "t": "Will these bots take over your job next? Real or hype? Comment below because...",
+     "kw": "humanoid robot turning head toward camera in brightly lit automated facility",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMivgFBVV95cUxQUjhHRWxZenhNeFJTdE5mb3NLbWZORUgyNmtJbU9SaGRJeUNjOE5IMExYNWlmQW4xMl95THducmZBSVZVYUwxbEVrVmZUd1VqQm1GZU81V3FKdHl4cklBTVprUERzeGY5Wi1OSmxWLVpnY3lRaVBPMDRieUJvWmk0UlRFUHhOSTJTUTlSN2d5Q0FpbU9vYS1nU2VydjFJSkhFLWJjc1ZYa3NxZ0YwbWNuR0xMLTVzSXhCdUhoMHRR?oc=5"
+   ],
+   "demand_evidence": "Figure 03 humanoids walking out of BotQ factory headline highlights aggressive commercial scaling toward 100,000 units, driving massive search interest in humanoid mass production.",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 356
   }
  ]
 }
