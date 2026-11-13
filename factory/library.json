@@ -7118,6 +7118,72 @@
    "origin": "reference_mirror",
    "reference_video": "HPCayerH1Jw",
    "added": "2026-11-13"
+  },
+  {
+   "id": "figure_03_production_100k_2026_11_13_2026-11-13",
+   "subject": "Figure 03 humanoid robot",
+   "title": "100,000 Figure 03 Humanoids Enter Production",
+   "headline": "100,000 ROBOTS",
+   "specs": [
+    "100K UNITS",
+    "BOTQ FACTORY",
+    "FIGURE 03"
+   ],
+   "description": "Figure 03 humanoid robots are officially entering mass production as Figure AI scales manufacturing toward 100,000 units at its BotQ facility. These autonomous humanoids are built to take over factory and warehouse labor at scale.\nRelated searches: figure 03 robot, figure ai humanoid, botq factory, autonomous robots 2026, real humanoid robots",
+   "tags": [
+    "figure 03",
+    "figure ai",
+    "humanoid robot",
+    "robotics",
+    "botq factory",
+    "tech news",
+    "future tech",
+    "ai robots"
+   ],
+   "narration": "100,000 humanoid robots are officially stepping off assembly lines. Figure AI just unlocked its massive BotQ mega-factory to scale mass production. Their new Figure 03 models walk out completely autonomous and ready for heavy labor. They weld, pack, and inspect real factory floors without a single human controlling them. With thousands shipping right now, the age of robotic workers is finally here. Would you trust a robot co-worker? Real or hype? Comment below.",
+   "beats": [
+    {
+     "t": "100,000 humanoid robots are officially stepping off assembly lines.",
+     "kw": "futuristic metallic humanoid robot stepping off high tech factory conveyor belt",
+     "tags": []
+    },
+    {
+     "t": "Figure AI just unlocked its massive BotQ mega-factory to scale mass production.",
+     "kw": "massive automated humanoid robot assembly floor with glowing robotic arms working",
+     "tags": []
+    },
+    {
+     "t": "Their new Figure 03 models walk out completely autonomous and ready for heavy labor.",
+     "kw": "sleek black humanoid robot walking smoothly through industrial warehouse",
+     "tags": []
+    },
+    {
+     "t": "They weld, pack, and inspect real factory floors without a single human controlling them.",
+     "kw": "humanoid robot lifting heavy wooden shipping crate with precise mechanical fingers",
+     "tags": []
+    },
+    {
+     "t": "With thousands shipping right now, the age of robotic workers is finally here.",
+     "kw": "long row of shiny identical humanoid robots standing in futuristic facility",
+     "tags": []
+    },
+    {
+     "t": "Would you trust a robot co-worker? Real or hype? Comment below.",
+     "kw": "humanoid robot turning head to stare directly into camera lens",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMivgFBVV95cUxQUjhHRWxZenhNeFJTdE5mb3NLbWZORUgyNmtJbU9SaGRJeUNjOE5IMExYNWlmQW4xMl95THducmZBSVZVYUwxbEVrVmZUd1VqQm1GZU81V3FKdHl4cklBTVprUERzeGY5Wi1OSmxWLVpnY3lRaVBPMDRieUJvWmk0UlRFUHhOSTJTUTlSN2d5Q0FpbU9vYS1nU2VydjFJSkhFLWJjc1ZYa3NxZ0YwbWNuR0xMLTVzSXhCdUhoMHRR?oc=5"
+   ],
+   "demand_evidence": "Figure 03 Humanoids Walk Out of BotQ Factory as Figure AI Scales Toward 100,000 Robots headline on Business Upturn on Nov 13, 2026.",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 547
   }
  ]
 }
