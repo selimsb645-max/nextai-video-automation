@@ -1,0 +1,41 @@
+{
+ "trick": "trick_egret_fakedeath",
+ "title": "This Egret Plays Dead to Catch Fish",
+ "videoId": null,
+ "scheduled_for": null,
+ "slot": "None",
+ "beats": 5,
+ "selftest": true,
+ "clips": [
+  {
+   "file": "tricks/trick_egret_fakedeath_b0.mp4",
+   "query": "great egret",
+   "page": "https://pixabay.com/videos/id-226516/",
+   "dur": 13.72
+  },
+  {
+   "file": "tricks/trick_egret_fakedeath_b1.mp4",
+   "query": "heron water",
+   "page": "https://pixabay.com/videos/id-27279/",
+   "dur": 27.56
+  },
+  {
+   "file": "tricks/trick_egret_fakedeath_b2.mp4",
+   "query": "fish underwater",
+   "page": "https://pixabay.com/videos/id-908/",
+   "dur": 76.88
+  },
+  {
+   "file": "tricks/trick_egret_fakedeath_b3.mp4",
+   "query": "heron catching fish",
+   "page": "https://pixabay.com/videos/id-130909/",
+   "dur": 8.28
+  },
+  {
+   "file": "tricks/trick_egret_fakedeath_b4.mp4",
+   "query": "great egret standing",
+   "page": "https://pixabay.com/videos/id-15743/",
+   "dur": 22.72
+  }
+ ]
+}
