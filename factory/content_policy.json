@@ -1,7 +1,8 @@
 {
  "version": "2026-10-01",
  "allowed_pillars": [
-  "ai_updates"
+  "ai_updates",
+  "wildlife_tricks"
  ],
  "priority": [
   "ai_updates"
@@ -132,6 +133,6 @@
   "qc_min_score": 85,
   "source": "owner master prompt 2026-11-01 (AI Revolution style upgrade)",
   "longs_per_day": 1,
-  "cadence_note": "Owner 2026-11-01: ONE long EVERY day at 21:00 BD (confirmed: '\u09aa\u09cd\u09b0\u09a4\u09bf\u09a6\u09bf\u09a8 \u098f\u0995\u099f\u09bf')."
+  "cadence_note": "Owner 2026-11-01: ONE long EVERY day at 21:00 BD (confirmed: 'প্রতিদিন একটি')."
  }
 }
