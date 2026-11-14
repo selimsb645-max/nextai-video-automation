@@ -1,0 +1,39 @@
+name: YouTube Admin (owner only)
+
+# Small manual tool for the owner: inspect, unschedule or delete one video on
+# the channel. Added 2026-11-14 when the owner wanted a scheduled Short pulled
+# before it went public. Nothing here runs on a schedule.
+
+on:
+  workflow_dispatch:
+    inputs:
+      cmd:
+        description: "list | unschedule | delete"
+        required: true
+        default: "list"
+      video_id:
+        description: "YouTube video id"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  admin:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run the admin command
+        env:
+          YT_TOKEN_JSON: ${{ secrets.YT_TOKEN_JSON }}
+        run: |
+          set -e
+          mkdir -p yt-auth
+          printf '%s' "$YT_TOKEN_JSON" > yt-auth/token_nextai.json
+          python3 factory/yt_admin.py "${{ github.event.inputs.cmd }}" "${{ github.event.inputs.video_id }}"
