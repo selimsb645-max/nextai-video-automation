@@ -7250,6 +7250,68 @@
    "scope_reviewed": true,
    "content_policy_version": "2026-10-01",
    "seed": 356
+  },
+  {
+   "id": "unitree_robotics_valuation_2026_11_14_2026-11-14",
+   "subject": "Unitree Robotics humanoid robot",
+   "title": "Unitree Surges to $41B as Humanoid Robots Explode",
+   "headline": "$41 BILLION VALUATION",
+   "specs": [
+    "300B YUAN",
+    "2.5 M/S",
+    "170 CM"
+   ],
+   "description": "Unitree Robotics hits a massive 300 billion yuan valuation milestone as humanoid robot demand surges worldwide. Discover the latest breakthrough in embodied AI and manufacturing. Related searches: Unitree humanoid robot, Wang Xingxing, robot market value 2026, humanoid robot stocks, AI robotics news",
+   "tags": [
+    "Unitree",
+    "humanoid robot",
+    "robotics",
+    "AI",
+    "tech news",
+    "future tech",
+    "robot stock",
+    "automation"
+   ],
+   "narration": "Unitree Robotics just rocketed past a staggering 300 billion yuan valuation! Founder Wang Xingxing completely shattered the darkest crisis in the industry. While skeptics called humanoid robots a passing fad, factories are snapping them up by the thousands. As mass production accelerates globally, these machines are stepping out of labs and straight onto assembly lines. Is this the start of full automation, or complete hype? Real or hype? Comment below.",
+   "beats": [
+    {
+     "t": "Unitree Robotics just rocketed past a staggering 300 billion yuan valuation!",
+     "kw": "sleek humanoid robot standing in a modern tech showroom",
+     "tags": []
+    },
+    {
+     "t": "Founder Wang Xingxing completely shattered the darkest crisis in the industry.",
+     "kw": "advanced bipedal robot walking steadily forward on a glossy floor",
+     "tags": []
+    },
+    {
+     "t": "While skeptics called humanoid robots a passing fad, factories are snapping them up.",
+     "kw": "humanoid robot gesturing and interacting with engineers in a bright lab",
+     "tags": []
+    },
+    {
+     "t": "As mass production accelerates globally, these machines are stepping onto assembly lines.",
+     "kw": "multiple humanoid robots operating in a high-tech manufacturing facility",
+     "tags": []
+    },
+    {
+     "t": "Is this the start of full automation, or complete hype? Real or hype? Comment below.",
+     "kw": "close up of a high-tech humanoid robot head with glowing optical sensors",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMiU0FVX3lxTE14Z1FNRjQxTjdsaW9XSC1ySVZBaUtucGZYdFR3VUlJZXZsd0NzTFBtZXMtdGhTSFZrVFRRd1dYY2dpbFM1eGl2Sl9DRWtWbHJYOW5V?oc=5",
+    "https://news.google.com/rss/articles/CBMidkFVX3lxTE1ocGVXVUh5VDB5cG5IYURUYWpvMlNzYnV3NTZqUENZME4yUWM2WmdoWXlDcFhpaThzZ01kNS12ZFNlbktVaUU5RE5KbndORmdxLVpqVk04a2s3LWV3V2xQTERwcC1hRmpSZlliMjlNYktMWXhwb3c?oc=5"
+   ],
+   "demand_evidence": "Unitree Robotics Reclaims 300B Valuation Milestone headline trending across multiple financial and tech news aggregators this week.",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 759
   }
  ]
 }
