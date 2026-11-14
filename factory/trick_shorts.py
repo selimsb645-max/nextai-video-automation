@@ -346,9 +346,11 @@ def main():
         except Exception as ex:
             log("thumbnail failed (continuing): " + str(ex)[:120])
 
-    state.setdefault("done", {})[topic["id"]] = {
-        "date": today, "videoId": vid, "scheduled_for": publish_at}
-    _save(STATE_F, state)
+    # A selftest must never burn a topic: only a real upload marks it used.
+    if not args.selftest:
+        state.setdefault("done", {})[topic["id"]] = {
+            "date": today, "videoId": vid, "scheduled_for": publish_at}
+        _save(STATE_F, state)
 
     os.makedirs(REPORT_DIR, exist_ok=True)
     report = os.path.join(REPORT_DIR, "trick_%s.json" % time.strftime("%Y%m%d_%H%M"))
