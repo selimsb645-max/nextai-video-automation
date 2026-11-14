@@ -250,6 +250,47 @@ def make_thumb(topic, pair, workdir):
     return True
 
 
+
+# ------------------------------------------------------------------ scheduling
+def pick_slot():
+    """Book the next free Short slot.
+
+    The main factory already books 1-2 of the three daily Short slots about a
+    day ahead, so the strict 1-22h window in next_bd_slot() is often closed for
+    this producer. Fall back to the earliest configured slot that is still in
+    the future and not reserved in published_log, and let upload() accept it
+    with allow_override (the caller has already proven it is a real slot time).
+    Returns (publish_at_iso, slot_local, override_needed).
+    """
+    try:
+        return F.next_bd_slot("short") + (False,)
+    except SystemExit as ex:
+        log("default window closed (%s) - picking the next free slot" % str(ex)[:70])
+
+    import datetime as _dt
+    from zoneinfo import ZoneInfo
+    cfg = _load(os.path.join(BASE, "content_policy.json"), {}).get("schedules", {})
+    tz = ZoneInfo(cfg.get("timezone", "Asia/Dhaka"))
+    reserved = set()
+    for row in _load(os.path.join(BASE, "published_log.json"), []):
+        if row.get("kind") == "short" and row.get("scheduled_for"):
+            reserved.add(row["scheduled_for"])
+    now = _dt.datetime.now(_dt.timezone.utc)
+    for day in range(4):
+        for hhmm in sorted(cfg.get("slots", {}).get("short", ["18:30"])):
+            hh, mm = [int(x) for x in hhmm.split(":")]
+            cand = (now.astimezone(tz) + _dt.timedelta(days=day)).replace(
+                hour=hh, minute=mm, second=0, microsecond=0)
+            iso = cand.astimezone(_dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+            if (cand.astimezone(_dt.timezone.utc) - now) < _dt.timedelta(hours=2):
+                continue
+            if iso in reserved:
+                continue
+            log("next free slot: %s (%s)" % (iso, hhmm + " " + cfg.get("timezone", "")))
+            return iso, cand, True
+    raise SystemExit("NO_FREE_SHORT_SLOT: every configured slot in the next 4 days is booked")
+
+
 # ---------------------------------------------------------------------- main
 def main():
     ap = argparse.ArgumentParser()
@@ -289,19 +330,14 @@ def main():
     log("render OK: " + mp4)
     make_thumb(topic, pairs[0], workdir)
 
-    publish_at = slot = None
     vid = None
+    publish_at, slot, override = pick_slot()
     if args.selftest:
-        try:
-            publish_at, slot = F.next_bd_slot("short")
-            log("selftest: would book slot %s (%s) - NOT uploading" % (publish_at, slot))
-        except SystemExit as ex:
-            log("selftest: no slot available now (%s)" % str(ex)[:100])
+        log("selftest: would book slot %s (%s) - NOT uploading" % (publish_at, slot))
     else:
-        publish_at, slot = F.next_bd_slot("short")
         if media_duration(mp4) > 61:
             raise SystemExit("SHORT_TOO_LONG")
-        vid = F.upload(e, mp4, publish_at)
+        vid = F.upload(e, mp4, publish_at, allow_override=override)
         F.note_published(e, vid, "short", publish_at)
         log("uploaded videoId=%s scheduledFor=%s (%s)" % (vid, publish_at, slot))
         try:
