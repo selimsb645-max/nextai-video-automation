@@ -1,0 +1,41 @@
+{
+ "trick": "trick_snapping_turtle",
+ "title": "This Turtle Is Not a Rock",
+ "videoId": "b6EpSnx2c04",
+ "scheduled_for": "2026-11-15T12:30:00Z",
+ "slot": "2026-11-15 18:30:00+06:00",
+ "beats": 5,
+ "selftest": false,
+ "clips": [
+  {
+   "file": "tricks/trick_snapping_turtle_b0.mp4",
+   "query": "snapping turtle",
+   "page": "https://pixabay.com/videos/id-35427/",
+   "dur": 6.21
+  },
+  {
+   "file": "tricks/trick_snapping_turtle_b1.mp4",
+   "query": "turtle head",
+   "page": "https://pixabay.com/videos/id-31909/",
+   "dur": 34.77
+  },
+  {
+   "file": "tricks/trick_snapping_turtle_b2.mp4",
+   "query": "small fish underwater",
+   "page": "https://pixabay.com/videos/id-16166/",
+   "dur": 8.17
+  },
+  {
+   "file": "tricks/trick_snapping_turtle_b3.mp4",
+   "query": "turtle eating",
+   "page": "https://pixabay.com/videos/id-2339/",
+   "dur": 35.5
+  },
+  {
+   "file": "tricks/trick_snapping_turtle_b4.mp4",
+   "query": "turtle creek",
+   "page": "https://pixabay.com/videos/id-300/",
+   "dur": 12.71
+  }
+ ]
+}
