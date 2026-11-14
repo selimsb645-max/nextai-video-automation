@@ -1,0 +1,157 @@
+{
+  "version": "2026-11-14",
+  "source": "Owner Google Doc 'Fack birds trick' master prompt (shared 2026-11-14) expanded into a 10-topic wildlife-trick library. The 'prompt' field is the paste-ready master prompt for Muse AI / Google Flow when the owner wants the AI-generated 10s clip by hand.",
+  "style_reference": "photorealistic wildlife, vertical 9:16, one continuous shot, 0-5s tension, 5-6s catch, 6-8s struggle, 8-10s reveal",
+  "entries": [
+    {
+      "id": "trick_egret_fakedeath",
+      "title": "This Egret Plays Dead to Catch Fish",
+      "headline": "PLAYING DEAD",
+      "tags": ["wildlife", "animal behavior", "birds", "egret", "nature"],
+      "beats": [
+        {"t": "A great egret lies on its back, both legs stiff in the air. It looks completely dead.", "q": "great egret"},
+        {"t": "It is not dead. It is fishing.", "q": "heron water"},
+        {"t": "A small fish creeps toward the bill, curious, then closer.", "q": "fish underwater"},
+        {"t": "The head snaps forward. One lunge, a burst of water, dinner.", "q": "heron catching fish"},
+        {"t": "Then it stands up, calm, and does the same thing tomorrow.", "q": "great egret standing"}
+      ],
+      "description": "A great egret fakes death at the waterline and waits for a fish to come close. Photorealistic wildlife behaviour, no bait, no editing tricks.\n\nFollow for one animal trick every day.",
+      "prompt": "Photorealistic wildlife video, vertical 9:16, 10 seconds, bright daylight, one continuous shot, no text, no subtitles, no watermark. A great egret - pure white plumage, a long yellow-orange dagger bill, very long thin black legs - is FAKING DEATH at the muddy edge of a shallow pond: lying flat on its BACK, belly facing up, wings spread flat on the mud, both long legs sticking stiffly straight UP into the air like a dead bird, neck flopped to one side, head resting on the mud right at the waterline, the tip of its long bill touching the shallow water, completely limp and lifeless. 0-5 seconds - TENSION: the bird does not move at all, not even a twitch. One small silvery fish swims in and creeps toward the bill in nervous stages: a little closer, freeze, dart back, circle around, then right up to the tip of the bill, gentle ripples spreading. 5-6 seconds - THE CATCH: the bird's head suddenly SNAPS forward and grabs the fish in one violent, lightning-fast lunge - a big splash of water bursts up, the whole body jolts, the camera shakes slightly. 6-8 seconds - THE STRUGGLE: the bird rolls over in a flurry of wings and kicking legs, splashing muddy water everywhere, shaking the thrashing fish in its bill as it scrambles up to its feet. 8-10 seconds - THE REVEAL: the bird stands tall in the shallow water, holding the fish crosswise in its bill, water dripping, calm and alert, green pond bank behind it. Only one bird and only one fish. Natural water sounds only, no music, no dialogue."
+    },
+    {
+      "id": "trick_snapping_turtle",
+      "title": "This Turtle Is Not a Rock",
+      "headline": "OPEN MOUTH TRAP",
+      "tags": ["wildlife", "turtle", "animal behavior", "nature", "predators"],
+      "beats": [
+        {"t": "A snapping turtle sits half under the mud with its mouth wide open.", "q": "snapping turtle"},
+        {"t": "Inside that mouth is a pink wriggling worm. It is not a worm.", "q": "turtle head"},
+        {"t": "A minnow drifts in for the easy meal.", "q": "small fish underwater"},
+        {"t": "The jaws slam shut faster than the eye can follow.", "q": "turtle eating"},
+        {"t": "The stone in the creek was never a stone.", "q": "turtle creek"}
+      ],
+      "description": "A snapping turtle uses the worm-shaped tip of its tongue as bait. This is real animal deception, not a staged clip.\n\nFollow for one animal trick every day.",
+      "prompt": "Photorealistic wildlife video, vertical 9:16, 10 seconds, bright daylight, one continuous shot, no text, no subtitles, no watermark. A common snapping turtle with a mossy ridged shell sits half-submerged in a muddy shallow creek, mouth WIDE OPEN and perfectly still, a fleshy pink tongue-worm glistening on the floor of its mouth, shell slime-covered like a sunken stone. 0-5s TENSION: one small silver minnow drifts toward the open mouth, hovering, backing off, circling, then edging in right beside the pink tongue-worm. 5-6s THE CATCH: the jaws SLAM shut in one lightning frame, water bursts outward, the camera shakes. 6-8s THE STRUGGLE: the turtle turns heavily through the mud, churning brown water, snapping twice more reflexively. 8-10s THE REVEAL: it settles, shell dripping, still and unreadable again. Only one turtle and one fish. Natural water and mud sounds only, no music, no dialogue."
+    },
+    {
+      "id": "trick_hognose_snake",
+      "title": "This Snake Plays Dead, Then Strikes",
+      "headline": "DEAD SNAKE?",
+      "tags": ["wildlife", "snake", "animal behavior", "reptiles", "nature"],
+      "beats": [
+        {"t": "This snake flips onto its back with its tongue hanging out.", "q": "snake grass"},
+        {"t": "Mouth open, body limp, not one muscle working. A perfect corpse.", "q": "snake ground"},
+        {"t": "A curious bird hops in to check the body.", "q": "small bird ground"},
+        {"t": "The corpse whips upright and strikes.", "q": "snake striking"},
+        {"t": "Playing dead keeps it alive. Any closer and it fights.", "q": "snake grass"}
+      ],
+      "description": "The hognose snake plays dead as a defence, then turns on anything that gets too close. Real reptile behaviour, filmed without harm.\n\nFollow for one animal trick every day.",
+      "prompt": "Photorealistic wildlife video, vertical 9:16, 10 seconds, bright daylight, one continuous shot, no text, no subtitles, no watermark. A western hognose snake - thick body, upturned shovel snout, brown blotched pattern - is PLAYING DEAD on sandy ground: completely on its BACK, pale belly to the sky, mouth hanging open, forked tongue lolling onto the sand, tail loosely curved, body limp and floppy. 0-5s TENSION: a plump brown sparrow hops in cautiously, head tilting, one step, freeze, another step, circling the limp snake, then pecking at the open mouth. 5-6s THE MOVE: the 'dead' snake WHIPS upright in one violent coil and strikes. 6-8s THE STRUGGLE: sand sprays as the snake thrashes, dust hanging in the sunlight. 8-10s THE REVEAL: the snake lifts its head high on a taut S-curve, sand settling over its blotched back. Only one snake and one bird. Natural wind and sand sounds only, no music, no dialogue."
+    },
+    {
+      "id": "trick_crocodile_log",
+      "title": "The Log in the Water Was Breathing",
+      "headline": "THAT IS A CROCODILE",
+      "tags": ["wildlife", "crocodile", "ambush", "nature", "predators"],
+      "beats": [
+        {"t": "A crocodile floats with only its head above the water.", "q": "crocodile water"},
+        {"t": "Barely moving, half covered in weed. It looks like a rotting log.", "q": "crocodile swamp"},
+        {"t": "A heron wades past, one careful step at a time.", "q": "heron water"},
+        {"t": "The log explodes upward, jaws wide.", "q": "crocodile attack"},
+        {"t": "Nothing in that water was ever driftwood.", "q": "crocodile river"}
+      ],
+      "description": "A juvenile saltwater crocodile waits like a log until the bird is close enough. Real ambush behaviour from the wild.\n\nFollow for one animal trick every day.",
+      "prompt": "Photorealistic wildlife video, vertical 9:16, 10 seconds, bright daylight, one continuous shot, no text, no subtitles, no watermark. A juvenile saltwater crocodile lies perfectly still in the shallows, only its head and a mossy back breaking the surface, jaws slightly parted, eyes glassy yellow and unmoving, looking exactly like a rotting log in the weeds, dragonflies landing on its snout. 0-5s TENSION: a white heron wades closer step by step, leg lifted mid-step, freezing, neck coiled, lowering its head toward the snout. 5-6s THE CATCH: the crocodile EXPLODES upward out of the water in one arching leap, jaws wide, a sheet of water peeling off its back, camera shaking hard. 6-8s THE STRUGGLE: water bursts and froths, the crocodile rolling in a violent death-roll, weeds snapping. 8-10s THE REVEAL: it slides back under with its head high, drops pouring off its jaws, weeds settling, still as a log once more. Only one crocodile and one bird. Natural water and insect sounds only, no music, no dialogue."
+    },
+    {
+      "id": "trick_monitor_lizard",
+      "title": "This Lizard Sunbathes Upside Down. On Purpose.",
+      "headline": "IT IS NOT DEAD",
+      "tags": ["wildlife", "lizard", "reptiles", "animal behavior", "nature"],
+      "beats": [
+        {"t": "A monitor lizard lies on its back in the sun, legs loose in the air.", "q": "monitor lizard"},
+        {"t": "Flies land on its belly. It does not twitch.", "q": "lizard sun"},
+        {"t": "A crab walks right up to the open mouth.", "q": "crab mud"},
+        {"t": "The lizard flips and bites in a single motion.", "q": "lizard eating"},
+        {"t": "That corpse was on a timer.", "q": "monitor lizard ground"}
+      ],
+      "description": "A Bengal monitor lizard holds a dead pose on the mud until something walks into range. Real reptile behaviour, no baiting.\n\nFollow for one animal trick every day.",
+      "prompt": "Photorealistic wildlife video, vertical 9:16, 10 seconds, bright daylight, one continuous shot, no text, no subtitles, no watermark. A Bengal monitor lizard - dark banded body, loose wrinkled skin, heavy claws - lies on its BACK on hot cracked mud, legs splayed loosely in the air, jaw hanging open, one eye filmed over, tail limp, flies crawling along its belly, absolutely motionless in the harsh sun. 0-5s TENSION: a land crab scuttles in sideways and stops, waiting, then creeps toward the open mouth in nervous bursts, one claw raised, until it stands right at the jaw line. 5-6s THE CATCH: the lizard FLIPS and bites in one blurring motion, mud dust puffing up, camera shuddering. 6-8s THE STRUGGLE: it thrashes and rolls through the dry mud, tail whipping in an arc. 8-10s THE REVEAL: the lizard rights itself, head lifted, dry mud crumbling off its banded skin. Only one lizard and one crab. Natural wind, insect and shell sounds only, no music, no dialogue."
+    },
+    {
+      "id": "trick_pelican_waterline",
+      "title": "The Pelican That Fakes Death on the Water",
+      "headline": "NOT A DEAD BIRD",
+      "tags": ["wildlife", "pelican", "birds", "fishing", "nature"],
+      "beats": [
+        {"t": "A pelican drifts with its head down and its bill flat on the water.", "q": "pelican water"},
+        {"t": "To every fish below, it looks like floating rubbish.", "q": "pelican swimming"},
+        {"t": "One mullet rises to take a closer look.", "q": "fish underwater"},
+        {"t": "The pouch opens and slams down like a net.", "q": "pelican fishing"},
+        {"t": "That was never a dead bird. It was a trap.", "q": "pelican"}
+      ],
+      "description": "A great white pelican rests its bill on the surface until fish drift into scoop range. Real feeding behaviour.\n\nFollow for one animal trick every day.",
+      "prompt": "Photorealistic wildlife video, vertical 9:16, 10 seconds, bright daylight, one continuous shot, no text, no subtitles, no watermark. A great white pelican floats motionless with its head dropped forward and its enormous bill resting flat on the water, throat pouch half-collapsed, body drifting with the current like a dead bird, both wings slack on the surface, eyes closed. 0-5s TENSION: a small silver mullet rises and glides toward the resting bill, turns, comes back, nudging the water right beside the pouch, ripples ringing out across the glassy surface. 5-6s THE CATCH: the pouch SWALLOWS open and the bill snaps down over the fish in one huge scoop, a wash of water surging outward. 6-8s THE STRUGGLE: the pelican surges up, wings half-open and beating, water cascading off its feathers, the pouch bulging. 8-10s THE REVEAL: it settles, head up, a single drop falling from its bill, the water returning to stillness. Only one pelican and one fish. Natural water and wing sounds only, no music, no dialogue."
+    },
+    {
+      "id": "trick_tiger_asleep",
+      "title": "This Tiger Fakes Sleep to Hunt",
+      "headline": "IT WAS NEVER ASLEEP",
+      "tags": ["wildlife", "tiger", "big cats", "ambush", "nature"],
+      "beats": [
+        {"t": "A tiger lies on its side in the grass with its eyes shut.", "q": "tiger grass"},
+        {"t": "Its flank rises slowly. Only the tip of the tail moves.", "q": "tiger lying"},
+        {"t": "A fawn steps out toward the water, curious.", "q": "deer forest"},
+        {"t": "The tiger uncoils in one explosive bound.", "q": "tiger running"},
+        {"t": "It was never asleep. It was waiting.", "q": "tiger forest"}
+      ],
+      "description": "A young Bengal tiger uses stillness, not speed, to close the distance. Real big-cat hunting behaviour.\n\nFollow for one animal trick every day.",
+      "prompt": "Photorealistic wildlife video, vertical 9:16, 10 seconds, bright daylight, one continuous shot, no text, no subtitles, no watermark. A young Bengal tiger lies flat on its side in tall dry grass at the edge of a forest pool, eyes shut, flank rising and falling very slowly, forelegs stretched out, only the tip of its tail lifting and falling in the grass. 0-5s TENSION: a spotted chital fawn steps out of the grass toward the water, ears swivelling, one hoof lifting and pausing, inching closer to the outstretched paws. 5-6s THE CATCH: the tiger's body UNCOILS in one explosive bound, grass tearing, sand and leaves flying, camera shaking hard. 6-8s THE STRUGGLE: dust and grass burst into the air as the tiger twists and pins the fawn, tail lashing. 8-10s THE REVEAL: the tiger stands in the settling dust, head low, breathing hard, ears forward. Only one tiger and one fawn. Natural forest, bird and wind sounds only, no music, no dialogue."
+    },
+    {
+      "id": "trick_octopus_rock",
+      "title": "You Walked Right Past This Octopus",
+      "headline": "THE ROCK IS ALIVE",
+      "tags": ["wildlife", "octopus", "camouflage", "ocean", "nature"],
+      "beats": [
+        {"t": "This rock on the reef has been sitting there all week.", "q": "coral reef"},
+        {"t": "The rock is breathing. Very, very slowly.", "q": "octopus"},
+        {"t": "A crab taps the surface, testing it.", "q": "crab reef"},
+        {"t": "An arm lashes out and wraps it tight.", "q": "octopus tentacle"},
+        {"t": "Then everything fades back into stone.", "q": "underwater reef"}
+      ],
+      "description": "An octopus holds a perfect rock disguise until dinner walks onto it. Real camouflage hunting, filmed underwater.\n\nFollow for one animal trick every day.",
+      "prompt": "Photorealistic underwater video, vertical 9:16, 10 seconds, bright sunlit shallow water, one continuous shot, no text, no subtitles, no watermark. A common octopus has flattened itself into a perfect imitation of a rock: mottled grey-brown skin matching the reef, arms tucked and stony, one arm draped like a piece of weed, breathing almost invisible, sand settling around it. 0-5s TENSION: a small red crab scuttles along the reef and stops right beside the 'rock', feelers twitching, tapping the surface with one claw, circling it. 5-6s THE CATCH: the rock ERUPTS - an arm lashes out and slams the crab into a tight curl, sand bursting into a cloudy swirl, camera rocking. 6-8s THE STRUGGLE: the octopus balloons, skin flashing white and red in ripples, suckers gripping as the crab's legs kick. 8-10s THE REVEAL: it settles back onto the reef and fades to mottled grey, crab held under its mantle. Only one octopus and one crab. Natural underwater ambience only, no music, no dialogue."
+    },
+    {
+      "id": "trick_bullfrog_bellyup",
+      "title": "This Frog Floats Belly-Up on Purpose",
+      "headline": "DEAD FROG? NO.",
+      "tags": ["wildlife", "frog", "amphibians", "pond", "nature"],
+      "beats": [
+        {"t": "A frog floats belly-up on a warm pond, legs hanging limp.", "q": "frog pond"},
+        {"t": "Everything about it says dead. Everything.", "q": "frog water"},
+        {"t": "A dragonfly lands right on the white throat.", "q": "dragonfly"},
+        {"t": "Two forelegs snap together.", "q": "frog jumping"},
+        {"t": "The dead frog was the best hunter in the pond.", "q": "frog pond"}
+      ],
+      "description": "A bullfrog floats motionless until an insect lands on it. Real pond behaviour in one unbroken shot.\n\nFollow for one animal trick every day.",
+      "prompt": "Photorealistic wildlife video, vertical 9:16, 10 seconds, bright daylight, one continuous shot, no text, no subtitles, no watermark. A large green bullfrog floats belly-UP on the still surface of a warm pond, pale throat exposed, legs dangling limp and spread, eyes showing white, a dead leaf bumping against its side, sunlight hot on its wet skin. 0-5s TENSION: a blue-bodied dragonfly hovers above, darting, returning, then lands delicately on the exposed white throat, wings glinting. 5-6s THE CATCH: the frog's forelegs SLAP together and the mouth snaps, one clean explosive movement, water ringing outward. 6-8s THE STRUGGLE: the frog rolls upright and kicks hard, water churning, wings shivering between its fingers. 8-10s THE REVEAL: the frog sits on the surface with only its eyes and snout showing, a ripple spreading, utterly calm. Only one frog and one insect. Natural pond and insect sounds only, no music, no dialogue."
+    },
+    {
+      "id": "trick_sea_eagle_mudflat",
+      "title": "The Dead Eagle on the Mudflat Was Waiting",
+      "headline": "THE BAIT IS THE BIRD",
+      "tags": ["wildlife", "eagle", "birds of prey", "tide", "nature"],
+      "beats": [
+        {"t": "A white sea eagle lies spread on wet mud, wings flat and open.", "q": "sea eagle"},
+        {"t": "Head down in the silt. Not one feather moving.", "q": "eagle ground"},
+        {"t": "A fish flops in a shrinking pool beside its beak.", "q": "fish water"},
+        {"t": "A talon slams down into the pool.", "q": "eagle talons"},
+        {"t": "The bait was the eagle.", "q": "sea eagle water"}
+      ],
+      "description": "A white-bellied sea eagle waits on the tide line with its wings down, holding still until a stranded fish moves.\n\nFollow for one animal trick every day.",
+      "prompt": "Photorealistic wildlife video, vertical 9:16, 10 seconds, bright daylight, one continuous shot, no text, no subtitles, no watermark. A white-bellied sea eagle lies spread on wet tidal mud from above, wings open flat and wide, head dropped sideways into the silt, tail fanned and dirty, feathers slicked down by mud, a single feather lifting in the wind. 0-5s TENSION: a grey mullet flops in a shrinking tide pool inches from the eagle's open beak, throwing thin splashes. 5-6s THE CATCH: the eagle's neck SNAPS sideways and its talon slams down into the pool, mud and water spraying, camera jolting. 6-8s THE STRUGGLE: wings beating hard against the mud, spray flinging, the fish whipping silver in the talons. 8-10s THE REVEAL: the eagle stands on the mudflat, wings still half-spread for balance, fish pinned under one foot, wet feathers steaming in the sun. Only one eagle and one fish. Natural tide, wind and wing sounds only, no music, no dialogue."
+    }
+  ]
+}
