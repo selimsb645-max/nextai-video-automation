@@ -7390,6 +7390,77 @@
    "scope_reviewed": true,
    "content_policy_version": "2026-10-01",
    "seed": 942
+  },
+  {
+   "id": "agility_digit_465m_2026_11_15_2026-11-15",
+   "subject": "Agility Digit humanoid robot",
+   "title": "This Robot Just Raised $465 Million",
+   "headline": "$465 MILLION",
+   "specs": [
+    "140 CM TALL",
+    "16 KG LIFT",
+    "NASDAQ LIST"
+   ],
+   "description": "Agility Digit humanoid robot secures $465 million ahead of Nasdaq listing as factory deployment expands. Discover how bipedal robots are transforming warehouse logistics.\n\nRelated searches: Agility Digit, Agility Robotics Nasdaq, humanoid robot, warehouse automation, factory robots",
+   "tags": [
+    "Agility Digit",
+    "humanoid robot",
+    "Agility Robotics",
+    "warehouse AI",
+    "factory automation",
+    "bipedal robot",
+    "robotics news",
+    "tech news"
+   ],
+   "narration": "A humanoid robot just unlocked four hundred sixty-five million dollars. Meet Digit, the two-legged worker building the future of factory labor. Instead of rebuilding entire warehouses, Digit steps right into existing human workflows. It grabs heavy totes and loads conveyor belts endlessly without stopping. Major logistics giants are now expanding real-world trials across America. With a massive market deal locked in, thousands are heading for industrial production. Are humanoids ready to take over logistics? Real or hype? Comment below.",
+   "beats": [
+    {
+     "t": "A humanoid robot just unlocked four hundred sixty-five million dollars.",
+     "kw": "bipedal humanoid robot standing in modern industrial facility",
+     "tags": []
+    },
+    {
+     "t": "Meet Digit, the two-legged worker building the future of factory labor.",
+     "kw": "bipedal humanoid robot walking down warehouse aisle",
+     "tags": []
+    },
+    {
+     "t": "Instead of rebuilding entire warehouses, Digit steps right into existing human workflows.",
+     "kw": "bipedal humanoid robot approaching storage shelf",
+     "tags": []
+    },
+    {
+     "t": "It grabs heavy totes and loads conveyor belts endlessly without stopping.",
+     "kw": "bipedal humanoid robot picking up plastic tote and placing on conveyor",
+     "tags": []
+    },
+    {
+     "t": "Major logistics giants are now expanding real-world trials across America.",
+     "kw": "bipedal humanoid robot working alongside human operators",
+     "tags": []
+    },
+    {
+     "t": "With a massive market deal locked in, thousands are heading for industrial production.",
+     "kw": "fleet of bipedal humanoid robots lined up in high tech factory",
+     "tags": []
+    },
+    {
+     "t": "Are humanoids ready to take over logistics? Real or hype? Comment below.",
+     "kw": "bipedal humanoid robot turning toward camera in warehouse",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMi4wFBVV95cUxNWFY5Z2pNTXBneGdERERGbUxuNnRIa2hOVEUwMWZHOXpyVkJlVF9HcWNQM1lteXZ3d1E3WTBpUWRqZEdueVlQSWd5eng2UGRpV0pOODZWN3kyTE9GN3ZQY0R3bVJTdzdrcjJJX2s3M0dzREFjR19FTklfWjEzRmVaNGFCM0NnMUdRMWtoaXNoMkY5YU5kNENuaDd3VEpoZnZNSFk5QTZGS1drZXFkYkFGR1M0UE85dzA0c1NjcFRuaUpiVU82X2hOT2RiU1VoNmFITkNjT2hoZkJZS1prMWtEVkpuYw?oc=5"
+   ],
+   "demand_evidence": "Headline 'Agility Robotics completes merger and secures $465 million in capital ahead of Nasdaq listing' published today, reporting massive US commercial humanoid robot expansion.",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 641
   }
  ]
 }
