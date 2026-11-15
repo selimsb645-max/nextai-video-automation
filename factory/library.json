@@ -7324,6 +7324,68 @@
    "origin": "reference_mirror",
    "reference_video": "ua8OVSw2wYU",
    "added": "2026-11-15"
+  },
+  {
+   "id": "unitree_robotics_valuation_2026_11_15_2026-11-15",
+   "subject": "Unitree humanoid robot",
+   "title": "Unitree Reclaims $42B Valuation Milestone",
+   "headline": "$42B VALUATION",
+   "specs": [
+    "300B YUAN",
+    "120 KG",
+    "28 MPH"
+   ],
+   "description": "Unitree Robotics reclaims a massive valuation milestone as humanoid robot stock surges. Founder Wang Xingxing overcomes the industry's darkest crisis. Related searches: Unitree humanoid robot, Wang Xingxing, Unitree valuation, bipedal robots, robot stocks 2026, robotics market value, Chinese robotics, AI hardware growth",
+   "tags": [
+    "Unitree",
+    "Humanoid",
+    "Robotics",
+    "TechNews",
+    "AI",
+    "Future",
+    "Business",
+    "Shorts"
+   ],
+   "narration": "Unitree just smashed past three hundred billion yuan in market value! After surviving the industry's darkest crisis, founder Wang Xingxing brings the robotics giant roaring back to life. Bipedal humanoids are flooding factories, scaling walls, and crushing production targets worldwide. Wall Street is scrambling to catch up as hardware demand explodes into overdrive. Is this the ultimate tech monopoly in the making, or pure financial hype? Drop your thoughts in the comments below!",
+   "beats": [
+    {
+     "t": "Unitree just smashed past three hundred billion yuan in market value!",
+     "kw": "humanoid robot walking proudly inside a high tech industrial laboratory",
+     "tags": []
+    },
+    {
+     "t": "After surviving the darkest industry crisis, founder Wang Xingxing brings the giant back.",
+     "kw": "advanced bipedal robot performing fast dynamic running tests outdoors",
+     "tags": []
+    },
+    {
+     "t": "Bipedal humanoids are flooding factories and crushing production targets worldwide.",
+     "kw": "multiple humanoid robots working simultaneously on an automated assembly line",
+     "tags": []
+    },
+    {
+     "t": "Wall Street is scrambling to catch up as hardware demand explodes.",
+     "kw": "robot doing complex balancing and agility maneuvers on stage",
+     "tags": []
+    },
+    {
+     "t": "Is this the ultimate tech monopoly, or pure hype? Drop your thoughts below!",
+     "kw": "close up of a humanoid robot face with glowing optical sensors looking at camera",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMiU0FVX3lxTE14Z1FNRjQxTjdsaW9XSC1ySVZBaUtucGZYdFR3VUlJZXZsd0NzTFBtZXMtdGhTSFZrVFRRd1dYY2dpbFM1eGl2Sl9DRWtWbHJYOW5V?oc=5",
+    "https://news.google.com/rss/articles/CBMidkFVX3lxTE1ocGVXVUh5VDB5cG5IYURUYWpvMlNzYnV3NTZqUENZME4yUWM2WmdoWXlDcFhpaThzZ01kNS12ZFNlbktVaUU5RE5KbndORmdxLVpqVk04a2s3LWV3V2xQTERwcC1hRmpSZlliMjlNYktMWXhwb3c?oc=5"
+   ],
+   "demand_evidence": "Unitree Robotics Reclaims 300B Valuation Milestone headline trending globally with massive US financial and tech interest.",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 108
   }
  ]
 }
