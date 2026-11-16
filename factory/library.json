@@ -7473,6 +7473,72 @@
    "origin": "reference_mirror",
    "reference_video": "iiepBMjZIMY",
    "added": "2026-11-16"
+  },
+  {
+   "id": "avride_one_million_deliveries_2026_11_16_2026-11-16",
+   "subject": "Avride delivery robot",
+   "title": "Avride Robots Hit 1 Million Deliveries",
+   "headline": "1 MILLION DROPS",
+   "specs": [
+    "1M DELIVERIES",
+    "6 WHEELS",
+    "100 AUTONOMOUS"
+   ],
+   "description": "Avride delivery robots have officially crossed 1 million autonomous deliveries across US streets. The self-driving sidewalk bots navigate traffic and weather with zero drivers. Related searches: Avride delivery robot, sidewalk delivery bots, autonomous food delivery, robot delivery 2026, self driving sidewalk robot.",
+   "tags": [
+    "Avride",
+    "delivery robot",
+    "autonomous bot",
+    "robotics",
+    "tech news",
+    "AI delivery",
+    "future tech",
+    "self driving"
+   ],
+   "narration": "This small robot just completed its one-millionth delivery. It rolls down busy sidewalks, dodges traffic, and carries dinner straight to your door. Engineered by Avride, hundreds of these autonomous bots now swarm US city streets daily. They navigate freezing snow, heavy rain, and chaotic crosswalks without a single human driver behind the wheel. What started as an experimental trial just officially crossed one million successful drops. Will street robots replace human drivers forever? Comment below, because...",
+   "beats": [
+    {
+     "t": "This small robot just completed its one-millionth delivery.",
+     "kw": "six-wheeled sidewalk delivery robot stopping in front of apartment building",
+     "tags": []
+    },
+    {
+     "t": "It rolls down busy sidewalks, dodges traffic, and carries dinner straight to your door.",
+     "kw": "six-wheeled sidewalk delivery robot navigating busy city sidewalk past pedestrians",
+     "tags": []
+    },
+    {
+     "t": "Engineered by Avride, hundreds of these autonomous bots now swarm US city streets daily.",
+     "kw": "fleet of six-wheeled sidewalk delivery robots lined up on street pavement",
+     "tags": []
+    },
+    {
+     "t": "They navigate freezing snow, heavy rain, and chaotic crosswalks without a single human driver.",
+     "kw": "six-wheeled sidewalk delivery robot driving through snow on crosswalk",
+     "tags": []
+    },
+    {
+     "t": "What started as an experimental trial just officially crossed one million successful drops.",
+     "kw": "six-wheeled sidewalk delivery robot lid opening to deliver package",
+     "tags": []
+    },
+    {
+     "t": "Will street robots replace human drivers forever? Comment below, because...",
+     "kw": "six-wheeled sidewalk delivery robot driving down urban street into distance",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPdmJfazl1YWJmNGtXRlpxM09taEd1cC16cGQxZFRxUmtXOVZqS25iNG1DUmxkYlN2ZnFXRDFfREV6OWFndjRrbm5zb3pjNE5sWEM3YUd3R1RhVlVFZTBwRk5GbnNLSWluZmFRR1pjSDRjclFTZ1Vab3FPR0JBZEY3YW1DNy1HelRLRmI3OXc0M3JpS3k1a0NSdTR2akxfWGVmU2JkN1d5bnNoRTlMM2s0MnduUFB2U2hxcF91T1UwdmhhWGZXWERHVw?oc=5"
+   ],
+   "demand_evidence": "Avride reaches one million robot deliveries as network expands across US - Robotics & Automation News",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 896
   }
  ]
 }
