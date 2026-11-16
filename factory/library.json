@@ -7475,70 +7475,65 @@
    "added": "2026-11-16"
   },
   {
-   "id": "avride_one_million_deliveries_2026_11_16_2026-11-16",
-   "subject": "Avride delivery robot",
-   "title": "Avride Robots Hit 1 Million Deliveries",
-   "headline": "1 MILLION DROPS",
+   "id": "humanoid_robots_1_5m_2026_11_16_2026-11-16",
+   "subject": "humanoid robot",
+   "title": "1.5 Million Humanoid Robots Coming by 2035",
+   "headline": "1.5 MILLION BY 2035",
    "specs": [
-    "1M DELIVERIES",
-    "6 WHEELS",
-    "100 AUTONOMOUS"
+    "1.5M ROBOTS",
+    "9 YRS AWAY",
+    "JP MORGAN"
    ],
-   "description": "Avride delivery robots have officially crossed 1 million autonomous deliveries across US streets. The self-driving sidewalk bots navigate traffic and weather with zero drivers. Related searches: Avride delivery robot, sidewalk delivery bots, autonomous food delivery, robot delivery 2026, self driving sidewalk robot.",
+   "description": "Humanoid robot numbers are set to explode with JPMorgan forecasting 1.5 million units in the US by 2035. Watch how fast automation is scaling up. Related searches: humanoid robots 2035, JPMorgan robot forecast, future of automation, robot workforce, Tesla Optimus, Figure robot, Boston Dynamics, AI robotics growth",
    "tags": [
-    "Avride",
-    "delivery robot",
-    "autonomous bot",
+    "humanoid robot",
     "robotics",
-    "tech news",
-    "AI delivery",
     "future tech",
-    "self driving"
+    "automation",
+    "ai robots",
+    "tech news",
+    "humanoid",
+    "innovation"
    ],
-   "narration": "This small robot just completed its one-millionth delivery. It rolls down busy sidewalks, dodges traffic, and carries dinner straight to your door. Engineered by Avride, hundreds of these autonomous bots now swarm US city streets daily. They navigate freezing snow, heavy rain, and chaotic crosswalks without a single human driver behind the wheel. What started as an experimental trial just officially crossed one million successful drops. Will street robots replace human drivers forever? Comment below, because...",
+   "narration": "One point five million humanoid robots are invading the US by 2035! JPMorgan just dropped a staggering new forecast proving factory floors and homes are getting a major metallic upgrade. From walking labs to autonomous assembly lines, humanoid machines are scaling faster than anyone predicted. Tech giants are pouring billions into mechanical muscle, leaving science fiction completely in the dust. Are you ready to work alongside machines, or is this total hype? Real or hype? Comment below!",
    "beats": [
     {
-     "t": "This small robot just completed its one-millionth delivery.",
-     "kw": "six-wheeled sidewalk delivery robot stopping in front of apartment building",
+     "t": "One point five million humanoid robots are invading the US by 2035!",
+     "kw": "humanoid robot walking in modern high tech laboratory",
      "tags": []
     },
     {
-     "t": "It rolls down busy sidewalks, dodges traffic, and carries dinner straight to your door.",
-     "kw": "six-wheeled sidewalk delivery robot navigating busy city sidewalk past pedestrians",
+     "t": "JPMorgan just dropped a staggering new forecast proving factory floors are getting an upgrade.",
+     "kw": "advanced bipedal robot working autonomously on industrial assembly line",
      "tags": []
     },
     {
-     "t": "Engineered by Avride, hundreds of these autonomous bots now swarm US city streets daily.",
-     "kw": "fleet of six-wheeled sidewalk delivery robots lined up on street pavement",
+     "t": "From walking labs to autonomous tasks, humanoid machines are scaling faster than predicted.",
+     "kw": "humanoid robot gesturing and demonstrating dynamic balance outdoors",
      "tags": []
     },
     {
-     "t": "They navigate freezing snow, heavy rain, and chaotic crosswalks without a single human driver.",
-     "kw": "six-wheeled sidewalk delivery robot driving through snow on crosswalk",
+     "t": "Tech giants are pouring billions into mechanical muscle, leaving science fiction in the dust.",
+     "kw": "close up of robotic joints moving with extreme precision and speed",
      "tags": []
     },
     {
-     "t": "What started as an experimental trial just officially crossed one million successful drops.",
-     "kw": "six-wheeled sidewalk delivery robot lid opening to deliver package",
-     "tags": []
-    },
-    {
-     "t": "Will street robots replace human drivers forever? Comment below, because...",
-     "kw": "six-wheeled sidewalk delivery robot driving down urban street into distance",
+     "t": "Are you ready to work alongside machines, or is this total hype? Real or hype? Comment below!",
+     "kw": "two humanoid robots standing side by side facing camera",
      "tags": []
     }
    ],
    "verified_sources": [
-    "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPdmJfazl1YWJmNGtXRlpxM09taEd1cC16cGQxZFRxUmtXOVZqS25iNG1DUmxkYlN2ZnFXRDFfREV6OWFndjRrbm5zb3pjNE5sWEM3YUd3R1RhVlVFZTBwRk5GbnNLSWluZmFRR1pjSDRjclFTZ1Vab3FPR0JBZEY3YW1DNy1HelRLRmI3OXc0M3JpS3k1a0NSdTR2akxfWGVmU2JkN1d5bnNoRTlMM2s0MnduUFB2U2hxcF91T1UwdmhhWGZXWERHVw?oc=5"
+    "https://news.google.com/rss/articles/CBMibEFVX3lxTE01QjF6ZlBobGl1ZG5NNFJ0M21Fb0llVzlNRFpVOFVfNERMRHp6VVBrUTJpNXNiYWl1OVlUcTBvY2NwbHJNZVhLYk1aT3ZBeWRPdWZPZ25fSm0yelZXSkNUanJkNC1xSVhnWS16dQ?oc=5"
    ],
-   "demand_evidence": "Avride reaches one million robot deliveries as network expands across US - Robotics & Automation News",
+   "demand_evidence": "JPMorgan Forecasts 1.5 Million US Humanoid Robots by 2035 headline trending in US interest on 2026-11-16.",
    "kind": "short",
    "categoryId": "28",
    "madeForKids": false,
    "content_pillar": "ai_updates",
    "scope_reviewed": true,
    "content_policy_version": "2026-10-01",
-   "seed": 896
+   "seed": 110
   }
  ]
 }
