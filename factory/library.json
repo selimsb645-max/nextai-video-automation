@@ -7537,74 +7537,69 @@
   },
   {
    "id": "avride_one_million_deliveries_2026_11_16_2026-11-16",
-   "subject": "Avride Delivery Robot",
-   "title": "This Robot Hit 1 Million US Deliveries",
+   "subject": "Avride delivery robot",
+   "title": "1 Million Deliveries Made by This Robot",
    "headline": "1 MILLION DELIVERIES",
    "specs": [
-    "1M DELIVERIES",
-    "6 WHEELS",
-    "30 SCANS/SEC"
+    "1000000 RUNS",
+    "0 DRIVERS",
+    "US CITIES"
    ],
-   "description": "Avride delivery robots just hit 1 million autonomous food and package deliveries across US cities. Here is how sidewalk rovers are replacing human couriers. Related searches: Avride delivery robot, autonomous delivery bot, sidewalk robot, AI delivery, robotics tech",
+   "description": "Avride delivery robot has completed over one million autonomous deliveries across US cities. Watch how sidewalk delivery robots are taking over food logistics without human drivers.\n\nRelated searches: Avride robot, delivery robot, autonomous delivery, sidewalk robot, future tech",
    "tags": [
     "Avride",
-    "robot delivery",
-    "delivery bot",
+    "delivery robot",
+    "robotics",
     "autonomous robot",
     "tech news",
-    "robotics",
     "future tech",
-    "AI robots"
+    "ai robotics",
+    "sidewalk robot"
    ],
-   "narration": "A sidewalk robot just hit one million real-world deliveries. Deployed across US cities, the Avride rover operates completely without human drivers. It navigates crowded crosswalks, dodges pedestrians, and powers through harsh snowstorms. Built-in LiDAR and cameras scan thirty times every second to secure cargo. Now, massive commercial fleets are taking over urban and suburban food delivery. Will human delivery drivers be totally replaced by 2030? Real or hype? Comment below, because...",
+   "narration": "A tiny sidewalk robot just hit one million deliveries. Deployed across busy city streets, this autonomous rolling pod carries food orders directly to doorsteps. It dodges rushing pedestrians, negotiates complex crosswalks, and handles curbs entirely without a human driver. Rain or shine, it navigated thousands of miles through unpredictable neighborhood traffic without stopping. Now, after hitting one million flawless trips, massive fleets are expanding across major American cities. Are human delivery drivers about to become extinct? Real or hype? Comment below.",
    "beats": [
     {
-     "t": "A sidewalk robot just hit one million real-world deliveries.",
-     "kw": "six wheeled delivery robot rolling down sidewalk carrying cargo box",
+     "t": "A tiny sidewalk robot just hit one million deliveries.",
+     "kw": "six wheeled autonomous delivery robot rolling fast on city sidewalk",
      "tags": []
     },
     {
-     "t": "Deployed across US cities, the Avride rover operates completely without human drivers.",
-     "kw": "autonomous delivery rover driving along busy city sidewalk near pedestrians",
+     "t": "Deployed across busy city streets, this autonomous rolling pod carries food orders directly to doorsteps.",
+     "kw": "six wheeled autonomous delivery robot opening top hatch to deliver parcel",
      "tags": []
     },
     {
-     "t": "It navigates crowded crosswalks, dodges pedestrians, and powers through harsh snowstorms.",
-     "kw": "wheel delivery robot maneuvering around street curb and dodging puddle",
+     "t": "It dodges rushing pedestrians, negotiates complex crosswalks, and handles curbs entirely without a human driver.",
+     "kw": "six wheeled autonomous delivery robot navigating crowded crosswalk and street curb",
      "tags": []
     },
     {
-     "t": "Built-in LiDAR and cameras scan thirty times every second to secure cargo.",
-     "kw": "close up sensor array flashing on top of autonomous delivery robot",
+     "t": "Rain or shine, it navigated thousands of miles through unpredictable neighborhood traffic without stopping.",
+     "kw": "six wheeled autonomous delivery robot moving through rainy suburban street",
      "tags": []
     },
     {
-     "t": "Now, massive commercial fleets are taking over urban and suburban food delivery.",
-     "kw": "line of small delivery robots rolling together down suburban pavement",
+     "t": "Now, after hitting one million flawless trips, massive fleets are expanding across major American cities.",
+     "kw": "fleet of six wheeled autonomous delivery robots lined up on urban walkway",
      "tags": []
     },
     {
-     "t": "Will human delivery drivers be totally replaced by 2030?",
-     "kw": "delivery robot opening lid autonomously outside residential front doorstep",
-     "tags": []
-    },
-    {
-     "t": "Real or hype? Comment below, because...",
-     "kw": "delivery robot lid closing shut and rolling smoothly down street",
+     "t": "Are human delivery drivers about to become extinct? Real or hype? Comment below.",
+     "kw": "six wheeled autonomous delivery robot stopping at front door under sunset light",
      "tags": []
     }
    ],
    "verified_sources": [
     "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPdmJfazl1YWJmNGtXRlpxM09taEd1cC16cGQxZFRxUmtXOVZqS25iNG1DUmxkYlN2ZnFXRDFfREV6OWFndjRrbm5zb3pjNE5sWEM3YUd3R1RhVlVFZTBwRk5GbnNLSWluZmFRR1pjSDRjclFTZ1Vab3FPR0JBZEY3YW1DNy1HelRLRmI3OXc0M3JpS3k1a0NSdTR2akxfWGVmU2JkN1d5bnNoRTlMM2s0MnduUFB2U2hxcF91T1UwdmhhWGZXWERHVw?oc=5"
    ],
-   "demand_evidence": "Avride officially announced reaching one million autonomous robot deliveries as its network expands across the US.",
+   "demand_evidence": "Avride reaches one million robot deliveries as network expands across US - Robotics & Automation News",
    "kind": "short",
    "categoryId": "28",
    "madeForKids": false,
    "content_pillar": "ai_updates",
    "scope_reviewed": true,
    "content_policy_version": "2026-10-01",
-   "seed": 851
+   "seed": 344
   }
  ]
 }
