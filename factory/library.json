@@ -7612,6 +7612,77 @@
    "origin": "reference_mirror",
    "reference_video": "2ISFOqFsv00",
    "added": "2026-11-17"
+  },
+  {
+   "id": "gemini_robotics_2_5_2026_11_17",
+   "subject": "Gemini",
+   "title": "Gemini 2.5 Powers New Humanoid Robots",
+   "headline": "100X SMARTER",
+   "specs": [
+    "100X FASTER",
+    "REAL-TIME",
+    "GOOGLE AI"
+   ],
+   "description": "Gemini Robotics 2.5 just unlocked a massive leap in physical intelligence for real-world humanoid robots. Google DeepMind is accelerating how fast machines learn complex tasks. Related searches: Gemini Robotics 2.5, Google DeepMind robots, Gemini AI physical intelligence, humanoid robot update, Google robotics 2026.",
+   "tags": [
+    "Gemini",
+    "Google DeepMind",
+    "Humanoid Robots",
+    "Robotics 2.5",
+    "AI Intelligence",
+    "Tech News",
+    "Future Tech",
+    "Android Alians"
+   ],
+   "narration": "Gemini Robotics 2.5 just made humanoid robots one hundred times smarter overnight. Google DeepMind unleashes a massive breakthrough in physical intelligence, letting machines learn complex physical tasks instantly. Watch as this bipedal machine processes chaotic real-world physics in real-time, adapting its grip and balance without a single human cue. The boundary between digital AI and the physical world just vanished. Is this the ultimate leap for automation, or are we moving too fast? Comment below.",
+   "beats": [
+    {
+     "t": "Gemini Robotics 2.5 just made humanoid robots one hundred times smarter overnight.",
+     "kw": "advanced humanoid robot walking smoothly inside a high-tech Google DeepMind laboratory",
+     "tags": []
+    },
+    {
+     "t": "Google DeepMind unleashes a massive breakthrough in physical intelligence.",
+     "kw": "close up of humanoid robot hands manipulating delicate objects with extreme precision",
+     "tags": []
+    },
+    {
+     "t": "Machines now learn complex physical tasks instantly.",
+     "kw": "humanoid robot sorting scattered metal tools on a workbench autonomously",
+     "tags": []
+    },
+    {
+     "t": "Watch as this bipedal machine processes chaotic real-world physics in real-time.",
+     "kw": "humanoid robot reacting instantly to a moving obstacle pushed by a researcher",
+     "tags": []
+    },
+    {
+     "t": "Adapting its grip and balance without a single human cue.",
+     "kw": "robot stabilizing its footing quickly on a narrow moving platform",
+     "tags": []
+    },
+    {
+     "t": "The boundary between digital AI and the physical world just vanished.",
+     "kw": "futuristic humanoid robot looking directly into the camera lens in dramatic cinematic lighting",
+     "tags": []
+    },
+    {
+     "t": "Is this the ultimate leap for automation, or are we moving too fast? Comment below.",
+     "kw": "humanoid robot walking confidently toward the camera exit in a bright modern facility",
+     "tags": []
+    }
+   ],
+   "verified_sources": [
+    "https://news.google.com/rss/articles/CBMimgFBVV95cUxPMnFDRm1lR21jZXRpR2JUak1nSUpZeU9jSXkzRFVfanhaVll4clRtdWUyZzZFeXcwb2ZiS0NsUmoxaFZkcDlGbnJqa2lIM2hBdmNqb0hPTWl4UWc2LXFXcmRPbHF4Q2VzZWQ2UG96Y1FrUzE3dkVUT0dvNHkzLWN0Y25ZR3V1SVE0TGxxb1U5YVNfRUJxc25iaVZR?oc=5"
+   ],
+   "demand_evidence": "anchored to a current verified headline: Gemini Robotics 2.5: Accelerating Physical Intelligence - Google DeepMind",
+   "kind": "short",
+   "categoryId": "28",
+   "madeForKids": false,
+   "content_pillar": "ai_updates",
+   "scope_reviewed": true,
+   "content_policy_version": "2026-10-01",
+   "seed": 623
   }
  ]
 }
