@@ -781,5 +781,14 @@
   "uploaded_at": "2026-11-16T16:59:39+06:00",
   "scheduled_for": "2026-11-17T02:30:00Z",
   "url": "https://www.youtube.com/watch?v=NmFqL2CWDpQ"
+ },
+ {
+  "id": "gemini_robotics_2_5_2026_11_17",
+  "videoId": "Z2qY9FQrHxk",
+  "title": "Gemini 2.5 Powers New Humanoid Robots",
+  "kind": "short",
+  "uploaded_at": "2026-11-17T15:02:18+06:00",
+  "scheduled_for": "2026-11-17T20:30:00Z",
+  "url": "https://www.youtube.com/watch?v=Z2qY9FQrHxk"
  }
 ]
