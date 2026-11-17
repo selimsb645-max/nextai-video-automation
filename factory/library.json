@@ -7600,6 +7600,18 @@
    "scope_reviewed": true,
    "content_policy_version": "2026-10-01",
    "seed": 344
+  },
+  {
+   "id": "ref_2026_11_17_qwen4_max_china_s_new_best_ai_model",
+   "title": "Qwen4 Max , China's New BEST AI Model",
+   "demand_evidence": "Reference channel AI Revolution (@airevolutionx) published \"Qwen4 Max Just Dropped, China's New BEST AI Model!\" on 2026-11-17 (https://www.youtube.com/watch?v=2ISFOqFsv00). Same subject, proven demand in our niche; we produce our own original script and footage, they keep theirs.",
+   "verified_sources": [
+    "https://www.youtube.com/watch?v=2ISFOqFsv00"
+   ],
+   "status": "pending",
+   "origin": "reference_mirror",
+   "reference_video": "2ISFOqFsv00",
+   "added": "2026-11-17"
   }
  ]
 }
