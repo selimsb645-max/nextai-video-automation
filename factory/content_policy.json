@@ -1,139 +1,150 @@
 {
- "version": "2026-10-01",
- "allowed_pillars": [
-  "ai_updates",
-  "wildlife_tricks"
- ],
- "priority": [
-  "ai_updates"
- ],
- "ai_platforms": [
-  "ChatGPT",
-  "OpenAI",
-  "Claude",
-  "Anthropic",
-  "Gemini",
-  "Google AI Studio",
-  "Grok",
-  "xAI",
-  "DeepSeek",
-  "Qwen"
- ],
- "scope": "100% AI, tech breakthroughs and robotics: AI platform/model updates (ChatGPT/OpenAI, Claude/Anthropic, Gemini/Google AI Studio, Grok/xAI, DeepSeek, Qwen), AI-linked science, robots and new AI technology. NO personal finance, NO gadget reviews, NO unrelated categories (owner review 2026-10-06).",
- "research": {
-  "cache_hours": 24,
-  "max_search_queries_per_topup": 2,
-  "batch_topup_max": 3,
-  "prefer_official_sources": true,
-  "exact_search_volume": "Only report with named provider and dated evidence. Free trends/news/YouTube signals are proxies, never invented search counts."
- },
- "gadget_reviews": "Clearly label research-based/spec-based comparisons. Never claim hands-on testing or show generic stock footage as the actual reviewed device.",
- "personal_finance": "General education only, no personalized investment/tax advice, guaranteed returns, get-rich-quick promises or fabricated rates. State jurisdiction/date for financial rules.",
- "cost": "Use free sources, native agent composition, local Kokoro/ffmpeg/Pexels, existing ChatGPT web session. No paid LLM/SEO APIs, generate_image or extra scheduled research runs. Reuse cached research across all five video slots. Agent/workflow turns still consume Base44 credits.",
- "schedules": {
-  "timezone": "Asia/Dhaka",
-  "lead_hours_min": 2,
-  "lead_hours_max": 30,
-  "production_lead_hours": 10,
-  "slots": {
-   "long": [
-    "21:00"
-   ],
-   "short": [
-    "02:30",
-    "08:30",
-    "18:30"
-   ]
+  "version": "2026-10-01",
+  "allowed_pillars": [
+    "ai_updates",
+    "wildlife_tricks"
+  ],
+  "priority": [
+    "ai_updates"
+  ],
+  "ai_platforms": [
+    "ChatGPT",
+    "OpenAI",
+    "Claude",
+    "Anthropic",
+    "Gemini",
+    "Google AI Studio",
+    "Grok",
+    "xAI",
+    "DeepSeek",
+    "Qwen"
+  ],
+  "scope": "100% AI, tech breakthroughs and robotics: AI platform/model updates (ChatGPT/OpenAI, Claude/Anthropic, Gemini/Google AI Studio, Grok/xAI, DeepSeek, Qwen), AI-linked science, robots and new AI technology. NO personal finance, NO gadget reviews, NO unrelated categories (owner review 2026-10-06).",
+  "research": {
+    "cache_hours": 24,
+    "max_search_queries_per_topup": 2,
+    "batch_topup_max": 3,
+    "prefer_official_sources": true,
+    "exact_search_volume": "Only report with named provider and dated evidence. Free trends/news/YouTube signals are proxies, never invented search counts."
   },
-  "first_new_evening_long_date": "2026-10-02",
-  "preserve_existing": {
-   "videoId": "OISJ6w_gFKE",
-   "publishAt": "2026-10-01T12:30:00Z"
+  "gadget_reviews": "Clearly label research-based/spec-based comparisons. Never claim hands-on testing or show generic stock footage as the actual reviewed device.",
+  "personal_finance": "General education only, no personalized investment/tax advice, guaranteed returns, get-rich-quick promises or fabricated rates. State jurisdiction/date for financial rules.",
+  "cost": "Use free sources, native agent composition, local Kokoro/ffmpeg/Pexels, existing ChatGPT web session. No paid LLM/SEO APIs, generate_image or extra scheduled research runs. Reuse cached research across all five video slots. Agent/workflow turns still consume Base44 credits.",
+  "schedules": {
+    "timezone": "Asia/Dhaka",
+    "lead_hours_min": 2,
+    "lead_hours_max": 30,
+    "production_lead_hours": 10,
+    "slots": {
+      "long": [
+        "21:00"
+      ],
+      "short": [
+        "02:30",
+        "08:30",
+        "18:30"
+      ]
+    },
+    "first_new_evening_long_date": "2026-10-02",
+    "preserve_existing": {
+      "videoId": "OISJ6w_gFKE",
+      "publishAt": "2026-10-01T12:30:00Z"
+    },
+    "rule": "OWNER 2026-11-01: one LONG every day at 21:00 BD (was every 3 days) in the @airevolutionx documentary style, 10-16 min, plus the 3 daily Shorts (02:30/08:30/18:30 BD) unchanged.",
+    "daily_long_limit": 1,
+    "production_times": {
+      "long": [
+        "11:00"
+      ],
+      "short": [
+        "evening runs: robot books 18:30 first, second run books 02:30"
+      ]
+    },
+    "lead_hours_min_short": 1,
+    "lead_hours_max_short": 22,
+    "daily_short_limit": 3,
+    "long_min_gap_days": 1,
+    "shorts_enabled": false
   },
-  "rule": "OWNER 2026-11-01: one LONG every day at 21:00 BD (was every 3 days) in the @airevolutionx documentary style, 10-16 min, plus the 3 daily Shorts (02:30/08:30/18:30 BD) unchanged.",
-  "daily_long_limit": 1,
-  "production_times": {
-   "long": [
-    "11:00"
-   ],
-   "short": [
-    "evening runs: robot books 18:30 first, second run books 02:30"
-   ]
+  "production_style": {
+    "version": "reference_channels_2026-10-01",
+    "references": [
+      "https://youtube.com/@airevolutionx",
+      "https://youtube.com/@natebjones",
+      "https://youtube.com/@theneuralnutshell"
+    ],
+    "inspected_samples": [
+      "https://www.youtube.com/watch?v=osZZjdMZVvA",
+      "https://www.youtube.com/watch?v=CMzleh2wjdg"
+    ],
+    "evidence": "Channel thumbnail grids, sample video opening frames, descriptions, chapters and available transcripts inspected. Not a claim of full audiovisual review of every video.",
+    "video_structure": [
+      "Immediate specific thesis/hook grounded in verified facts",
+      "Explain the update and why it matters for the viewer",
+      "Give a verified practical example or comparison, accurately attribute external evidence",
+      "Explain limitations, uncertainty and tradeoffs",
+      "End with a useful takeaway and short subscribe CTA"
+    ],
+    "video_tone": "Nate-inspired calm, analytical, concrete English explanation plus Neural-inspired documentary tension where supported. Use original Kokoro af_heart narration (owner choice 2026-11-01) and own semantically matched licensed footage. No borrowed creator interviews, likeness, voice, shots, music, thumbnail files, logos or scripts. Never falsely say we tested a product or measured a benchmark.",
+    "editing": "Evidence-led relevant B-roll, clean readable information, restrained transitions and clear narration. Keep existing render, audio and safety gates. Any new captions/infographic renderer must be separately implemented/tested before claiming that feature is live; channel reference alone does not add graphics.",
+    "thumbnail_generator": "Gemini image API, automatic (footage-frame PIL fallback)",
+    "thumbnail_default": "Original Neural-inspired clean black/dark background, one clear topic-appropriate focal subject, large flat white condensed sans-serif hook text of 2-5 words and one factual red emphasis word. Keep plenty of negative space and phone readability. No mandatory arrows, yellow 3D type, fake shocked presenter, visual clutter or sensational danger unsupported by the actual video.",
+    "thumbnail_alternative": "Original Nate-inspired clean subject/product layout, large white text with green or blue emphasis and clear contextual imagery for practical positive tool/comparison topics. Do not duplicate their creator face, artwork, channel identity or exact wording.",
+    "face_rule": "No creator-lookalike presenter or borrowed portraits. Without an approved owner presenter image, prefer a relevant original product/concept subject. Never imply a named expert said or endorsed an unverified claim.",
+    "preserve": "Scope: AI updates and new model launches (ChatGPT/OpenAI, Claude/Anthropic, Gemini/Google AI Studio, Grok/xAI, DeepSeek, Qwen) first, plus AI-linked science, robots and technology. Every run ranks topic demand from US headline volume and picks the most-searched story. Do not reupload their videos or modify already-uploaded/scheduled videos unless specifically requested.",
+    "account_switches_allowed": false,
+    "thumbnail_delivery": "Pipeline auto-generates the thumbnail (free Gemini image model) and sets it via YouTube API right after upload. Owner no longer needs to create thumbnails; the WhatsApp report still includes the hook text used.",
+    "owner_reference_2026_11_01": "Style target = youtube.com/@airevolutionx (AI Revolution): cinematic documentary AI news, professional English voice-over, and per-sentence footage sync - every narrated sentence is illustrated by its own distinct clip showing exactly what the sentence says.",
+    "footage_sync_rule": "One unique clip per sentence, matching that sentence's meaning. Never reuse a clip inside a video; cross-video reuse is blocked by the ledger.",
+    "voice": {
+      "engine": "Kokoro v1.0 (local, free)",
+      "voice": "af_heart",
+      "env_switch": "KOKORO_VOICE",
+      "post_chain": "highpass 75Hz, -2dB@120Hz, +1.5dB@3.2kHz, 2.5:1 compand, loudnorm -16 LUFS, 48kHz"
+    }
   },
-  "lead_hours_min_short": 1,
-  "lead_hours_max_short": 22,
-  "daily_short_limit": 3,
+  "owner_daily_mode": {
+    "effective_date": "2026-10-03",
+    "public_time": "21:00",
+    "timezone": "Asia/Dhaka",
+    "longs_per_day": 1,
+    "shorts_per_day": 1,
+    "automated_thumbnails": true,
+    "comments": false,
+    "session_guard": false,
+    "imports": false,
+    "extra_work": false,
+    "public_times": [
+      "21:00",
+      "02:30"
+    ],
+    "production_times": [
+      "11:00"
+    ],
+    "rule": "1 Long per 2 days + 1 Short daily (owner review 2026-10-06)"
+  },
   "long_min_gap_days": 1,
-  "shorts_enabled": false
- },
- "production_style": {
-  "version": "reference_channels_2026-10-01",
-  "references": [
-   "https://youtube.com/@airevolutionx",
-   "https://youtube.com/@natebjones",
-   "https://youtube.com/@theneuralnutshell"
-  ],
-  "inspected_samples": [
-   "https://www.youtube.com/watch?v=osZZjdMZVvA",
-   "https://www.youtube.com/watch?v=CMzleh2wjdg"
-  ],
-  "evidence": "Channel thumbnail grids, sample video opening frames, descriptions, chapters and available transcripts inspected. Not a claim of full audiovisual review of every video.",
-  "video_structure": [
-   "Immediate specific thesis/hook grounded in verified facts",
-   "Explain the update and why it matters for the viewer",
-   "Give a verified practical example or comparison, accurately attribute external evidence",
-   "Explain limitations, uncertainty and tradeoffs",
-   "End with a useful takeaway and short subscribe CTA"
-  ],
-  "video_tone": "Nate-inspired calm, analytical, concrete English explanation plus Neural-inspired documentary tension where supported. Use original Kokoro af_heart narration (owner choice 2026-11-01) and own semantically matched licensed footage. No borrowed creator interviews, likeness, voice, shots, music, thumbnail files, logos or scripts. Never falsely say we tested a product or measured a benchmark.",
-  "editing": "Evidence-led relevant B-roll, clean readable information, restrained transitions and clear narration. Keep existing render, audio and safety gates. Any new captions/infographic renderer must be separately implemented/tested before claiming that feature is live; channel reference alone does not add graphics.",
-  "thumbnail_generator": "Gemini image API, automatic (footage-frame PIL fallback)",
-  "thumbnail_default": "Original Neural-inspired clean black/dark background, one clear topic-appropriate focal subject, large flat white condensed sans-serif hook text of 2-5 words and one factual red emphasis word. Keep plenty of negative space and phone readability. No mandatory arrows, yellow 3D type, fake shocked presenter, visual clutter or sensational danger unsupported by the actual video.",
-  "thumbnail_alternative": "Original Nate-inspired clean subject/product layout, large white text with green or blue emphasis and clear contextual imagery for practical positive tool/comparison topics. Do not duplicate their creator face, artwork, channel identity or exact wording.",
-  "face_rule": "No creator-lookalike presenter or borrowed portraits. Without an approved owner presenter image, prefer a relevant original product/concept subject. Never imply a named expert said or endorsed an unverified claim.",
-  "preserve": "Scope: AI updates and new model launches (ChatGPT/OpenAI, Claude/Anthropic, Gemini/Google AI Studio, Grok/xAI, DeepSeek, Qwen) first, plus AI-linked science, robots and technology. Every run ranks topic demand from US headline volume and picks the most-searched story. Do not reupload their videos or modify already-uploaded/scheduled videos unless specifically requested.",
-  "account_switches_allowed": false,
-  "thumbnail_delivery": "Pipeline auto-generates the thumbnail (free Gemini image model) and sets it via YouTube API right after upload. Owner no longer needs to create thumbnails; the WhatsApp report still includes the hook text used.",
-  "owner_reference_2026_11_01": "Style target = youtube.com/@airevolutionx (AI Revolution): cinematic documentary AI news, professional English voice-over, and per-sentence footage sync - every narrated sentence is illustrated by its own distinct clip showing exactly what the sentence says.",
-  "footage_sync_rule": "One unique clip per sentence, matching that sentence's meaning. Never reuse a clip inside a video; cross-video reuse is blocked by the ledger.",
-  "voice": {
-   "engine": "Kokoro v1.0 (local, free)",
-   "voice": "af_heart",
-   "env_switch": "KOKORO_VOICE",
-   "post_chain": "highpass 75Hz, -2dB@120Hz, +1.5dB@3.2kHz, 2.5:1 compand, loudnorm -16 LUFS, 48kHz"
+  "production_targets": {
+    "long_minutes_standard": "9-10 min floor, longer when the story needs it",
+    "long_minutes_deepdive": "16-22",
+    "long_target_words": "topic_driven (min 1400, no maximum)",
+    "long_max_beats": 70,
+    "resolution": "1920x1080",
+    "fps": 30,
+    "qc_min_score": 85,
+    "source": "owner master prompt 2026-11-01 (AI Revolution style upgrade)",
+    "longs_per_day": 1,
+    "cadence_note": "Owner 2026-11-01: ONE long EVERY day at 21:00 BD (confirmed: 'প্রতিদিন একটি')."
+  },
+  "length_policy": {
+    "mode": "topic_driven",
+    "min_words": 1400,
+    "max_words": null,
+    "note": "owner 2026-11-19: 'আনলিমিটেড শব্দ, টপিক অনুযায়ী শব্দ নির্ধারিত হবে'. 1400 words (~9-10 min at 150 wpm) is a floor, not a target; there is no ceiling, so a big story can run 20+ minutes. The writer decides per topic."
+  },
+  "shorts_resume_rule": {
+    "enabled": false,
+    "condition": "owner 2026-11-19: shorts come back only when long videos show good response. The owner decides; tools/shorts_gate.py reports the last 3 longs' views/likes so the decision rests on numbers, not a feeling.",
+    "note": "AVD cannot be read: the OAuth token lacks yt-analytics.readonly, so views and likes are the available proxy. Do not invent a retention number."
   }
- },
- "owner_daily_mode": {
-  "effective_date": "2026-10-03",
-  "public_time": "21:00",
-  "timezone": "Asia/Dhaka",
-  "longs_per_day": 1,
-  "shorts_per_day": 1,
-  "automated_thumbnails": true,
-  "comments": false,
-  "session_guard": false,
-  "imports": false,
-  "extra_work": false,
-  "public_times": [
-   "21:00",
-   "02:30"
-  ],
-  "production_times": [
-   "11:00"
-  ],
-  "rule": "1 Long per 2 days + 1 Short daily (owner review 2026-10-06)"
- },
- "long_min_gap_days": 1,
- "production_targets": {
-  "long_minutes_standard": "8-10",
-  "long_minutes_deepdive": "16-22",
-  "long_target_words": 1300,
-  "long_max_beats": 70,
-  "resolution": "1920x1080",
-  "fps": 30,
-  "qc_min_score": 85,
-  "source": "owner master prompt 2026-11-01 (AI Revolution style upgrade)",
-  "longs_per_day": 1,
-  "cadence_note": "Owner 2026-11-01: ONE long EVERY day at 21:00 BD (confirmed: 'প্রতিদিন একটি')."
- }
 }

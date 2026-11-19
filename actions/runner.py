@@ -199,6 +199,38 @@ def news_headlines(kind="long"):
         if k not in seen:
             seen.add(k)
             out.append(it)
+    # OWNER 2026-11-19: "কোন টপিক বেশি চলতেছে ওইটা তো আমাদের টুলস খুঁজে বের করবে".
+    # factory/trends_check.py already computes a free 24h demand read (RSS cluster
+    # counts + Google Trends matches) but nothing called it, so a hot story the plain
+    # RSS pass missed never reached the writer. Merge its candidates here.
+    try:
+        _cache = os.path.join(FACT, "topic_demand_cache.json")
+        if os.path.exists(_cache):
+            _d = json.load(open(_cache))
+            _extra = []
+            for _grp in (_d.get("news_candidates") or {}).values():
+                for _it in (_grp or [])[:12]:
+                    if _it.get("title"):
+                        _extra.append({"title": _it["title"],
+                                       "url": _it.get("url") or _it.get("link") or "",
+                                       "source": "trends_check"})
+            for _it in (_d.get("search_trend_matches") or [])[:10]:
+                if _it.get("title"):
+                    _extra.append({"title": _it["title"],
+                                   "url": _it.get("url") or "",
+                                   "source": "google_trends"})
+            _added = 0
+            for _it in _extra:
+                _k = _it["title"].lower()[:60]
+                if _k not in seen and _it.get("url"):
+                    seen.add(_k)
+                    out.append(_it)
+                    _added += 1
+            log(f"trends: merged {_added} cached demand candidates "
+                f"(policy_version match, age {int((time.time() - _d.get('generated_at', 0)) / 3600)}h)")
+    except Exception as _e:
+        log(f"trends: cache not used ({type(_e).__name__})")
+
     log(f"research: {len(out)} fresh US headlines (7d)")
     return out[:150]
 
@@ -274,10 +306,28 @@ def gemini_json(prompt, models=None):
 # and only raise the length once YouTube retention data proves viewers stay.
 # 150 wpm: 1600 words ~ 10-11 min, matching the @airevolutionx reference length
 # (owner standing rule: 10-16 min). LONG_TARGET_WORDS=2200+ for a longer cut.
-LONG_TARGET_WORDS = int(os.environ.get("LONG_TARGET_WORDS", "1600"))
+# OWNER 2026-11-19: "আনলিমিটেড শব্দ, টপিক অনুযায়ী শব্দ নির্ধারিত হবে" + "লম্বা".
+# Length is now topic-driven: content_policy.schedules... length_policy gives a FLOOR
+# (min_words) and no ceiling. LONG_TARGET_WORDS stays as the point where the growth
+# loop stops asking for more beats - it is a floor, not a target, and nothing rejects
+# a script for being longer than it.
+def _length_policy():
+    try:
+        _p = json.load(open(os.path.join(FACT, "content_policy.json")))
+        return _p.get("length_policy") or {}
+    except Exception:
+        return {}
+
+
+_LP = _length_policy()
+LONG_TARGET_WORDS = int(os.environ.get("LONG_TARGET_WORDS")
+                        or _LP.get("min_words") or 1400)
 LONG_MAX_BEATS = int(os.environ.get("LONG_MAX_BEATS", "52"))
 LONG_MIN_WORDS = int(LONG_TARGET_WORDS * 0.65)
-LONG_MAX_WORDS = int(LONG_TARGET_WORDS * 1.15)
+# max_words: null in the policy means no ceiling at all
+_LP_MAX = _LP.get("max_words")
+LONG_MAX_WORDS = int(os.environ.get("LONG_MAX_WORDS")
+                     or (_LP_MAX if _LP_MAX else 10 ** 6))
 
 ENTRY_PROMPT = """You are the topic researcher and script writer for a US-audience English YouTube channel about AI (NextAI Vision). OWNER RULE 2026-10-12: the TOPICS stay the same — videos cover ALL types of AI: ChatGPT/OpenAI, Claude/Anthropic, Gemini/Google AI Studio, Grok/xAI, DeepSeek, Qwen, and EVERY other AI company, platform, tool, model or AI technology; also AI-linked science discoveries and robots. ONLY the PRESENTATION STYLE follows the channel "AI Revolution" (youtube.com/@airevolutionx, OWNER REFERENCE 2026-11-01, ~576K subs): cinematic DOCUMENTARY-style AI news storytelling — a confident professional English voice-over that explains each breakthrough, and EVERY SENTENCE is illustrated by its own distinctive real footage / cinematic B-roll of exactly what is being said at that moment. Momentum and tension throughout, no filler, no tutorial tone, no listicle.
 From the headlines below pick exactly ONE real, currently-trending topic (last 7 days, US-interest). Allowed pillars, in priority order: (1) AI updates and NEW MODEL LAUNCHES from ChatGPT/OpenAI, Claude/Anthropic, Gemini/Google AI Studio, Grok/xAI, DeepSeek, Qwen — ANY AI update from ANY AI company counts; (2) AI-linked science discoveries; (3) robots and new AI technology. NEVER medical advice, no politics, no tragedy exploitation.
@@ -509,7 +559,7 @@ def _anchor_entry(kind, h, plat, today, demand_txt, recent_txt):
         val.setdefault("specs", [])
     words = len(str(val.get("narration", "")).split())
     lo, hi = ((45, 150) if kind == "short"
-              else (int(LONG_TARGET_WORDS * 0.6), int(LONG_TARGET_WORDS * 1.2)))
+              else (int(LONG_TARGET_WORDS * 0.6), LONG_MAX_WORDS))
     if not (lo <= words <= hi):
         log(f"anchored entry rejected on length ({words} words)")
         return None

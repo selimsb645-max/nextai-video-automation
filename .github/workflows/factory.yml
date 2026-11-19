@@ -89,6 +89,12 @@ jobs:
           ls factory/footage/ | head -3
           rm -f assets.tar.gz
 
+      # OWNER 2026-11-19: the writer must pick whatever is genuinely hot, so refresh
+      # the free demand cache (Google News cluster counts + Trends matches) first.
+      # It self-caches for 24h and never fails the run.
+      - name: Refresh topic demand (free)
+        run: python3 factory/trends_check.py > factory/topic_demand_cache.json || true
+
       - name: Production turn (topic -> footage -> voice -> render -> private publishAt upload)
         env:
           YT_TOKEN_JSON: ${{ secrets.YT_TOKEN_JSON }}
