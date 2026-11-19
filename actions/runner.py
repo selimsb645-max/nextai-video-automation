@@ -1390,6 +1390,16 @@ def vertical_copy(mp4, workdir):
     return None
 
 
+def _shorts_enabled():
+    """Shorts producer switch (owner 2026-11-19: Short off). Default: on, so a
+    missing key never silently changes behaviour for an older config."""
+    try:
+        cfg = json.load(open(os.path.join(FACT, "content_policy.json")))
+        return bool((cfg.get("schedules") or {}).get("shorts_enabled", True))
+    except Exception:
+        return True
+
+
 def render_film(e, workdir, pairs, audio):
     """SAFE INTEGRATION (owner master upgrade 2026-11-01).
 
@@ -1528,17 +1538,28 @@ def main():
             else:
                 publish_at, slot_local = factory.next_bd_slot(kind)
         except SystemExit:
+            # OWNER 2026-11-19 ("Short off long চালু"): Shorts are off, so a missed
+            # Long window must never be answered with a robot Short. Say why and stop.
+            if not _shorts_enabled():
+                log("no Long slot inside the window and Shorts are disabled "
+                    "(shorts_enabled=false) - nothing produced this run")
+                return
             # OWNER 2026-10-11 War Plan: a no-Long day is NOT a dead day —
             # the channel published NOTHING on off-days, which kills algo
             # momentum. Produce the standalone robot Short for the next
             # Short slot, then exit (hook-cut needs the Long, so it only
             # happens on Long days).
-            log("no Long slot due (2-day cadence) - producing robot Short, then exiting")
+            log("no Long slot due - producing robot Short, then exiting")
             try:
                 _robot_short([], time.strftime("%Y-%m-%d"))
             except (Exception, SystemExit) as ex:
                 log("robot short step failed: " + str(ex)[:140])
             return
+
+    # 1b) Shorts are off: refuse an explicit --kind short instead of silently producing one
+    if kind == "short" and not _shorts_enabled():
+        log("Shorts are disabled (schedules.shorts_enabled=false) - nothing produced this run")
+        return
 
     # 2) Cross-producer duplicate guard (YouTube scheduled uploads)
     if not args.selftest and slot_taken_on_youtube(publish_at):
