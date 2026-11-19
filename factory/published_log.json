@@ -844,5 +844,14 @@
   "uploaded_at": "2026-11-19T19:22:42+06:00",
   "scheduled_for": "2026-11-20T02:30:00Z",
   "url": "https://www.youtube.com/watch?v=rvDfV8eujO0"
+ },
+ {
+  "id": "openai_gpt62_astra_law_2026_11_19_short1",
+  "videoId": "2tafuYOuyEk",
+  "title": "OpenAI Just Dropped GPT-6.2 Astra for Law... Here's Why — 30 Seconds That Changed It",
+  "kind": "short",
+  "uploaded_at": "2026-11-19T19:23:00+06:00",
+  "scheduled_for": "2026-11-20T12:30:00Z",
+  "url": "https://www.youtube.com/watch?v=2tafuYOuyEk"
  }
 ]
