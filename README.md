@@ -2,7 +2,7 @@
 
 This is a private code/data backup and handover package. It is **not** a newly deployed independent service. GitHub holds code; another Base44 agent still needs authorized tools, its execution environment and available account/workspace credits. Creating another agent does not guarantee additional credits.
 
-Start with [AGENT_HANDOVER.md](AGENT_HANDOVER.md), [current status](docs/CURRENT_STATUS.md) and [known limitations](docs/KNOWN_LIMITATIONS.md). Owner communication is Bengali. Executable source scripts are copied unchanged from the active factory; no live YouTube upload, production workflow change or cutover is authorized by merely cloning.
+Start with the [master agent prompt](docs/MASTER_AGENT_PROMPT.md) — one self-contained brief for any AI agent — then [AGENT_HANDOVER.md](AGENT_HANDOVER.md), [current status](docs/CURRENT_STATUS.md) and [known limitations](docs/KNOWN_LIMITATIONS.md). Owner communication is Bengali. Executable source scripts are copied unchanged from the active factory; no live YouTube upload, production workflow change or cutover is authorized by merely cloning.
 
 ## Runtime setup
 
