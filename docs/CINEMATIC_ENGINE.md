@@ -1,7 +1,14 @@
 # Next AI Vision 4 — Cinematic Editing Engine
 
-Status: **implemented, tested, not yet enabled in production.**
-Production renderer is untouched until `ENABLE_CINEMATIC_EDITOR=true` is set by you.
+Status: **ENABLED in production from 2026-11-19** (owner delegation via
+Muse: "make the videos like @airevolutionx / like a professional human
+editor, fix everything, keep it fully automatic").
+`ENABLE_CINEMATIC_EDITOR=true` is set in `.github/workflows/factory.yml`.
+Safety is unchanged: `actions/runner.py::render_film()` accepts the
+cinematic cut only when this engine's own QC passes and otherwise falls
+back to the proven `factory.render()`, so a slot is never lost to the new
+engine. Rollback: set the flag back to `"false"` in factory.yml.
+See `docs/QUALITY_UPGRADE_2026-11-19.md` for the full change set.
 
 ## 1. Audit of what already existed (measured, not assumed)
 
