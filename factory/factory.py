@@ -1403,6 +1403,13 @@ def upload(e, mp4, publish_at=None, playlist_link=None, allow_override=False):
     desc = e["description"].strip()
     if "Related searches" not in desc:
         desc = desc + "\n\nRelated searches: " + kw + "\n\n" + hashtags
+    # Sources section (owner 2026-11-19, @airevolutionx packaging): the
+    # reference channel lists a SOURCE under its claims; our verified
+    # sources were collected for every story but never shown to viewers.
+    _srcs = [str(s) for s in (e.get("verified_sources") or [])
+             if str(s).startswith("http")]
+    if _srcs and "Sources:" not in desc:
+        desc = desc + "\n\nSources:\n" + "\n".join(_srcs[:3])
     if playlist_link:
         desc = desc + "\n\nMore deep dives: " + playlist_link
     # CC-BY portrait credit: required by the licence when a face is in the thumb
