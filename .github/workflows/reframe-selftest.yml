@@ -35,3 +35,8 @@ jobs:
           PY
       - name: Unit tests
         run: python3 -m pytest tests/test_reframe.py -q
+
+      # শর্টস ক্লিপ ফিটিং আর লম্বা ভিডিওর ভার্টিকাল কপি — দুটোই এখানে যাচাই হয়,
+      # কারণ Wildlife Trick Shorts প্রোডিউসার owner review gate-এ disabled।
+      - name: Wiring tests (shorts fit + long vertical copy)
+        run: python3 -m pytest tests/test_vertical_wiring.py -q
