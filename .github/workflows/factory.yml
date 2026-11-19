@@ -104,6 +104,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_REF_NAME: ${{ github.ref_name }}
+          ENABLE_CINEMATIC_EDITOR: "true"
         run: |
           MODE="${{ github.event.inputs.mode || 'produce' }}"
           KIND="${{ github.event.inputs.kind || 'long' }}"
