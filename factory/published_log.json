@@ -826,5 +826,23 @@
   "uploaded_at": "2026-11-19T08:08:03+06:00",
   "scheduled_for": "2026-11-19T20:30:00Z",
   "url": "https://www.youtube.com/watch?v=SOsFtbp7W38"
+ },
+ {
+  "id": "openai_gpt62_astra_law_2026_11_19",
+  "videoId": "awf-YtCpFrk",
+  "title": "OpenAI Just Dropped GPT-6.2 Astra for Law... Here's Why",
+  "kind": "long",
+  "uploaded_at": "2026-11-19T19:00:13+06:00",
+  "scheduled_for": "2026-11-20T15:00:00Z",
+  "url": "https://www.youtube.com/watch?v=awf-YtCpFrk"
+ },
+ {
+  "id": "openai_disbands_robotics_team_2026_11_19",
+  "videoId": "rvDfV8eujO0",
+  "title": "OpenAI Just Killed Its Robot Team",
+  "kind": "short",
+  "uploaded_at": "2026-11-19T19:22:42+06:00",
+  "scheduled_for": "2026-11-20T02:30:00Z",
+  "url": "https://www.youtube.com/watch?v=rvDfV8eujO0"
  }
 ]
