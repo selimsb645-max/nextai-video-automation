@@ -187,6 +187,38 @@ def fetch_clips(topic, used):
 
 
 # --------------------------------------------------------------- entry + thumb
+def fit_clips(pairs, workdir, mode=None):
+    """প্রতিটা ক্লিপ ৯:১৬ ফ্রেমে বসিয়ে দাও, যাতে রেন্ডারের hard crop বিষয়বস্তু কেটে না ফেলে।
+
+    mode='pad'  -> পুরো ফ্রেম অক্ষত, ওপরে-নিচে ঝাপসা ব্যাকগ্রাউন্ড (ডিফল্ট)
+    mode='crop' -> পুরোনো আচরণ: কেন্দ্র থেকে কেটে ভরা (factory.render নিজেই করে)
+    mode='off'  -> কিছুই করি না
+    """
+    mode = (mode or os.environ.get("SHORTS_FIT", "pad")).strip().lower()
+    if mode in ("off", "0", "false", "no", "crop"):
+        log("fit_clips: %s (রেন্ডার নিজেই ফ্রেম ভরাবে)" % mode)
+        return pairs
+    import reframe as RF
+    outdir = os.path.join(workdir, "fit")
+    os.makedirs(outdir, exist_ok=True)
+    fitted = []
+    for beat, clip in pairs:
+        src = clip["file"]
+        if not os.path.isabs(src):
+            src = os.path.join(FACT, "footage", src)
+        dst = os.path.join(outdir, os.path.basename(clip["file"]).replace(".mp4", "_v.mp4"))
+        r = RF.to_vertical(src, dst, mode="pad")
+        if r.get("ok"):
+            c2 = dict(clip)
+            c2["file"] = dst          # absolute path: the renderer's join keeps it
+            fitted.append((beat, c2))
+        else:
+            log("  fit failed, keeping original: %s" % str(r.get("error"))[:90])
+            fitted.append((beat, clip))
+    log("fit_clips: %d/%d ক্লিপ ৯:১৬-এ বসানো হয়েছে" % (len(fitted), len(pairs)))
+    return fitted
+
+
 def build_entry(topic, pairs, policy):
     beats = [{"t": b["t"], "q": b["q"]} for b, _c in pairs]
     return {
@@ -325,6 +357,7 @@ def main():
     log("workdir: " + workdir)
 
     audio = F.gen_voice(e, workdir)
+    pairs = fit_clips(pairs, workdir)
     clips = [(c, len(b["t"].split())) for b, c in pairs]
     mp4 = F.render(e, workdir, clips, audio)
     log("render OK: " + mp4)

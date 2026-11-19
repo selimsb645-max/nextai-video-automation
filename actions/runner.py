@@ -1368,6 +1368,28 @@ def quality_gate(e, mp4, kind="long", narration_path=None):
     return total, sc, notes
 
 
+def vertical_copy(mp4, workdir):
+    """লম্বা (16:9) ভিডিওর ৯:১৬ কপি বানায়, রিলস/শর্টসে পুনর্ব্যবহারের জন্য।
+
+    ENABLE_VERTICAL_COPY বন্ধ (ডিফল্ট) থাকলে কিছুই করে না। কপিটা আপলোড হয় না,
+    শুধু workdir-এ রাখা হয়, তাই কোনো স্লট হারানোর ঝুঁকি নেই।
+    """
+    flag = os.environ.get("ENABLE_VERTICAL_COPY", "false").strip().lower()
+    if flag not in ("1", "true", "yes", "on"):
+        return None
+    try:
+        from reframe import to_vertical
+        dst = os.path.join(workdir, "vertical.mp4")
+        res = to_vertical(mp4, dst, mode="pad")
+        if res.get("ok"):
+            log("vertical copy: OK " + str(res.get("probe")))
+            return dst
+        log("vertical copy failed: " + str(res.get("error"))[:140])
+    except Exception as ex:
+        log("vertical copy crashed: " + str(ex)[:140])
+    return None
+
+
 def render_film(e, workdir, pairs, audio):
     """SAFE INTEGRATION (owner master upgrade 2026-11-01).
 
@@ -1583,6 +1605,7 @@ def main():
             pass
     if not _reused:
         mp4 = render_film(e, workdir, pairs, audio)
+        vertical_copy(mp4, workdir)
         try:
             json.dump({"hash": _want, "duration": _mp4_duration(mp4),
                        "clips": len(pairs), "at": time.time()},
