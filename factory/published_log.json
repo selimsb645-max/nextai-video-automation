@@ -799,5 +799,32 @@
   "uploaded_at": "2026-11-18T16:24:04+06:00",
   "scheduled_for": "2026-11-18T20:30:00Z",
   "url": "https://www.youtube.com/watch?v=e9chNdJ2EDw"
+ },
+ {
+  "id": "openai_astra_gpt62_law_2026_11_19",
+  "videoId": "cJwbBOC-Xr4",
+  "title": "OpenAI Just Released GPT-6.2 for Law",
+  "kind": "long",
+  "uploaded_at": "2026-11-19T08:00:54+06:00",
+  "scheduled_for": "2026-11-19T15:00:00Z",
+  "url": "https://www.youtube.com/watch?v=cJwbBOC-Xr4"
+ },
+ {
+  "id": "openai_astra_gpt62_law_2026_11_19_short1",
+  "videoId": "M6uwapKXnmc",
+  "title": "OpenAI Just Released GPT-6.2 for Law — 30 Seconds That Changed It",
+  "kind": "short",
+  "uploaded_at": "2026-11-19T08:07:58+06:00",
+  "scheduled_for": "2026-11-19T12:30:00Z",
+  "url": "https://www.youtube.com/watch?v=M6uwapKXnmc"
+ },
+ {
+  "id": "openai_astra_gpt62_law_2026_11_19_short2",
+  "videoId": "SOsFtbp7W38",
+  "title": "OpenAI Just Released GPT-6.2 for Law — The Part Nobody Shows",
+  "kind": "short",
+  "uploaded_at": "2026-11-19T08:08:03+06:00",
+  "scheduled_for": "2026-11-19T20:30:00Z",
+  "url": "https://www.youtube.com/watch?v=SOsFtbp7W38"
  }
 ]
