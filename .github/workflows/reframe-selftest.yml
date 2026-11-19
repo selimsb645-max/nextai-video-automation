@@ -1,0 +1,37 @@
+name: Reframe selftest
+
+# factory/reframe.py ক্লিন রানারে সত্যিই ৯:১৬ বানায় কি না — কোনো বাইরের প্যাকেজ ছাড়া।
+on:
+  workflow_dispatch:
+
+jobs:
+  selftest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - run: pip install -r requirements.txt pytest
+      - name: Make a 16:9 test clip
+        run: |
+          ffmpeg -y -f lavfi -i "testsrc=size=1280x720:rate=25:duration=4" \
+                 -f lavfi -i "sine=frequency=440:duration=4" \
+                 -c:v libx264 -pix_fmt yuv420p -c:a aac /tmp/in.mp4 -loglevel error
+      - name: Reframe both modes
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          sys.path.insert(0, '.')
+          from factory.reframe import to_vertical, probe
+          for mode in ('crop', 'pad'):
+              r = to_vertical('/tmp/in.mp4', f'/tmp/out_{mode}.mp4', mode=mode)
+              print(mode, json.dumps(r, ensure_ascii=False))
+              assert r['ok'], r
+              assert probe(r['output'])['height'] == 1920
+          print('REFRAME SELFTEST OK')
+          PY
+      - name: Unit tests
+        run: python3 -m pytest tests/test_reframe.py -q
