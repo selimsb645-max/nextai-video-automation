@@ -349,7 +349,7 @@ SCRIPT FORMAT — an AI news story told by a real host:
 - OWNER DATA 2026-10-11: average view duration on 5-min longs is only 57s — assume viewers decide in the first 30 seconds; nothing slow, nothing generic, no throat-clearing before the surprise.
 
 HARD RULES:
-- Title: MAX 50 CHARACTERS (mobile viewers must read the full message at a glance), must contain "AI" or the platform/company name AND one of these story-drama hook patterns: Banned / Built / Just / Shocking / Warning / Nobody / Truth / Finally / vs.
+- Title: 55-70 CHARACTERS (owner 2026-11-19, matching the @airevolutionx reference: their winning titles run 55-70 chars, e.g. "OpenAI Just Embarrassed Itself With New GPT 6.2 Astra...", "Google Just Gives the World Its Most Powerful AI Model Ever: Carbon"). Mobile truncates the END, so the searchable subject name AND the tension must both land in the FIRST 40 characters; use the rest to complete the claim or end with a curiosity gap ("...", ": What Happens Next"). Must contain "AI" or the platform/company name AND one of these story-drama hook patterns: Banned / Built / Just / Shocking / Warning / Nobody / Truth / Finally / vs / Lost / Dropped / Embarrassed / Terrifying. Prefer a CONFLICT angle when the story has one (winner vs loser, promise vs backlash, breakthrough vs danger) over a neutral announcement - "X Just Released Y" is the announcement, not the story.
 - TITLE SEARCHABILITY (owner 2026-10-16: 70% of views come from SEARCH, and drama-only titles rank for nothing): the title MUST contain the exact SEARCHABLE SUBJECT NAME a viewer would actually type into YouTube/Google — the model name (e.g. "GPT-5.1", "Claude Opus 4.5", "Gemini 3"), the company name, the robot name, or the law/event name — spelled EXACTLY as in the headlines. GOOD: "Claude Opus 4.5 Just Beat GPT-5.1", "Tesla Optimus Banned Itself". BAD: "AI Agent Hacked a Government. Nobody Told It To" (no searchable subject, nobody searches this).
 - TITLE PATTERNS that work (pick the best fit, never the same one twice in a row): "<Name> Built an AI. <Company> Banned Him.", "X Just Happened — Here's Why It Matters", "The Truth About X", "X Banned Y. Here's Why.", "Nobody Expected This From X", "X vs Y: It's Not Even Close", "<Company> Just <Dramatic Claim>" (e.g. "Anthropic Just Dropped DUET: The First AI That Thinks Ahead"), "It's Happening... <Consequence>".
 - TITLE VARIETY: do NOT reuse the same title template (like "AI Warning: ...") that appears in the RECENT TITLES list; at most one title there shares its first two words with yours.
@@ -534,17 +534,18 @@ def _anchor_entry(kind, h, plat, today, demand_txt, recent_txt):
     # deterministic repair: subject in title + description, hook, length limits
     ttl = " ".join(str(val.get("title") or "").split())
     hook = next((w for w in ("Banned", "Built", "Just", "New", "Shocking",
-                             "Warning", "Nobody", "Truth", "Finally", "First")
+                             "Warning", "Nobody", "Truth", "Finally", "First",
+                             "Lost", "Dropped", "Embarrassed", "Terrifying")
                  if w.lower() in ttl.lower()), None)
-    if subj.lower() not in ttl.lower() or len(ttl) > 50 or not hook:
+    if subj.lower() not in ttl.lower() or len(ttl) > 70 or not hook:
         head = re.sub(r"^[^:]{0,26}:\s*", "", (h.get("title") or ""))
         cand = [subj + ": " + head, subj + " Just Changed Everything",
                 subj + " Just Got Banned", subj + " Is Not What You Think"]
-        ttl = next((c[:50].strip() for c in cand
-                    if subj.lower() in c.lower() and len(c) <= 50
+        ttl = next((c[:70].strip() for c in cand
+                    if subj.lower() in c.lower() and len(c) <= 70
                     and any(w.lower() in c.lower() for w in
                             ("just", "banned", "new", "first", "changed",
-                             "not", "built"))), (subj + " AI News")[:50])
+                             "not", "built"))), (subj + " AI News")[:70])
     val["title"] = ttl
     val["subject"] = subj
     desc = " ".join(str(val.get("description") or "").split())
@@ -1157,18 +1158,32 @@ def _robot_short(commit_extra, today):
     except (Exception, SystemExit) as ex:
         log("robot short step failed (long already uploaded; continuing): " + str(ex)[:140])
 
-def write_report(e, vid, publish_at, slot_local, mode, extra=""):
+def write_report(e, vid, publish_at, slot_local, mode, extra="", qc=None):
     os.makedirs(REPORTS, exist_ok=True)
     f = os.path.join(REPORTS, f"{e['id']}_{time.strftime('%Y%m%d_%H%M')}.md")
     state = ("scheduled (private, publishAt)" if vid
              else ("SELFTEST — rendered locally, NOT uploaded" if mode == "selftest"
                    else "not uploaded (see log)"))
+    # Quality section (owner delegation 2026-11-19): every report must show
+    # the measured QC score, its breakdown, which renderer produced the cut
+    # and the final duration - "success" alone never proves quality.
+    qc_block = ""
+    if qc:
+        _total, _sc, _notes, _dur = qc
+        _parts = ", ".join(f"{k} {v}" for k, v in (_sc or {}).items())
+        qc_block = (f"\n## Quality (QC gate, pass >= {QC_MIN_SCORE})\n"
+                    f"**Score:** {_total}/100  |  {_parts}\n"
+                    f"**Renderer:** {e.get('_renderer', 'unknown')}\n"
+                    f"**Duration:** {int(_dur or 0)}s\n")
+        if _notes:
+            qc_block += "**QC notes:** " + "; ".join(str(n) for n in _notes[:8]) + "\n"
     open(f, "w").write(f"""# {e['title']}
 
 **Status:** {state}
 **Slot (Dhaka):** {slot_local or 'n/a'}  |  **Slot (UTC):** {publish_at or 'n/a'}
 {"**Video:** https://www.youtube.com/watch?v=" + vid if vid else ""}
 **Topic pillar:** {e.get('content_pillar')}  |  **Sources:** {', '.join(str(x)[:60] for x in (e.get('verified_sources') or [])[:2])}
+{qc_block}
 
 ## Thumbnail prompt (owner makes it in ChatGPT)
 {extra}
@@ -1382,7 +1397,7 @@ def quality_gate(e, mp4, kind="long", narration_path=None):
     title = str(e.get("title", ""))
     subj = str(e.get("subject", "")).lower()
     seo = 0
-    seo += 2 if 0 < len(title) <= 52 else 0
+    seo += 2 if 0 < len(title) <= 72 else 0
     seo += 2 if (subj and subj in title.lower()
                  and subj in str(e.get("description", "")).lower()) else 0
     seo += 1 if len(e.get("tags") or []) >= 8 else 0
@@ -1461,6 +1476,7 @@ def render_film(e, workdir, pairs, audio):
     """
     flag = os.environ.get("ENABLE_CINEMATIC_EDITOR", "false").strip().lower()
     if flag not in ("1", "true", "yes", "on"):
+        e["_renderer"] = "factory.render (cinematic flag off)"
         return factory.render(e, workdir, pairs, audio)
     try:
         from cine import editor as CINE
@@ -1470,12 +1486,18 @@ def render_film(e, workdir, pairs, audio):
         if qc.get("ok") and rep.get("output"):
             log("cinematic editor: QC PASS (score "
                 + str(qc.get("score")) + ") - using the new render")
+            e["_renderer"] = ("cinematic engine (own QC PASS, score "
+                              + str(qc.get("score")) + ")")
             return rep["output"]
         log("cinematic editor: QC FAIL (score " + str(qc.get("score"))
             + ") - falling back to factory.render")
+        e["_renderer"] = ("factory.render (cinematic QC FAIL, score "
+                          + str(qc.get("score")) + ")")
     except Exception as ex:
         log("cinematic editor crashed, falling back to factory.render: "
             + str(ex)[:180])
+        e["_renderer"] = "factory.render (cinematic crashed: " \
+            + str(ex)[:80] + ")"
     return factory.render(e, workdir, pairs, audio)
 
 
@@ -1842,7 +1864,8 @@ def main():
     # 8) Thumbnail prompt + Bengali report, committed back to the repo
     thumb = gemini_json(THUMB_PROMPT.format(title=e["title"]))
     thumb_txt = (thumb or {}).get("prompt", "n/a") if isinstance(thumb, dict) else str(thumb or "n/a")
-    rf = write_report(e, vid, publish_at, slot_local, "produce", thumb_txt)
+    rf = write_report(e, vid, publish_at, slot_local, "produce", thumb_txt,
+                      qc=(_qc_total, _qc_sc, _qc_notes, _mp4_duration(mp4)))
     log(f"scheduled slot (Dhaka): {slot_local}")
     for rel, loc, msg in [
         ("factory/library.json", os.path.join(FACT, "library.json"), "state: library entry " + e["id"]),
