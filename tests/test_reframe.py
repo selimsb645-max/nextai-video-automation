@@ -8,7 +8,15 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from factory import reframe  # noqa: E402
+# Load factory/reframe.py by path. `from factory import reframe` breaks when another test
+# module in the same pytest process has put the factory DIRECTORY on sys.path (that makes
+# `factory` resolve to factory/factory.py). Loading by file keeps the tests order-independent.
+import importlib.util  # noqa: E402
+
+_spec = importlib.util.spec_from_file_location(
+    "reframe", str(Path(__file__).resolve().parents[1] / "factory" / "reframe.py"))
+reframe = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(reframe)
 
 pytestmark = pytest.mark.skipif(not shutil.which("ffmpeg"), reason="ffmpeg নেই")
 
