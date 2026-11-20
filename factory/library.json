@@ -8405,6 +8405,18 @@
    "scope_reviewed": true,
    "content_policy_version": "2026-10-01",
    "seed": 221
+  },
+  {
+   "id": "ref_2026_11_19_google_unleashes_gemini_4_neon_microsoft_drops_3_new_model",
+   "title": "Google Unleashes Gemini 4 Neon, Microsoft Drops 3 New Models, New RSI, Kling Reaches 8K",
+   "demand_evidence": "Reference channel AI Revolution (@airevolutionx) published \"Google Unleashes Gemini 4 Neon, Microsoft Drops 3 New Models, New RSI, Kling Reaches 8K...\" on 2026-11-19 (https://www.youtube.com/watch?v=TfnQju0-0i4). Same subject, proven demand in our niche; we produce our own original script and footage, they keep theirs.",
+   "verified_sources": [
+    "https://www.youtube.com/watch?v=TfnQju0-0i4"
+   ],
+   "status": "pending",
+   "origin": "reference_mirror",
+   "reference_video": "TfnQju0-0i4",
+   "added": "2026-11-20"
   }
  ]
 }
