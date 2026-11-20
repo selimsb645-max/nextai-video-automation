@@ -853,5 +853,32 @@
   "uploaded_at": "2026-11-19T19:23:00+06:00",
   "scheduled_for": "2026-11-20T12:30:00Z",
   "url": "https://www.youtube.com/watch?v=2tafuYOuyEk"
+ },
+ {
+  "id": "openai_astra_gpt62_update_2026_11_20",
+  "videoId": "zDgOL2C7DNM",
+  "title": "OpenAI Shockingly Expands Astra Access with GPT-6.2 Update",
+  "kind": "long",
+  "uploaded_at": "2026-11-20T15:58:06+06:00",
+  "scheduled_for": "2026-11-21T15:00:00Z",
+  "url": "https://www.youtube.com/watch?v=zDgOL2C7DNM"
+ },
+ {
+  "id": "openai_astra_gpt62_update_2026_11_20_short1",
+  "videoId": "53uO209kNEA",
+  "title": "OpenAI Shockingly Expands Astra Access with GPT-6.2 Update — 30 Seconds That Changed It",
+  "kind": "short",
+  "uploaded_at": "2026-11-20T16:00:38+06:00",
+  "scheduled_for": "2026-11-20T20:30:00Z",
+  "url": "https://www.youtube.com/watch?v=53uO209kNEA"
+ },
+ {
+  "id": "openai_astra_gpt62_update_2026_11_20_short2",
+  "videoId": "8Zh1syPwL-4",
+  "title": "OpenAI Shockingly Expands Astra Access with GPT-6.2 Update — The Part Nobody Shows",
+  "kind": "short",
+  "uploaded_at": "2026-11-20T16:00:42+06:00",
+  "scheduled_for": "2026-11-21T02:30:00Z",
+  "url": "https://www.youtube.com/watch?v=8Zh1syPwL-4"
  }
 ]
