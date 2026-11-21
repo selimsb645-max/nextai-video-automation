@@ -1,53 +1,54 @@
 import React from "react";
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
-import { COLORS, FONTS } from "../theme";
+import { Stage } from "../components/Stage";
+import { breathe, COLORS, EASE, FONTS, SPRING } from "../theme";
 
 /**
  * DataCard — one number, one claim, one source.
  *
- * The factory's current renders burn a caption and move on. This gives a beat
- * the weight a documentary gives a stat: the number counts up, the unit sits
- * beside it, and the source line stays on screen so the claim is checkable.
+ * Skill compliance: the counter uses an ease-out curve (never linear), the number, label
+ * and source stagger 8 frames apart, the accent bar springs in, and the whole block holds
+ * with a breathing drift so it does not look frozen.
  */
 export const DataCard: React.FC<{
   value?: number;
   suffix?: string;
   label?: string;
   source?: string;
-}> = ({ value = 465, suffix = "M", label = "RAISED BY AGILITY ROBOTICS", source = "Source: company filing" }) => {
+}> = ({
+  value = 465,
+  suffix = "M",
+  label = "RAISED BY AGILITY ROBOTICS",
+  source = "Source: company filing",
+}) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const pop = spring({ frame, fps, config: { damping: 16, mass: 0.8 } });
-  // count up over 1.4s, then hold: the number lands before the label finishes
-  const counted = Math.round(interpolate(frame, [6, 48], [0, value], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  }));
-  const labelIn = spring({ frame: frame - 24, fps, config: { damping: 200 } });
-  const sourceIn = interpolate(frame, [44, 66], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+  const pop = spring({ frame, fps, config: SPRING.snappy });
+  const counted = Math.round(
+    interpolate(frame, [6, 48], [0, value], {
+      easing: EASE.out,
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+    }),
+  );
+  const labelIn = spring({ frame: frame - 14, fps, config: SPRING.smooth });
+  const sourceIn = spring({ frame: frame - 22, fps, config: SPRING.smooth });
+  const bar = spring({ frame: frame - 4, fps, config: SPRING.bouncy });
 
   return (
-    <AbsoluteFill style={{ backgroundColor: COLORS.stage }}>
-      <AbsoluteFill
-        style={{
-          background: `linear-gradient(115deg, ${COLORS.stageLift} 0%, ${COLORS.stage} 58%)`,
-        }}
-      />
-      <AbsoluteFill
-        style={{
-          padding: "150px 150px",
-          justifyContent: "center",
-          borderLeft: `12px solid ${COLORS.accent}`,
-          margin: "90px 0 90px 120px",
-          width: "fit-content",
-          paddingRight: 90,
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "flex-end", gap: 18 }}>
+    <Stage light="right">
+      <AbsoluteFill style={{ padding: "150px 150px", justifyContent: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-end",
+            gap: 18,
+            borderLeft: `12px solid ${COLORS.accent}`,
+            paddingLeft: 54,
+            transform: `translateY(${breathe(frame, fps, 2.2)}px)`,
+          }}
+        >
           <div
             style={{
               fontFamily: FONTS.display,
@@ -67,6 +68,8 @@ export const DataCard: React.FC<{
               lineHeight: 1,
               color: COLORS.accent,
               paddingBottom: 34,
+              opacity: pop,
+              transform: `translateY(${(1 - pop) * 16}px)`,
             }}
           >
             {suffix}
@@ -91,19 +94,27 @@ export const DataCard: React.FC<{
 
         <div
           style={{
+            height: 2,
+            width: `${bar * 52}%`,
+            backgroundColor: COLORS.rule,
+            marginTop: 26,
+          }}
+        />
+
+        <div
+          style={{
             fontFamily: FONTS.body,
             fontSize: 26,
             color: COLORS.muted,
-            marginTop: 22,
+            marginTop: 16,
             opacity: sourceIn,
-            borderTop: `1px solid ${COLORS.rule}`,
-            paddingTop: 16,
+            transform: `translateY(${(1 - sourceIn) * 12}px)`,
             width: 900,
           }}
         >
           {source}
         </div>
       </AbsoluteFill>
-    </AbsoluteFill>
+    </Stage>
   );
 };

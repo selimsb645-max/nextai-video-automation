@@ -1,6 +1,7 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
-import { COLORS, FONTS } from "../theme";
+import { Stage } from "../components/Stage";
+import { COLORS, EASE, FONTS } from "../theme";
 
 /**
  * KineticCaptions — word-by-word caption bar for narration.
@@ -41,18 +42,21 @@ export const KineticCaptions: React.FC<{
   const lineFrame = frame - activeLine * perLineFrames;
   const hot = longestIndex(lines[activeLine] || []);
 
-  const enter = interpolate(lineFrame, [0, 6], [0, 1], {
+  // ease-out on the way in, faster ease-in on the way out (skill rules 1 + 4)
+  const enter = interpolate(lineFrame, [0, 7], [0, 1], {
+    easing: EASE.out,
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
-  const exit = interpolate(lineFrame, [perLineFrames - 5, perLineFrames], [1, 0], {
+  const exit = interpolate(lineFrame, [perLineFrames - 4, perLineFrames], [1, 0], {
+    easing: EASE.in,
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
   const opacity = Math.min(enter, exit);
 
   return (
-    <AbsoluteFill style={{ backgroundColor: COLORS.stage }}>
+    <Stage light="center" grain={0.04}>
       <AbsoluteFill
         style={{
           justifyContent: "flex-end",
@@ -74,22 +78,32 @@ export const KineticCaptions: React.FC<{
             transform: `translateY(${(1 - enter) * 18}px)`,
           }}
         >
-          {(lines[activeLine] || []).map((word, i) => (
-            <span
-              key={`${activeLine}-${i}`}
-              style={{
-                fontFamily: FONTS.body,
-                fontWeight: 800,
-                fontSize: 78,
-                lineHeight: 1.15,
-                color: i === hot ? COLORS.accent : COLORS.ink,
-                textTransform: "uppercase",
-                letterSpacing: 1,
-              }}
-            >
-              {word}
-            </span>
-          ))}
+          {(lines[activeLine] || []).map((word, i) => {
+            // 4-frame stagger per word: the line assembles instead of appearing whole
+            const wIn = interpolate(lineFrame, [i * 4, i * 4 + 8], [0, 1], {
+              easing: EASE.out,
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp",
+            });
+            return (
+              <span
+                key={`${activeLine}-${i}`}
+                style={{
+                  fontFamily: FONTS.body,
+                  fontWeight: 800,
+                  fontSize: 78,
+                  lineHeight: 1.15,
+                  color: i === hot ? COLORS.accent : COLORS.ink,
+                  textTransform: "uppercase",
+                  letterSpacing: 1,
+                  opacity: wIn,
+                  transform: `translateY(${(1 - wIn) * 14}px)`,
+                }}
+              >
+                {word}
+              </span>
+            );
+          })}
         </div>
         {/* progress hairline: shows the viewer how much of the line is left */}
         <div style={{ width: 1560, height: 4, backgroundColor: COLORS.rule, marginTop: 18 }}>
@@ -118,6 +132,6 @@ export const KineticCaptions: React.FC<{
         NEXTAI VISION
         <span style={{ color: COLORS.accent }}> ·</span> {fps}fps
       </div>
-    </AbsoluteFill>
+    </Stage>
   );
 };

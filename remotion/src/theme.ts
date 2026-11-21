@@ -1,11 +1,11 @@
 /**
- * Shared design tokens for every NextAI Vision graphic.
+ * Single source of truth for every graphic (skill rule 9: never inline a hex or an easing).
  *
- * Why these values: the channel's reference (@airevolutionx) uses a dark
- * near-black stage, one hot accent colour, and very heavy condensed type for
- * the numbers/headlines. Everything here is deliberate so a new composition
- * cannot drift off-brand.
+ * The easings and spring presets come from the vendored motion-graphics skill — linear
+ * interpolation is forbidden because it is the clearest tell of a generated video.
  */
+import { Easing } from "remotion";
+
 export const COLORS = {
   stage: "#08090C",
   stageLift: "#101319",
@@ -21,5 +21,21 @@ export const FONTS = {
   body: '"Inter", "DejaVu Sans", Arial, sans-serif',
 };
 
+export const EASE = {
+  out: Easing.bezier(0.16, 1, 0.3, 1),      // entrances
+  inOut: Easing.bezier(0.83, 0, 0.17, 1),   // moves, Ken Burns
+  in: Easing.bezier(0.7, 0, 0.84, 0),       // exits only
+};
+
+export const SPRING = {
+  snappy: { damping: 14, stiffness: 160, mass: 0.6 },
+  smooth: { damping: 20, stiffness: 90, mass: 1 },
+  bouncy: { damping: 11, stiffness: 170, mass: 0.7 },
+};
+
 /** 1920x1080 @ 30fps is what the factory already publishes. */
 export const VIDEO = { width: 1920, height: 1080, fps: 30 };
+
+/** Rule 7: anything on screen longer than 2s breathes. Returns a tiny offset. */
+export const breathe = (frame: number, fps: number, amount = 1.6) =>
+  Math.sin((frame / fps) * Math.PI) * amount;
