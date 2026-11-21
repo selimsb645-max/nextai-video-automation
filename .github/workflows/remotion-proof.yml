@@ -1,0 +1,66 @@
+name: Remotion Proof Render
+
+# Proves the Remotion graphics layer builds and renders on a clean runner.
+# Manual dispatch only: this is the harness we run before wiring the components
+# into the factory's real video pipeline.
+
+on:
+  workflow_dispatch:
+    inputs:
+      composition:
+        description: "Composition id (ProofReel, IntroCard, DataCard, KineticCaptions, OutroCard)"
+        default: "ProofReel"
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: remotion/package-lock.json
+
+      - name: Install dependencies
+        working-directory: remotion
+        run: npm ci --no-audit --no-fund
+
+      - name: Type check
+        working-directory: remotion
+        run: npx tsc --noEmit
+
+      - name: Ensure headless browser
+        working-directory: remotion
+        run: npx remotion browser ensure
+
+      - name: Render
+        working-directory: remotion
+        run: |
+          COMP="${{ github.event.inputs.composition || 'ProofReel' }}"
+          /usr/bin/time -f 'render wall time: %E' \
+            npx remotion render src/index.ts "$COMP" "out/${COMP}.mp4" --log=error
+
+      - name: Report the render
+        working-directory: remotion
+        run: |
+          F="out/${{ github.event.inputs.composition || 'ProofReel' }}.mp4"
+          ffprobe -v error -show_entries format=duration,size:stream=width,height,r_frame_rate,nb_frames \
+                  -of default=nw=1 "$F" | tee render_report.txt
+          {
+            echo "### Remotion render"
+            echo '```'
+            cat render_report.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: remotion-proof
+          path: remotion/out/*.mp4
+          retention-days: 7
