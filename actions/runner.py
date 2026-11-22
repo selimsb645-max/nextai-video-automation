@@ -1350,9 +1350,12 @@ def quality_gate(e, mp4, kind="long", narration_path=None):
       SEO / metadata                 5
       render integrity              10
     Below QC_MIN_SCORE nothing is uploaded. Scores are never rounded up and a
-    failed check is never waived.
+    failed check is never waived. Hard failures reported by qc_visual as
+    blocking_failures (e.g. a frozen run >10s) cap the total below the
+    publish threshold regardless of the points earned.
     """
     sc, notes, report = {}, [], {}
+    _blocking = []
     beats = e.get("beats") or []
     narr = e.get("narration", "") or ""
     words = len(narr.split())
@@ -1388,6 +1391,7 @@ def quality_gate(e, mp4, kind="long", narration_path=None):
         import qc_visual
         _parts, report = qc_visual.analyse(e, mp4, os.path.dirname(mp4) or ".", narration_path)
         sc["visual"] = min(25, int(report.get("total", 0)))
+        _blocking = report.get("blocking_failures") or []
         for prob in report.get("problems", [])[:12]:
             notes.append(f"{prob['check']} @{prob.get('t', 0)}s: {prob['detail'][:70]}")
     except Exception as ex:
@@ -1457,6 +1461,17 @@ def quality_gate(e, mp4, kind="long", narration_path=None):
     sc["render"] = perf
 
     total = sum(sc.values())
+    if _blocking:
+        # Hard gate (2026-11-22): a blocking visual defect (e.g. a frozen
+        # run >10s - the defect that let a ~98%-frozen render publish at
+        # QC 91 on 2026-11-20) fails the gate outright, however many
+        # points the rest of the video earned.
+        for b in _blocking:
+            notes.append(f"BLOCKING {b.get('check')}: "
+                         f"{str(b.get('detail'))[:90]}")
+        total = min(total, QC_MIN_SCORE - 1)
+        log("QC blocking failure(s): "
+            + "; ".join(str(b.get("detail"))[:120] for b in _blocking))
     log("QC: " + json.dumps(sc) + f" = {total}/100 (publish >= {QC_MIN_SCORE})")
     for n in notes:
         log("QC note: " + n)
