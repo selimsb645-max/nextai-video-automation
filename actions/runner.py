@@ -1177,6 +1177,9 @@ def write_report(e, vid, publish_at, slot_local, mode, extra="", qc=None):
                     f"**Duration:** {int(_dur or 0)}s\n")
         if _notes:
             qc_block += "**QC notes:** " + "; ".join(str(n) for n in _notes[:8]) + "\n"
+        if e.get("_cine_qc_failures"):
+            qc_block += ("**Cinematic QC failures:** "
+                         + str(e["_cine_qc_failures"])[:800] + "\n")
     open(f, "w").write(f"""# {e['title']}
 
 **Status:** {state}
@@ -1465,6 +1468,33 @@ def _shorts_enabled():
         return True
 
 
+def _with_graphics(e, workdir, mp4):
+    """Remotion intro/outro wrap (owner five-tool stack, 2026-11-21).
+
+    Fail-soft by design: the bridge returns the original path whenever a
+    graphic cannot be rendered, and any exception here does the same, so the
+    graphics layer can never cost a publish. Longs only - Shorts keep their
+    own format. When the wrap is applied the renderer string says so, so the
+    committed report proves whether graphics actually shipped.
+    """
+    if str(e.get("kind", "long")).strip().lower() != "long":
+        return mp4
+    try:
+        import remotion_bridge as RB
+        out = RB.add_intro_outro(mp4, os.path.join(workdir, "graphics"),
+                                 headline=e.get("title", ""))
+        if out and str(out) != str(mp4) and os.path.exists(str(out)):
+            log("remotion: intro/outro wrap applied")
+            e["_renderer"] = (str(e.get("_renderer", ""))
+                              + " + remotion intro/outro")
+            return str(out)
+        log("remotion: graphics not applied - keeping the plain render")
+    except Exception as ex:
+        log("remotion: bridge failed, keeping the plain render: "
+            + str(ex)[:140])
+    return mp4
+
+
 def render_film(e, workdir, pairs, audio):
     """SAFE INTEGRATION (owner master upgrade 2026-11-01).
 
@@ -1473,11 +1503,15 @@ def render_film(e, workdir, pairs, audio):
     flag is on we try the new engine, and we only accept its output if its own
     QC report passes - otherwise we fall straight back to the proven renderer so
     a slot can never be lost to the new code.
+
+    Whichever engine produced the cut, a Long then goes through the Remotion
+    graphics wrap (_with_graphics), which is fail-soft in the same way.
     """
     flag = os.environ.get("ENABLE_CINEMATIC_EDITOR", "false").strip().lower()
     if flag not in ("1", "true", "yes", "on"):
         e["_renderer"] = "factory.render (cinematic flag off)"
-        return factory.render(e, workdir, pairs, audio)
+        return _with_graphics(e, workdir,
+                              factory.render(e, workdir, pairs, audio))
     try:
         from cine import editor as CINE
         rep = CINE.build(e, os.path.join(workdir, "cine"),
@@ -1488,9 +1522,23 @@ def render_film(e, workdir, pairs, audio):
                 + str(qc.get("score")) + ") - using the new render")
             e["_renderer"] = ("cinematic engine (own QC PASS, score "
                               + str(qc.get("score")) + ")")
-            return rep["output"]
+            return _with_graphics(e, workdir, rep["output"])
+        # DIAGNOSABILITY (2026-11-22): the report used to carry only the
+        # score, so a deterministic QC failure could not be diagnosed from
+        # the committed reports (both 2026-11-19 and 2026-11-20 fell back at
+        # score 91.7 with no recorded reason). Record every failed check
+        # (name + measured detail) on the entry - write_report prints it -
+        # and put the full per-check summary in the run log.
+        failed = [c for c in (qc.get("checks") or []) if not c.get("ok")]
+        fail_txt = ("; ".join(str(c.get("check")) + ": " + str(c.get("detail"))
+                              for c in failed)
+                    or "no per-check detail in QC report")
+        e["_cine_qc_failures"] = fail_txt
         log("cinematic editor: QC FAIL (score " + str(qc.get("score"))
-            + ") - falling back to factory.render")
+            + ") - failed checks: " + fail_txt)
+        log("cinematic QC summary: " + " | ".join(
+            ("ok " if c.get("ok") else "FAIL ") + str(c.get("check")) + ": "
+            + str(c.get("detail")) for c in (qc.get("checks") or [])))
         e["_renderer"] = ("factory.render (cinematic QC FAIL, score "
                           + str(qc.get("score")) + ")")
     except Exception as ex:
@@ -1498,7 +1546,8 @@ def render_film(e, workdir, pairs, audio):
             + str(ex)[:180])
         e["_renderer"] = "factory.render (cinematic crashed: " \
             + str(ex)[:80] + ")"
-    return factory.render(e, workdir, pairs, audio)
+    return _with_graphics(e, workdir,
+                          factory.render(e, workdir, pairs, audio))
 
 
 def _explicit_slot(kind, iso):
