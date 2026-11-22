@@ -1,1 +1,217 @@
-IiIiQnJpZGdlIGJldHdlZW4gdGhlIFB5dGhvbiBmYWN0b3J5IGFuZCB0aGUgUmVtb3Rpb24gZ3JhcGhpY3MgbGF5ZXIuCgpEaXZpc2lvbiBvZiBsYWJvdXIgKG93bmVyJ3MgZml2ZS10b29sIHN0YWNrLCAyMDI2LTExLTIxKToKCiAgICBQeXRob24gICBvcmNoZXN0cmF0aW9uIOKAlCB0aGlzIGZpbGUsIGFjdGlvbnMvcnVubmVyLnB5CiAgICBOb2RlLmpzICBydW50aW1lIHRoYXQgZXhlY3V0ZXMgdGhlIFJlbW90aW9uIENMSQogICAgUmVtb3Rpb24gUmVhY3QgY29tcG9uZW50cyAtPiBmcmFtZXMgKGludHJvLCBkYXRhIGNhcmRzLCBjYXB0aW9ucywgb3V0cm8pCiAgICBGRm1wZWcgICBhc3NlbWJseSwgY29uY2F0LCBsb3VkbmVzcywgbXV4IOKAlCB0aGUgZm9vdGFnZSBzdGF5cyBGRm1wZWcncyBqb2IKICAgIEh5cGVyRnJhbWVzICBvcHRpb25hbCBIVE1MIHNjZW5lIHJlbmRlcmVyOyBub3Qgd2lyZWQgaW4gKHNlZSBub3RlIGF0IHRoZSBib3R0b20pCgpXaHkgYSBzZXBhcmF0ZSBtb2R1bGU6IHJ1bm5lci5weSBhbHJlYWR5IGltcG9ydHMgYSBsb3QsIGFuZCByZW5kZXJpbmcgZ3JhcGhpY3MgbXVzdCBuZXZlcgpiZSBhYmxlIHRvIGJyZWFrIGEgdmlkZW8gdGhhdCB3b3VsZCBvdGhlcndpc2UgcHVibGlzaC4gRXZlcnkgZnVuY3Rpb24gaGVyZSBmYWlscyBzb2Z0IGFuZApyZXR1cm5zIE5vbmUsIHNvIHRoZSBjYWxsZXIga2VlcHMgdGhlIGV4aXN0aW5nIHJlbmRlci4KIiIiCmZyb20gX19mdXR1cmVfXyBpbXBvcnQgYW5ub3RhdGlvbnMKCmltcG9ydCBqc29uCmltcG9ydCBvcwppbXBvcnQgc2h1dGlsCmltcG9ydCBzdWJwcm9jZXNzCmltcG9ydCB0ZW1wZmlsZQpmcm9tIHBhdGhsaWIgaW1wb3J0IFBhdGgKClJFUE8gPSBQYXRoKF9fZmlsZV9fKS5yZXNvbHZlKCkucGFyZW50LnBhcmVudApSRU1PVElPTl9ESVIgPSBSRVBPIC8gInJlbW90aW9uIgpOT0RFX1RJTUVPVVQgPSBpbnQob3MuZW52aXJvbi5nZXQoIlJFTU9USU9OX1RJTUVPVVQiLCAiOTAwIikpCgoKZGVmIF9sb2cobXNnOiBzdHIpIC0+IE5vbmU6CiAgICBwcmludChmIltyZW1vdGlvbl0ge21zZ30iLCBmbHVzaD1UcnVlKQoKCmRlZiBhdmFpbGFibGUoKSAtPiBib29sOgogICAgIiIiVHJ1ZSBvbmx5IHdoZW4gTm9kZSBhbmQgdGhlIFJlbW90aW9uIHByb2plY3QgYXJlIGJvdGggcHJlc2VudC4iIiIKICAgIGlmIG5vdCAoUkVNT1RJT05fRElSIC8gInBhY2thZ2UuanNvbiIpLmV4aXN0cygpOgogICAgICAgIHJldHVybiBGYWxzZQogICAgcmV0dXJuIHNodXRpbC53aGljaCgibnB4IikgaXMgbm90IE5vbmUKCgpTRVRVUF9USU1FT1VUID0gaW50KG9zLmVudmlyb24uZ2V0KCJSRU1PVElPTl9TRVRVUF9USU1FT1VUIiwgIjEyMDAiKSkKX3NldHVwX3N0YXRlID0geyJkb25lIjogRmFsc2UsICJvayI6IEZhbHNlfQoKCmRlZiBfcnVuX3NldHVwX2NtZChjbWQ6IGxpc3Rbc3RyXSwgdGltZW91dDogaW50KToKICAgIHRyeToKICAgICAgICByZXR1cm4gc3VicHJvY2Vzcy5ydW4oY21kLCBjd2Q9c3RyKFJFTU9USU9OX0RJUiksIGNhcHR1cmVfb3V0cHV0PVRydWUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRleHQ9VHJ1ZSwgdGltZW91dD10aW1lb3V0KQogICAgZXhjZXB0IEV4Y2VwdGlvbiBhcyBleDoKICAgICAgICBfbG9nKGYic2V0dXA6IHsnICcuam9pbihjbWRbOjNdKX0gY291bGQgbm90IHJ1biAoe3R5cGUoZXgpLl9fbmFtZV9ffSkiKQogICAgICAgIHJldHVybiBOb25lCgoKZGVmIGVuc3VyZV9zZXR1cCgpIC0+IGJvb2w6CiAgICAiIiJNYWtlIHRoZSBncmFwaGljcyBsYXllciBydW5uYWJsZSBvbiBhIGJhcmUgQ0kgcnVubmVyICgyMDI2LTExLTIyKS4KCiAgICBBIGZyZXNoIGNoZWNrb3V0IGhhcyBubyBub2RlX21vZHVsZXMsIGFuZCB0aGUgcHJvZHVjdGlvbiB3b3JrZmxvdyBoYXMgbm8KICAgIE5vZGUgc3RlcHMgYXQgYWxsOiBHaXRIdWIncyB1YnVudHUgaW1hZ2Ugc2hpcHMgTm9kZS9ucG0sIGJ1dCBub3QgdGhpcwogICAgcHJvamVjdCdzIGRlcGVuZGVuY2llcyBvciBSZW1vdGlvbidzIGhlYWRsZXNzIGJyb3dzZXIuIFVudGlsIG5vdyB0aGF0CiAgICBtZWFudCBgbnB4IHJlbW90aW9uIHJlbmRlcmAgZmFpbGVkIG9uIGV2ZXJ5IHByb2R1Y3Rpb24gcnVuIGFuZCB0aGUKICAgIGZhaWx1cmUgc3RheWVkIGludmlzaWJsZS4gVGhlIGJyaWRnZSB0aGVyZWZvcmUgaW5zdGFsbHMgd2hhdCBpdCBuZWVkcwogICAgaXRzZWxmLCBvbmNlIHBlciBwcm9jZXNzLCBhbmQgbG9ncyBleGFjdGx5IHdoYXQgaXQgZGlkIGFuZCB3aHkgaXQgZ2F2ZQogICAgdXAuIFJldHVybnMgVHJ1ZSB3aGVuIGEgcmVuZGVyIGNhbiBiZSBhdHRlbXB0ZWQuCiAgICAiIiIKICAgIGlmIF9zZXR1cF9zdGF0ZVsiZG9uZSJdOgogICAgICAgIHJldHVybiBfc2V0dXBfc3RhdGVbIm9rIl0KICAgIF9zZXR1cF9zdGF0ZVsiZG9uZSJdID0gVHJ1ZQogICAgaWYgbm90IChSRU1PVElPTl9ESVIgLyAicGFja2FnZS5qc29uIikuZXhpc3RzKCk6CiAgICAgICAgX2xvZygic2V0dXA6IHJlbW90aW9uL3BhY2thZ2UuanNvbiBtaXNzaW5nIC0gZ3JhcGhpY3MgdW5hdmFpbGFibGUiKQogICAgICAgIHJldHVybiBGYWxzZQogICAgaWYgc2h1dGlsLndoaWNoKCJucG0iKSBpcyBOb25lIG9yIHNodXRpbC53aGljaCgibnB4IikgaXMgTm9uZToKICAgICAgICBfbG9nKCJzZXR1cDogbm9kZS9ucG0gbm90IG9uIFBBVEggLSBncmFwaGljcyB1bmF2YWlsYWJsZSBoZXJlIikKICAgICAgICByZXR1cm4gRmFsc2UKICAgIGlmIG5vdCAoUkVNT1RJT05fRElSIC8gIm5vZGVfbW9kdWxlcyIpLmV4aXN0cygpOgogICAgICAgIF9sb2coInNldHVwOiBub2RlX21vZHVsZXMgbWlzc2luZyAtIHJ1bm5pbmcgbnBtIGNpIChmaXJzdCBydW4gb25seSkiKQogICAgICAgIHByb2MgPSBfcnVuX3NldHVwX2NtZChbIm5wbSIsICJjaSIsICItLW5vLWF1ZGl0IiwgIi0tbm8tZnVuZCJdLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICBTRVRVUF9USU1FT1VUKQogICAgICAgIGlmIChwcm9jIGlzIE5vbmUgb3IgcHJvYy5yZXR1cm5jb2RlICE9IDAKICAgICAgICAgICAgICAgIG9yIG5vdCAoUkVNT1RJT05fRElSIC8gIm5vZGVfbW9kdWxlcyIpLmV4aXN0cygpKToKICAgICAgICAgICAgdGFpbCA9ICIiCiAgICAgICAgICAgIGlmIHByb2MgaXMgbm90IE5vbmU6CiAgICAgICAgICAgICAgICB0YWlsID0gIiB8ICIuam9pbigKICAgICAgICAgICAgICAgICAgICAocHJvYy5zdGRlcnIgb3IgcHJvYy5zdGRvdXQgb3IgIiIpLnN0cmlwKCkKICAgICAgICAgICAgICAgICAgICAuc3BsaXRsaW5lcygpWy0zOl0pWzozMDBdCiAgICAgICAgICAgIF9sb2coZiJzZXR1cDogbnBtIGNpIGZhaWxlZCAtIGdyYXBoaWNzIHVuYXZhaWxhYmxlICh7dGFpbH0pIikKICAgICAgICAgICAgcmV0dXJuIEZhbHNlCiAgICAgICAgX2xvZygic2V0dXA6IG5wbSBjaSBjb21wbGV0ZSIpCiAgICBwcm9jID0gX3J1bl9zZXR1cF9jbWQoWyJucHgiLCAicmVtb3Rpb24iLCAiYnJvd3NlciIsICJlbnN1cmUiXSwgNjAwKQogICAgaWYgcHJvYyBpcyBOb25lIG9yIHByb2MucmV0dXJuY29kZSAhPSAwOgogICAgICAgIF9sb2coInNldHVwOiAncmVtb3Rpb24gYnJvd3NlciBlbnN1cmUnIGRpZCBub3QgY29tcGxldGUgLSBhIHJlbmRlciAiCiAgICAgICAgICAgICAid2lsbCBzdGlsbCBiZSBhdHRlbXB0ZWQgKHRoZSBDTEkgY2FuIGZldGNoIHRoZSBicm93c2VyIGl0c2VsZikiKQogICAgX3NldHVwX3N0YXRlWyJvayJdID0gVHJ1ZQogICAgcmV0dXJuIFRydWUKCgpkZWYgcmVuZGVyKAogICAgY29tcG9zaXRpb246IHN0ciwKICAgIG91dF9wYXRoOiBzdHIgfCBQYXRoLAogICAgcHJvcHM6IGRpY3QgfCBOb25lID0gTm9uZSwKICAgIHRpbWVvdXQ6IGludCA9IE5PREVfVElNRU9VVCwKKSAtPiBQYXRoIHwgTm9uZToKICAgICIiIlJlbmRlciBvbmUgY29tcG9zaXRpb24gdG8gYW4gbXA0LiBSZXR1cm5zIHRoZSBwYXRoLCBvciBOb25lIG9uIGFueSBmYWlsdXJlLgoKICAgIHByb3BzIGFyZSBwYXNzZWQgYXMgUmVtb3Rpb24gaW5wdXQgcHJvcHMgKC0tcHJvcHMpLCBzbyB0aGUgc2FtZSBjb21wb25lbnQgY2FuIGNhcnJ5CiAgICB0b2RheSdzIGhlYWRsaW5lL251bWJlciB3aXRob3V0IGVkaXRpbmcgUmVhY3QgY29kZS4KICAgICIiIgogICAgaWYgbm90IChSRU1PVElPTl9ESVIgLyAicGFja2FnZS5qc29uIikuZXhpc3RzKCk6CiAgICAgICAgX2xvZygic2tpcHBlZDogcmVtb3Rpb24vcGFja2FnZS5qc29uIG5vdCBmb3VuZCIpCiAgICAgICAgcmV0dXJuIE5vbmUKICAgIGlmIHNodXRpbC53aGljaCgibnB4IikgaXMgTm9uZToKICAgICAgICBfbG9nKCJza2lwcGVkOiBucHggbm90IG9uIFBBVEggKE5vZGUuanMgbWlzc2luZykiKQogICAgICAgIHJldHVybiBOb25lCiAgICBpZiBub3QgZW5zdXJlX3NldHVwKCk6CiAgICAgICAgcmV0dXJuIE5vbmUKCiAgICBvdXQgPSBQYXRoKG91dF9wYXRoKQogICAgb3V0LnBhcmVudC5ta2RpcihwYXJlbnRzPVRydWUsIGV4aXN0X29rPVRydWUpCiAgICBjbWQgPSBbCiAgICAgICAgIm5weCIsICJyZW1vdGlvbiIsICJyZW5kZXIiLCAic3JjL2luZGV4LnRzIiwgY29tcG9zaXRpb24sIHN0cihvdXQpLAogICAgICAgICItLWxvZz1lcnJvciIsCiAgICBdCiAgICBpZiBwcm9wczoKICAgICAgICAjIC0tcHJvcHMgdGFrZXMgYSBmaWxlIHBhdGggb3IgSlNPTiBzdHJpbmc7IGEgZmlsZSBhdm9pZHMgc2hlbGwtcXVvdGluZyBpc3N1ZXMKICAgICAgICBwcm9wc19maWxlID0gb3V0LndpdGhfc3VmZml4KCIucHJvcHMuanNvbiIpCiAgICAgICAgcHJvcHNfZmlsZS53cml0ZV90ZXh0KGpzb24uZHVtcHMocHJvcHMpLCBlbmNvZGluZz0idXRmLTgiKQogICAgICAgIGNtZCArPSBbIi0tcHJvcHMiLCBzdHIocHJvcHNfZmlsZSldCgogICAgdHJ5OgogICAgICAgIHByb2MgPSBzdWJwcm9jZXNzLnJ1bigKICAgICAgICAgICAgY21kLCBjd2Q9c3RyKFJFTU9USU9OX0RJUiksIGNhcHR1cmVfb3V0cHV0PVRydWUsIHRleHQ9VHJ1ZSwgdGltZW91dD10aW1lb3V0LAogICAgICAgICkKICAgIGV4Y2VwdCBzdWJwcm9jZXNzLlRpbWVvdXRFeHBpcmVkOgogICAgICAgIF9sb2coZiJ7Y29tcG9zaXRpb259OiByZW5kZXIgdGltZWQgb3V0IGFmdGVyIHt0aW1lb3V0fXMiKQogICAgICAgIHJldHVybiBOb25lCiAgICBleGNlcHQgRXhjZXB0aW9uIGFzIGV4OiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAjIHByYWdtYTogbm8gY292ZXIKICAgICAgICBfbG9nKGYie2NvbXBvc2l0aW9ufTogcmVuZGVyIGZhaWxlZCB0byBzdGFydCAoe3R5cGUoZXgpLl9fbmFtZV9ffSkiKQogICAgICAgIHJldHVybiBOb25lCgogICAgaWYgcHJvYy5yZXR1cm5jb2RlICE9IDAgb3Igbm90IG91dC5leGlzdHMoKToKICAgICAgICB0YWlsID0gKHByb2Muc3RkZXJyIG9yIHByb2Muc3Rkb3V0IG9yICIiKS5zdHJpcCgpLnNwbGl0bGluZXMoKVstNDpdCiAgICAgICAgX2xvZyhmIntjb21wb3NpdGlvbn06IGV4aXQge3Byb2MucmV0dXJuY29kZX0g4oCUIHsnIHwgJy5qb2luKHRhaWwpWzozMDBdfSIpCiAgICAgICAgcmV0dXJuIE5vbmUKICAgIF9sb2coZiJ7Y29tcG9zaXRpb259OiByZW5kZXJlZCB7b3V0LnN0YXQoKS5zdF9zaXplIC8vIDEwMjR9IEtCIC0+IHtvdXQubmFtZX0iKQogICAgcmV0dXJuIG91dAoKCmRlZiBjb25jYXQocGFydHM6IGxpc3RbUGF0aF0sIG91dF9wYXRoOiBzdHIgfCBQYXRoLCByZWVuY29kZTogYm9vbCA9IFRydWUpIC0+IFBhdGggfCBOb25lOgogICAgIiIiSm9pbiBtcDRzIHdpdGggRkZtcGVnLgoKICAgIFJlLWVuY29kZSBieSBkZWZhdWx0OiB0aGUgZ3JhcGhpY3MgcmVuZGVyIGFuZCB0aGUgZmFjdG9yeSByZW5kZXIgY2FuIGRpZmZlciBpbgogICAgcHJvZmlsZS9sZXZlbCwgYW5kIGEgc3RyZWFtIGNvcHkgYWNyb3NzIG1pc21hdGNoZWQgcGFyYW1ldGVycyBwcm9kdWNlcyBhIGJyb2tlbiBmaWxlCiAgICB0aGF0IG9ubHkgc2hvd3MgdXAgb24gcGxheWJhY2suCiAgICAiIiIKICAgIHBhcnRzID0gW3AgZm9yIHAgaW4gcGFydHMgaWYgcCBhbmQgUGF0aChwKS5leGlzdHMoKV0KICAgIGlmIGxlbihwYXJ0cykgPCAyOgogICAgICAgIF9sb2coZiJjb25jYXQgbmVlZHMgMisgcGFydHMsIGdvdCB7bGVuKHBhcnRzKX0iKQogICAgICAgIHJldHVybiBOb25lCgogICAgb3V0ID0gUGF0aChvdXRfcGF0aCkKICAgIG91dC5wYXJlbnQubWtkaXIocGFyZW50cz1UcnVlLCBleGlzdF9vaz1UcnVlKQogICAgd2l0aCB0ZW1wZmlsZS5OYW1lZFRlbXBvcmFyeUZpbGUoInciLCBzdWZmaXg9Ii50eHQiLCBkZWxldGU9RmFsc2UpIGFzIGZoOgogICAgICAgIGZvciBwIGluIHBhcnRzOgogICAgICAgICAgICBmaC53cml0ZShmImZpbGUgJ3tQYXRoKHApLnJlc29sdmUoKX0nXG4iKQogICAgICAgIGxpc3RmaWxlID0gZmgubmFtZQoKICAgIGNtZCA9IFsiZmZtcGVnIiwgIi15IiwgIi1mIiwgImNvbmNhdCIsICItc2FmZSIsICIwIiwgIi1pIiwgbGlzdGZpbGVdCiAgICBpZiByZWVuY29kZToKICAgICAgICBjbWQgKz0gWyItYzp2IiwgImxpYngyNjQiLCAiLXByZXNldCIsICJ2ZXJ5ZmFzdCIsICItY3JmIiwgIjE4IiwKICAgICAgICAgICAgICAgICItYzphIiwgImFhYyIsICItYjphIiwgIjE5MmsiLCAiLW1vdmZsYWdzIiwgIitmYXN0c3RhcnQiXQogICAgZWxzZToKICAgICAgICBjbWQgKz0gWyItYyIsICJjb3B5Il0KICAgIGNtZC5hcHBlbmQoc3RyKG91dCkpCiAgICB0cnk6CiAgICAgICAgcHJvYyA9IHN1YnByb2Nlc3MucnVuKGNtZCwgY2FwdHVyZV9vdXRwdXQ9VHJ1ZSwgdGV4dD1UcnVlLCB0aW1lb3V0PTE4MDApCiAgICBmaW5hbGx5OgogICAgICAgIG9zLnVubGluayhsaXN0ZmlsZSkKCiAgICBpZiBwcm9jLnJldHVybmNvZGUgIT0gMCBvciBub3Qgb3V0LmV4aXN0cygpOgogICAgICAgIF9sb2coZiJjb25jYXQgZmFpbGVkOiB7KHByb2Muc3RkZXJyIG9yICcnKVstMjAwOl19IikKICAgICAgICByZXR1cm4gTm9uZQogICAgX2xvZyhmImNvbmNhdDoge2xlbihwYXJ0cyl9IHBhcnRzIC0+IHtvdXQubmFtZX0gKHtvdXQuc3RhdCgpLnN0X3NpemUgLy8gMTAyNH0gS0IpIikKICAgIHJldHVybiBvdXQKCgpkZWYgYWRkX2ludHJvX291dHJvKAogICAgbWFpbl92aWRlbzogc3RyIHwgUGF0aCwKICAgIHdvcmtkaXI6IHN0ciB8IFBhdGgsCiAgICBoZWFkbGluZTogc3RyID0gIiIsCiAgICBicmFuZDogc3RyID0gIk5FWFRBSSBWSVNJT04iLAopIC0+IFBhdGggfCBOb25lOgogICAgIiIiV3JhcCBhIGZpbmlzaGVkIGxvbmcgdmlkZW8gaW4gdGhlIGJyYW5kZWQgaW50cm8gYW5kIG91dHJvLgoKICAgIERlbGliZXJhdGVseSBhZGRpdGl2ZTogaWYgZWl0aGVyIGdyYXBoaWMgZmFpbHMgdG8gcmVuZGVyIHdlIHJldHVybiB0aGUgT1JJR0lOQUwgdmlkZW8KICAgIHBhdGggc28gdGhlIHVwbG9hZCBzdGlsbCBoYXBwZW5zLiBBIG1pc3NpbmcgaW50cm8gaXMgYSBjb3NtZXRpYyBsb3NzOyBhIG1pc3NpbmcgdmlkZW8KICAgIGlzIGEgbG9zdCBkYXkuCiAgICAiIiIKICAgIG1haW4gPSBQYXRoKG1haW5fdmlkZW8pCiAgICBpZiBub3QgbWFpbi5leGlzdHMoKToKICAgICAgICBfbG9nKGYibWFpbiB2aWRlbyBtaXNzaW5nOiB7bWFpbn0iKQogICAgICAgIHJldHVybiBOb25lCgogICAgd29yayA9IFBhdGgod29ya2RpcikKICAgIGludHJvID0gcmVuZGVyKCJJbnRyb0NhcmQiLCB3b3JrIC8gImludHJvLm1wNCIsIHsiYnJhbmQiOiBicmFuZCwgImhlYWRsaW5lIjogaGVhZGxpbmV9KQogICAgb3V0cm8gPSByZW5kZXIoIk91dHJvQ2FyZCIsIHdvcmsgLyAib3V0cm8ubXA0IiwgeyJicmFuZCI6IGJyYW5kfSkKICAgIGlmIG5vdCBpbnRybyBvciBub3Qgb3V0cm86CiAgICAgICAgX2xvZygiZ3JhcGhpY3MgdW5hdmFpbGFibGUg4oCUIGtlZXBpbmcgdGhlIG9yaWdpbmFsIGN1dCIpCiAgICAgICAgcmV0dXJuIG1haW4KCiAgICBqb2luZWQgPSBjb25jYXQoW2ludHJvLCBtYWluLCBvdXRyb10sIHdvcmsgLyAiZmluYWxfd2l0aF9ncmFwaGljcy5tcDQiKQogICAgcmV0dXJuIGpvaW5lZCBvciBtYWluCgoKIyBOT1RFIG9uIEh5cGVyRnJhbWVzIChnaXRodWIuY29tL2hleWdlbi1jb20vaHlwZXJmcmFtZXMsIEhleUdlbiwgZnJlZS9vcGVuLXNvdXJjZSk6CiMgaXQgcmVuZGVycyBIVE1ML0NTUyBzY2VuZXMgdG8gTVA0IHRoZSBzYW1lIHdheSBSZW1vdGlvbiByZW5kZXJzIFJlYWN0IHRvIE1QNC4gUnVubmluZyBib3RoCiMgd291bGQgbWVhbiB0d28gTm9kZSB0b29sY2hhaW5zLCB0d28gYXNzZXQgcGlwZWxpbmVzIGFuZCB0d28gZmFpbHVyZSBtb2RlcyBmb3IgdGhlIHNhbWUKIyBmcmFtZXMuIFJlbW90aW9uIGlzIGFscmVhZHkgcHJvdmVuIGhlcmUgKDEzLjE3cyBwcm9vZiwgMjMuNzhzIG9uIGEgY2xlYW4gcnVubmVyKSwgc28gaXQKIyBzdGF5cyB0aGUgZ3JhcGhpY3MgZW5naW5lLiBIeXBlckZyYW1lcyBpcyB3b3J0aCBhIHNpZGUtYnktc2lkZSB0ZXN0IG9ubHkgaWYgd2Ugd2FudCBpdHMKIyBTdHVkaW8gcHJldmlldyBvciBIVE1MLWF1dGhvcmVkIHNjZW5lczsgdGhhdCBpcyBhbiBvd25lciBkZWNpc2lvbiwgbm90IGEgZGVmYXVsdC4K
+"""Bridge between the Python factory and the Remotion graphics layer.
+
+Division of labour (owner's five-tool stack, 2026-11-21):
+
+    Python   orchestration — this file, actions/runner.py
+    Node.js  runtime that executes the Remotion CLI
+    Remotion React components -> frames (intro, data cards, captions, outro)
+    FFmpeg   assembly, concat, loudness, mux — the footage stays FFmpeg's job
+    HyperFrames  optional HTML scene renderer; not wired in (see note at the bottom)
+
+Why a separate module: runner.py already imports a lot, and rendering graphics must never
+be able to break a video that would otherwise publish. Every function here fails soft and
+returns None, so the caller keeps the existing render.
+"""
+from __future__ import annotations
+
+import json
+import os
+import shutil
+import subprocess
+import tempfile
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parent.parent
+REMOTION_DIR = REPO / "remotion"
+NODE_TIMEOUT = int(os.environ.get("REMOTION_TIMEOUT", "900"))
+
+
+def _log(msg: str) -> None:
+    print(f"[remotion] {msg}", flush=True)
+
+
+def available() -> bool:
+    """True only when Node and the Remotion project are both present."""
+    if not (REMOTION_DIR / "package.json").exists():
+        return False
+    return shutil.which("npx") is not None
+
+
+SETUP_TIMEOUT = int(os.environ.get("REMOTION_SETUP_TIMEOUT", "1200"))
+_setup_state = {"done": False, "ok": False}
+
+
+def _run_setup_cmd(cmd: list[str], timeout: int):
+    try:
+        return subprocess.run(cmd, cwd=str(REMOTION_DIR), capture_output=True,
+                              text=True, timeout=timeout)
+    except Exception as ex:
+        _log(f"setup: {' '.join(cmd[:3])} could not run ({type(ex).__name__})")
+        return None
+
+
+def ensure_setup() -> bool:
+    """Make the graphics layer runnable on a bare CI runner (2026-11-22).
+
+    A fresh checkout has no node_modules, and the production workflow has no
+    Node steps at all: GitHub's ubuntu image ships Node/npm, but not this
+    project's dependencies or Remotion's headless browser. Until now that
+    meant `npx remotion render` failed on every production run and the
+    failure stayed invisible. The bridge therefore installs what it needs
+    itself, once per process, and logs exactly what it did and why it gave
+    up. Returns True when a render can be attempted.
+    """
+    if _setup_state["done"]:
+        return _setup_state["ok"]
+    _setup_state["done"] = True
+    if not (REMOTION_DIR / "package.json").exists():
+        _log("setup: remotion/package.json missing - graphics unavailable")
+        return False
+    if shutil.which("npm") is None or shutil.which("npx") is None:
+        _log("setup: node/npm not on PATH - graphics unavailable here")
+        return False
+    if not (REMOTION_DIR / "node_modules").exists():
+        _log("setup: node_modules missing - running npm ci (first run only)")
+        proc = _run_setup_cmd(["npm", "ci", "--no-audit", "--no-fund"],
+                              SETUP_TIMEOUT)
+        if (proc is None or proc.returncode != 0
+                or not (REMOTION_DIR / "node_modules").exists()):
+            tail = ""
+            if proc is not None:
+                tail = " | ".join(
+                    (proc.stderr or proc.stdout or "").strip()
+                    .splitlines()[-3:])[:300]
+            _log(f"setup: npm ci failed - graphics unavailable ({tail})")
+            return False
+        _log("setup: npm ci complete")
+    proc = _run_setup_cmd(["npx", "remotion", "browser", "ensure"], 600)
+    if proc is None or proc.returncode != 0:
+        _log("setup: 'remotion browser ensure' did not complete - a render "
+             "will still be attempted (the CLI can fetch the browser itself)")
+    _setup_state["ok"] = True
+    return True
+
+
+def render(
+    composition: str,
+    out_path: str | Path,
+    props: dict | None = None,
+    timeout: int = NODE_TIMEOUT,
+) -> Path | None:
+    """Render one composition to an mp4. Returns the path, or None on any failure.
+
+    props are passed as Remotion input props (--props), so the same component can carry
+    today's headline/number without editing React code.
+    """
+    if not (REMOTION_DIR / "package.json").exists():
+        _log("skipped: remotion/package.json not found")
+        return None
+    if shutil.which("npx") is None:
+        _log("skipped: npx not on PATH (Node.js missing)")
+        return None
+    if not ensure_setup():
+        return None
+
+    out = Path(out_path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    cmd = [
+        "npx", "remotion", "render", "src/index.ts", composition, str(out),
+        "--log=error",
+    ]
+    if props:
+        # --props takes a file path or JSON string; a file avoids shell-quoting issues
+        props_file = out.with_suffix(".props.json")
+        props_file.write_text(json.dumps(props), encoding="utf-8")
+        cmd += ["--props", str(props_file)]
+
+    try:
+        proc = subprocess.run(
+            cmd, cwd=str(REMOTION_DIR), capture_output=True, text=True, timeout=timeout,
+        )
+    except subprocess.TimeoutExpired:
+        _log(f"{composition}: render timed out after {timeout}s")
+        return None
+    except Exception as ex:                                  # pragma: no cover
+        _log(f"{composition}: render failed to start ({type(ex).__name__})")
+        return None
+
+    if proc.returncode != 0 or not out.exists():
+        tail = (proc.stderr or proc.stdout or "").strip().splitlines()[-4:]
+        _log(f"{composition}: exit {proc.returncode} — {' | '.join(tail)[:300]}")
+        return None
+    _log(f"{composition}: rendered {out.stat().st_size // 1024} KB -> {out.name}")
+    return out
+
+
+def concat(parts: list[Path], out_path: str | Path, reencode: bool = True) -> Path | None:
+    """Join mp4s with FFmpeg.
+
+    Re-encode by default: the graphics render and the factory render can differ in
+    profile/level, and a stream copy across mismatched parameters produces a broken file
+    that only shows up on playback.
+    """
+    parts = [p for p in parts if p and Path(p).exists()]
+    if len(parts) < 2:
+        _log(f"concat needs 2+ parts, got {len(parts)}")
+        return None
+
+    out = Path(out_path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False) as fh:
+        for p in parts:
+            fh.write(f"file '{Path(p).resolve()}'\n")
+        listfile = fh.name
+
+    cmd = ["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", listfile]
+    if reencode:
+        cmd += ["-c:v", "libx264", "-preset", "veryfast", "-crf", "18",
+                "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart"]
+    else:
+        cmd += ["-c", "copy"]
+    cmd.append(str(out))
+    try:
+        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=1800)
+    finally:
+        os.unlink(listfile)
+
+    if proc.returncode != 0 or not out.exists():
+        _log(f"concat failed: {(proc.stderr or '')[-200:]}")
+        return None
+    _log(f"concat: {len(parts)} parts -> {out.name} ({out.stat().st_size // 1024} KB)")
+    return out
+
+
+def add_intro_outro(
+    main_video: str | Path,
+    workdir: str | Path,
+    headline: str = "",
+    brand: str = "NEXTAI VISION",
+) -> Path | None:
+    """Wrap a finished long video in the branded intro and outro.
+
+    Deliberately additive: if either graphic fails to render we return the ORIGINAL video
+    path so the upload still happens. A missing intro is a cosmetic loss; a missing video
+    is a lost day.
+    """
+    main = Path(main_video)
+    if not main.exists():
+        _log(f"main video missing: {main}")
+        return None
+
+    work = Path(workdir)
+    intro = render("IntroCard", work / "intro.mp4", {"brand": brand, "headline": headline})
+    outro = render("OutroCard", work / "outro.mp4", {"brand": brand})
+    if not intro or not outro:
+        _log("graphics unavailable — keeping the original cut")
+        return main
+
+    joined = concat([intro, main, outro], work / "final_with_graphics.mp4")
+    return joined or main
+
+
+# NOTE on HyperFrames (github.com/heygen-com/hyperframes, HeyGen, free/open-source):
+# it renders HTML/CSS scenes to MP4 the same way Remotion renders React to MP4. Running both
+# would mean two Node toolchains, two asset pipelines and two failure modes for the same
+# frames. Remotion is already proven here (13.17s proof, 23.78s on a clean runner), so it
+# stays the graphics engine. HyperFrames is worth a side-by-side test only if we want its
+# Studio preview or HTML-authored scenes; that is an owner decision, not a default.
