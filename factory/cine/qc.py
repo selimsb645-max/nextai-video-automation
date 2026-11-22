@@ -1,1 +1,263 @@
-IiIiUGhhc2UgOCAtIGF1dG9tYXRlZCB2aWRlbyBRQy4gTWFjaGluZS1yZWFkYWJsZSwgbm8gb3BpbmlvbnMgZHJlc3NlZCBhcyBmYWN0cy4KCkNoZWNrcyAoYWxsIG1lYXN1cmVkIHdpdGggZmZwcm9iZS9mZm1wZWcsIG5ldmVyIGFzc3VtZWQpOgogIDEgIHJlc29sdXRpb24gICAgICAgICAgICA4ICBtaXNzaW5nIHNjZW5lIGFzc2V0cwogIDIgIGZyYW1lIHJhdGUgICAgICAgICAgICA5ICBzdWJ0aXRsZSB0aW1pbmcKICAzICBBL1YgZHVyYXRpb24gc3luYyAgICAxMCAgYXVkaW8gY2xpcHBpbmcKICA0ICBtaXNzaW5nIGF1ZGlvICAgICAgICAxMSAgZXhjZXNzaXZlIHNpbGVuY2UKICA1ICBibGFjayBmcmFtZXMgICAgICAgICAxMiAgcmVuZGVyIGVycm9ycwogIDYgIGZyb3plbiBmcmFtZXMgICAgICAgIDEzICBmaWxlIGNvcnJ1cHRpb24KICA3ICBkdXBsaWNhdGUgZm9vdGFnZSAgICAxNCAgZmluYWwgZHVyYXRpb24gdnMgbmFycmF0aW9uCgpUaGUgcmVwb3J0IHN0YXRlcyBleHBsaWNpdGx5IHRoYXQgc3ViamVjdGl2ZSBjaW5lbWF0aWMgcXVhbGl0eSBpcyBOT1QgcHJvdmFibGUKYnkgdGhlc2UgY2hlY2tzOyBpdCBvbmx5IGJsb2NrcyBvYmplY3RpdmUgZGVmZWN0cy4KIiIiCmltcG9ydCBqc29uCmltcG9ydCBvcwppbXBvcnQgcmUKaW1wb3J0IHN1YnByb2Nlc3MKCgpkZWYgX3J1bihhcmdzKToKICAgIHJldHVybiBzdWJwcm9jZXNzLnJ1bihhcmdzLCBjYXB0dXJlX291dHB1dD1UcnVlLCB0ZXh0PVRydWUpCgoKZGVmIF9wcm9iZShwYXRoKToKICAgIHIgPSBfcnVuKFsiZmZwcm9iZSIsICItdiIsICJlcnJvciIsICItc2hvd19mb3JtYXQiLCAiLXNob3dfc3RyZWFtcyIsCiAgICAgICAgICAgICAgIi1vZiIsICJqc29uIiwgcGF0aF0pCiAgICB0cnk6CiAgICAgICAgcmV0dXJuIGpzb24ubG9hZHMoci5zdGRvdXQgb3IgInt9IikKICAgIGV4Y2VwdCBFeGNlcHRpb246CiAgICAgICAgcmV0dXJuIE5vbmUKCgpkZWYgY2hlY2sobXA0LCBzdG9yeWJvYXJkPU5vbmUsIGNhcHRpb25zX21ldGE9Tm9uZSwgY2FwdGlvbl9lcnJvcnM9Tm9uZSwKICAgICAgICAgIGFzc2V0cz1Ob25lLCByZW5kZXJfZXJyb3JzPU5vbmUsIGV4cGVjdGVkX3c9MTkyMCwgZXhwZWN0ZWRfaD0xMDgwLAogICAgICAgICAgZXhwZWN0ZWRfZnBzPTI1LCBtaW5fc2Vjb25kcz1Ob25lKToKICAgIHJlcCA9IHsiZmlsZSI6IG9zLnBhdGguYWJzcGF0aChtcDQpLCAiY2hlY2tzIjogW10sICJlcnJvcnMiOiBbXX0KCiAgICBkZWYgYWRkKG5hbWUsIG9rLCBkZXRhaWwsIGJsb2NraW5nPVRydWUpOgogICAgICAgIHJlcFsiY2hlY2tzIl0uYXBwZW5kKHsiY2hlY2siOiBuYW1lLCAib2siOiBib29sKG9rKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgImRldGFpbCI6IGRldGFpbCwgImJsb2NraW5nIjogYmxvY2tpbmd9KQoKICAgIGluZm8gPSBfcHJvYmUobXA0KSBvciB7fQogICAgc3RyZWFtcyA9IGluZm8uZ2V0KCJzdHJlYW1zIikgb3IgW10KICAgIHYgPSBuZXh0KChzIGZvciBzIGluIHN0cmVhbXMgaWYgcy5nZXQoImNvZGVjX3R5cGUiKSA9PSAidmlkZW8iKSwgTm9uZSkKICAgIGEgPSBuZXh0KChzIGZvciBzIGluIHN0cmVhbXMgaWYgcy5nZXQoImNvZGVjX3R5cGUiKSA9PSAiYXVkaW8iKSwgTm9uZSkKICAgIGZtdCA9IGluZm8uZ2V0KCJmb3JtYXQiKSBvciB7fQogICAgZHVyID0gZmxvYXQoZm10LmdldCgiZHVyYXRpb24iKSBvciAwKQogICAgcmVwWyJkdXJhdGlvbl9zIl0gPSByb3VuZChkdXIsIDIpCiAgICByZXBbInNpemVfYnl0ZXMiXSA9IGludChmbXQuZ2V0KCJzaXplIikgb3IgKG9zLnBhdGguZ2V0c2l6ZShtcDQpIGlmIG9zLnBhdGguZXhpc3RzKG1wNCkgZWxzZSAwKSkKCiAgICBpZiBub3QgdjoKICAgICAgICByZXBbImVycm9ycyJdLmFwcGVuZCgibm8gdmlkZW8gc3RyZWFtIC8gY29ycnVwdCBjb250YWluZXIiKQogICAgICAgIGFkZCgiZmlsZV9pbnRlZ3JpdHkiLCBGYWxzZSwgImZmcHJvYmUgY291bGQgbm90IHJlYWQgYSB2aWRlbyBzdHJlYW0iKQogICAgICAgIHJlcFsib2siXSA9IEZhbHNlCiAgICAgICAgcmVwWyJzY29yZSJdID0gMAogICAgICAgIHJldHVybiByZXAKCiAgICAjIDEzIGNvcnJ1cHRpb24gLyAxIHJlc29sdXRpb24gLyAyIGZwcwogICAgYWRkKCJmaWxlX2ludGVncml0eSIsIGR1ciA+IDEgYW5kIHJlcFsic2l6ZV9ieXRlcyJdID4gMjAwXzAwMCwKICAgICAgICBmImR1cmF0aW9uPXtkdXI6LjJmfXMgc2l6ZT17cmVwWydzaXplX2J5dGVzJ10vLzEwMjR9S0IiKQogICAgVywgSCA9IGludCh2LmdldCgid2lkdGgiKSBvciAwKSwgaW50KHYuZ2V0KCJoZWlnaHQiKSBvciAwKQogICAgYWRkKCJyZXNvbHV0aW9uIiwgKFcsIEgpID09IChleHBlY3RlZF93LCBleHBlY3RlZF9oKSBvcgogICAgICAgIChILCBXKSA9PSAoZXhwZWN0ZWRfdywgZXhwZWN0ZWRfaCkgb3IgKFcgPj0gMTA4MCBhbmQgSCA+PSAxMDgwKSwKICAgICAgICBmIntXfXh7SH0gKHRhcmdldCB7ZXhwZWN0ZWRfd314e2V4cGVjdGVkX2h9KSIpCiAgICBudW0sIGRlbiA9ICh2LmdldCgicl9mcmFtZV9yYXRlIikgb3IgIjAvMSIpLnNwbGl0KCIvIikKICAgIGZwcyA9IGZsb2F0KG51bSkgLyBmbG9hdChkZW4gb3IgMSkgaWYgZmxvYXQoZGVuIG9yIDEpIGVsc2UgMAogICAgYWRkKCJmcmFtZV9yYXRlIiwgYWJzKGZwcyAtIGV4cGVjdGVkX2ZwcykgPD0gMS4wLCBmIntmcHM6LjJmfSBmcHMgKHRhcmdldCB7ZXhwZWN0ZWRfZnBzfSkiKQoKICAgICMgNCBtaXNzaW5nIGF1ZGlvICsgMyBzeW5jCiAgICBhZGQoImF1ZGlvX3ByZXNlbnQiLCBib29sKGEpLCAiYXVkaW8gc3RyZWFtICIgKyAoImZvdW5kIiBpZiBhIGVsc2UgIk1JU1NJTkciKSkKICAgIGlmIGE6CiAgICAgICAgYWR1ciA9IGZsb2F0KGEuZ2V0KCJkdXJhdGlvbiIpIG9yIGR1cikKICAgICAgICB2ZHVyID0gZmxvYXQodi5nZXQoImR1cmF0aW9uIikgb3IgZHVyKQogICAgICAgIGFkZCgiYXZfZHVyYXRpb25fc3luYyIsIGFicyhhZHVyIC0gdmR1cikgPD0gMC42LAogICAgICAgICAgICBmInZpZGVvPXt2ZHVyOi4yZn1zIGF1ZGlvPXthZHVyOi4yZn1zIGRlbHRhPXthYnMoYWR1ciAtIHZkdXIpOi4yZn1zIikKCiAgICAjIDUgYmxhY2sgZnJhbWVzIC8gNiBmcm96ZW4gZnJhbWVzCiAgICByID0gX3J1bihbImZmbXBlZyIsICItaGlkZV9iYW5uZXIiLCAiLW5vc3RhdHMiLCAiLWkiLCBtcDQsCiAgICAgICAgICAgICAgIi12ZiIsICJibGFja2RldGVjdD1kPTAuMzU6cGl4X3RoPTAuMTAiLCAiLWFuIiwgIi1mIiwgIm51bGwiLCAiLSJdKQogICAgYmxhY2sgPSBbKGZsb2F0KHMpLCBmbG9hdChlKSkgZm9yIHMsIGUgaW4KICAgICAgICAgICAgIHJlLmZpbmRhbGwociJibGFja19zdGFydDooW1xkLl0rKSBibGFja19lbmQ6KFtcZC5dKykiLCByLnN0ZGVyciBvciAiIildCiAgICAjIFRoZSBmaW5pc2hlZCB0aW1lbGluZSBkZWxpYmVyYXRlbHkgZmFkZXMgaW4gZnJvbSBibGFjayAoMC44cykgYW5kIG91dAogICAgIyB0byBibGFjayAoMS4ycykgLSBtb3Rpb24uYXNzZW1ibGUncyBmYWRlX2luL2ZhZGVfb3V0LiBUaGUgaGVhZCBmYWRlIGlzCiAgICAjIGFscmVhZHkgaWdub3JlZCAoYSBkZWZlY3Qgc2VnbWVudCBtdXN0IHN0YXJ0IGFmdGVyIDEuMHMpLCBidXQgdGhlIHRhaWwKICAgICMgZmFkZSB3YXMgbm90OiBvbiBhIG1vZGVyYXRlbHkgZGFyayBjbG9zaW5nIHNob3QgdGhlIGZhZGUgcHVzaGVzIHRoZQogICAgIyBmcmFtZSB1bmRlciB0aGUgYmxhY2sgdGhyZXNob2xkIGZvciB0aGUgbGFzdCB+MC44cywgYW5kIFFDIGZhaWxlZCB0aGUKICAgICMgZmlsbSBmb3IgYSBmYWRlIHRoZSBlbmdpbmUgaXRzZWxmIGFwcGxpZWQgKGZpeCAyMDI2LTExLTIyKS4gQSBzZWdtZW50CiAgICAjIHdob2xseSBpbnNpZGUgdGhlIGNsb3NpbmcgZmFkZSB3aW5kb3cgYW5kIHJlYWNoaW5nIHRoZSBlbmQgb2YgdGhlIGZpbG0KICAgICMgaXMgZGVzaWduLCBub3QgbWlzc2luZyBmb290YWdlLCBzbyBpdCBpcyBub3QgY291bnRlZCBhcyBhIGRlZmVjdC4gVGhlCiAgICAjIGRldGFpbCBzdHJpbmcgbm93IG5hbWVzIHRoZSBmaXJzdCBkZWZlY3Qgc2VnbWVudCdzIHRpbWVzdGFtcHMgc28gYQogICAgIyBmdXR1cmUgZmFpbHVyZSBpcyBsb2NhdGFibGUgZnJvbSB0aGUgUUMgcmVwb3J0IGFsb25lLgogICAgZGVmIF9pbl90YWlsX2ZhZGUoYik6CiAgICAgICAgcmV0dXJuIGJbMF0gPj0gZHVyIC0gMS4zIGFuZCBiWzFdID49IGR1ciAtIDAuMTUKICAgIGxvbmdfYmxhY2sgPSBbYiBmb3IgYiBpbiBibGFjawogICAgICAgICAgICAgICAgICBpZiBiWzFdIC0gYlswXSA+IDAuNiBhbmQgYlswXSA+IDEuMAogICAgICAgICAgICAgICAgICBhbmQgbm90IF9pbl90YWlsX2ZhZGUoYildCiAgICBibGFja19jb3YgPSBzdW0oZSAtIHMgZm9yIHMsIGUgaW4gYmxhY2spIC8gZHVyIGlmIGR1ciBlbHNlIDAuMAogICAgYWRkKCJibGFja19mcmFtZXMiLCBub3QgbG9uZ19ibGFjayBhbmQgYmxhY2tfY292IDwgMC41LAogICAgICAgIGYie2xlbihibGFjayl9IGJsYWNrIHJhbmdlcywge2xlbihsb25nX2JsYWNrKX0gbG9uZ2VyIHRoYW4gMC42cywgIgogICAgICAgIGYie2JsYWNrX2NvdiAqIDEwMDouMGZ9JSBvZiBydW50aW1lIGJsYWNrIgogICAgICAgICsgKGYiOyBmaXJzdCBsb25nIHNlZ21lbnQge2xvbmdfYmxhY2tbMF1bMF06LjFmfS17bG9uZ19ibGFja1swXVsxXTouMWZ9cyIKICAgICAgICAgICBpZiBsb25nX2JsYWNrIGVsc2UgIiIpKQoKICAgIHIgPSBfcnVuKFsiZmZtcGVnIiwgIi1oaWRlX2Jhbm5lciIsICItbm9zdGF0cyIsICItaSIsIG1wNCwKICAgICAgICAgICAgICAiLXZmIiwgImZyZWV6ZWRldGVjdD1uPS02MGRCOmQ9My4wIiwgIi1hbiIsICItZiIsICJudWxsIiwgIi0iXSkKICAgIGZyb3plbiA9IFsoZmxvYXQocyksIGZsb2F0KGUpKSBmb3IgcywgZSBpbgogICAgICAgICAgICAgIHppcChyZS5maW5kYWxsKHIiZnJlZXplX3N0YXJ0OiAoW1xkLl0rKSIsIHIuc3RkZXJyIG9yICIiKSwKICAgICAgICAgICAgICAgICAgcmUuZmluZGFsbChyImZyZWV6ZV9lbmQ6IChbXGQuXSspIiwgci5zdGRlcnIgb3IgIiIpKV0KICAgIGFkZCgiZnJvemVuX2ZyYW1lcyIsIGxlbihmcm96ZW4pID09IDAsCiAgICAgICAgZiJ7bGVuKGZyb3plbil9IGZyb3plbiByYW5nZXMgKD49M3MpIiwgYmxvY2tpbmc9RmFsc2UpCgogICAgIyA3IGR1cGxpY2F0ZSBmb290YWdlIC8gOCBtaXNzaW5nIGFzc2V0cwogICAgaWYgYXNzZXRzOgogICAgICAgIHVzZWQgPSBbYS5nZXQoImFzc2V0X2lkIikgZm9yIGEgaW4gYXNzZXRzIGlmIGEuZ2V0KCJzb3VyY2UiKSAhPSAiZ2VuZXJhdGVkIl0KICAgICAgICBkdXAgPSBsZW4odXNlZCkgLSBsZW4oc2V0KHVzZWQpKQogICAgICAgIGFkZCgiZHVwbGljYXRlX2Zvb3RhZ2UiLCBkdXAgPT0gMCwgZiJ7ZHVwfSByZXBlYXRlZCBhc3NldCBpZHMgIgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBmIm9mIHtsZW4odXNlZCl9IHNvdXJjZWQgYXNzZXRzIikKICAgICAgICBtaXNzaW5nID0gW2FbInBhdGgiXSBmb3IgYSBpbiBhc3NldHMgaWYgbm90IG9zLnBhdGguZXhpc3RzKGEuZ2V0KCJwYXRoIiwgIiIpKV0KICAgICAgICBhZGQoInNjZW5lX2Fzc2V0c19wcmVzZW50Iiwgbm90IG1pc3NpbmcsCiAgICAgICAgICAgIGYie2xlbihhc3NldHMpfSBhc3NldHMsIHtsZW4obWlzc2luZyl9IG1pc3NpbmcgZmlsZXMiKQogICAgICAgIGNhcmRzID0gW2EgZm9yIGEgaW4gYXNzZXRzIGlmIGEuZ2V0KCJzb3VyY2UiKSA9PSAiZ2VuZXJhdGVkIl0KICAgICAgICBhZGQoImdlbmVyYXRlZF9mYWxsYmFja19zaGFyZSIsIGxlbihjYXJkcykgPD0gbWF4KDEsIGxlbihhc3NldHMpIC8vIDMpLAogICAgICAgICAgICBmIntsZW4oY2FyZHMpfS97bGVuKGFzc2V0cyl9IHNjZW5lcyB1c2VkIGEgZ2VuZXJhdGVkIGNhcmQiLAogICAgICAgICAgICBibG9ja2luZz1GYWxzZSkKICAgICAgICBsaWMgPSBzb3J0ZWQoe2EuZ2V0KCJsaWNlbnNlIiwgIj8iKSBmb3IgYSBpbiBhc3NldHN9KQogICAgICAgIHJlcFsibGljZW5zZXMiXSA9IGxpYwogICAgICAgIHdpZHRocyA9IFthLmdldCgid2lkdGgiKSBvciAwIGZvciBhIGluIGFzc2V0cyBpZiBhLmdldCgic291cmNlIikgIT0gImdlbmVyYXRlZCJdCiAgICAgICAgaWYgd2lkdGhzOgogICAgICAgICAgICBsb3cgPSBzdW0oMSBmb3IgdyBpbiB3aWR0aHMgaWYgdyBhbmQgdyA8IDk2MCkKICAgICAgICAgICAgYWRkKCJzb3VyY2VfcmVzb2x1dGlvbiIsIGxvdyA8PSBtYXgoMSwgbGVuKHdpZHRocykgLy8gMiksCiAgICAgICAgICAgICAgICBmIntsb3d9L3tsZW4od2lkdGhzKX0gc291cmNlZCBjbGlwcyBhcmUgYmVsb3cgOTYwcHggd2lkZSIsCiAgICAgICAgICAgICAgICBibG9ja2luZz1GYWxzZSkKCiAgICAjIDkgc3VidGl0bGUgdGltaW5nCiAgICBpZiBjYXB0aW9uc19tZXRhOgogICAgICAgIGNlID0gY2FwdGlvbl9lcnJvcnMgb3IgW10KICAgICAgICBhZGQoInN1YnRpdGxlX3RpbWluZyIsIG5vdCBjZSwKICAgICAgICAgICAgZiJ7Y2FwdGlvbnNfbWV0YS5nZXQoJ2N1ZXMnLCAwKX0gY3VlcyAoe2NhcHRpb25zX21ldGEuZ2V0KCd0aW1pbmdfc291cmNlJyl9KSIKICAgICAgICAgICAgKyAoZiI7IHtsZW4oY2UpfSBwcm9ibGVtczoge2NlWzozXX0iIGlmIGNlIGVsc2UgIiIpKQogICAgIyAxMCBjbGlwcGluZyAvIDExIHNpbGVuY2UKICAgIHRyeToKICAgICAgICBmcm9tIC4gaW1wb3J0IGF1ZGlvIGFzIEEKICAgIGV4Y2VwdCBJbXBvcnRFcnJvcjoKICAgICAgICBpbXBvcnQgYXVkaW8gYXMgQQogICAgaWYgYToKICAgICAgICBtID0gQS5tZWFzdXJlKG1wNCkKICAgICAgICByZXBbImF1ZGlvX21ldHJpY3MiXSA9IG0KICAgICAgICBhZGQoImF1ZGlvX2NsaXBwaW5nIiwgKG0uZ2V0KCJ0cnVlX3BlYWtfZGIiKSBvciAtOTkpIDwgLTAuNSwKICAgICAgICAgICAgZiJ0cnVlIHBlYWsge20uZ2V0KCd0cnVlX3BlYWtfZGInKX0gZEJUUCAodGFyZ2V0IDwgLTAuNSkiLAogICAgICAgICAgICBibG9ja2luZz1GYWxzZSkKICAgICAgICBzciA9IG0uZ2V0KCJzaWxlbmNlX3JhdGlvIikKICAgICAgICBhZGQoImV4Y2Vzc2l2ZV9zaWxlbmNlIiwgc3IgaXMgbm90IE5vbmUgYW5kIHNyIDwgMC4yMiwKICAgICAgICAgICAgZiJzaWxlbmNlIHJhdGlvIHtzcn0gb2YgcnVudGltZSIsIGJsb2NraW5nPUZhbHNlKQogICAgICAgIGFkZCgibG91ZG5lc3MiLCBtLmdldCgibHVmcyIpIGlzIG5vdCBOb25lIGFuZCAtMTggPD0gKG0uZ2V0KCJsdWZzIikgb3IgMCkgPD0gLTExLAogICAgICAgICAgICBmImludGVncmF0ZWQge20uZ2V0KCdsdWZzJyl9IExVRlMgKHRhcmdldCAtMTQgKy8tMykiLCBibG9ja2luZz1GYWxzZSkKCiAgICAjIDEyIHJlbmRlciBlcnJvcnMKICAgIGFkZCgicmVuZGVyX2Vycm9ycyIsIG5vdCByZW5kZXJfZXJyb3JzLCBmIntsZW4ocmVuZGVyX2Vycm9ycyBvciBbXSl9IHNjZW5lIGVycm9ycyIKICAgICAgICArIChmIjoge3JlbmRlcl9lcnJvcnNbOjJdfSIgaWYgcmVuZGVyX2Vycm9ycyBlbHNlICIiKSkKCiAgICAjIDE0IGR1cmF0aW9uIHZzIG5hcnJhdGlvbgogICAgaWYgc3Rvcnlib2FyZDoKICAgICAgICBuZCA9IHN0b3J5Ym9hcmQuZ2V0KCJuYXJyYXRpb25fZHVyYXRpb24iKSBvciAwCiAgICAgICAgaWYgbmQ6CiAgICAgICAgICAgIGFkZCgiZmluYWxfZHVyYXRpb24iLCBhYnMoZHVyIC0gbmQpIDw9IG1heCgyLjUsIG5kICogMC4wMyksCiAgICAgICAgICAgICAgICBmImZpbmFsIHtkdXI6LjJmfXMgdnMgbmFycmF0aW9uIHtuZDouMmZ9cyIpCiAgICAgICAgc2NlbmVfc3VtID0gc3VtKHMuZ2V0KCJkdXJhdGlvbiIsIDApIGZvciBzIGluIHN0b3J5Ym9hcmQuZ2V0KCJzY2VuZXMiLCBbXSkpCiAgICAgICAgYWRkKCJzY2VuZV9jb3ZlcmFnZSIsIGFicyhzY2VuZV9zdW0gLSBuZCkgPD0gbWF4KDEuNSwgbmQgKiAwLjAyKSwKICAgICAgICAgICAgZiJzY2VuZSB0aW1lbGluZSB7c2NlbmVfc3VtOi4yZn1zIHZzIG5hcnJhdGlvbiB7bmQ6LjJmfXMiKQoKICAgIGJsb2NraW5nID0gW2MgZm9yIGMgaW4gcmVwWyJjaGVja3MiXSBpZiBjWyJibG9ja2luZyJdXQogICAgcGFzc2VkID0gc3VtKDEgZm9yIGMgaW4gYmxvY2tpbmcgaWYgY1sib2siXSkKICAgIHJlcFsic2NvcmUiXSA9IHJvdW5kKDEwMCAqIHBhc3NlZCAvIGxlbihibG9ja2luZyksIDEpIGlmIGJsb2NraW5nIGVsc2UgMAogICAgcmVwWyJvayJdID0gYWxsKGNbIm9rIl0gZm9yIGMgaW4gYmxvY2tpbmcpCiAgICByZXBbIm5vdF9wcm92YWJsZSJdID0gKCJzdWJqZWN0aXZlIGNpbmVtYXRpYyBxdWFsaXR5IChwYWNpbmcgdGFzdGUsIGVtb3Rpb25hbCAiCiAgICAgICAgICAgICAgICAgICAgICAgICAgICJpbXBhY3QsIGhvb2sgc3RyZW5ndGgpIGlzIE5PVCB2ZXJpZmllZCBieSB0aGVzZSBjaGVja3MiKQogICAgcmV0dXJuIHJlcAoKCmRlZiBzYXZlKHJlcCwgcGF0aCk6CiAgICBvcy5tYWtlZGlycyhvcy5wYXRoLmRpcm5hbWUob3MucGF0aC5hYnNwYXRoKHBhdGgpKSBvciAiLiIsIGV4aXN0X29rPVRydWUpCiAgICB3aXRoIG9wZW4ocGF0aCwgInciLCBlbmNvZGluZz0idXRmLTgiKSBhcyBmOgogICAgICAgIGpzb24uZHVtcChyZXAsIGYsIGluZGVudD0xLCBlbnN1cmVfYXNjaWk9RmFsc2UpCiAgICByZXR1cm4gcGF0aAoKCmRlZiBzdW1tYXJ5KHJlcCk6CiAgICBiYWQgPSBbYyBmb3IgYyBpbiByZXAuZ2V0KCJjaGVja3MiLCBbXSkgaWYgbm90IGNbIm9rIl1dCiAgICBoZWFkID0gKGYiUUMgeydQQVNTJyBpZiByZXAuZ2V0KCdvaycpIGVsc2UgJ0ZBSUwnfSDigJQgc2NvcmUge3JlcC5nZXQoJ3Njb3JlJyl9LCAiCiAgICAgICAgICAgIGYie3JlcC5nZXQoJ2R1cmF0aW9uX3MnKX1zLCB7cmVwLmdldCgnc2l6ZV9ieXRlcycsIDApLy8xMDI0Ly8xMDI0fSBNQiIpCiAgICBsaW5lcyA9IFtoZWFkXQogICAgZm9yIGMgaW4gcmVwLmdldCgiY2hlY2tzIiwgW10pOgogICAgICAgIGxpbmVzLmFwcGVuZChmIiAgeydvayAgJyBpZiBjWydvayddIGVsc2UgJ0ZBSUwnfSB7Y1snY2hlY2snXX06IHtjWydkZXRhaWwnXX0iKQogICAgcmV0dXJuICJcbiIuam9pbihsaW5lcykK
+"""Phase 8 - automated video QC. Machine-readable, no opinions dressed as facts.
+
+Checks (all measured with ffprobe/ffmpeg, never assumed):
+  1  resolution            8  missing scene assets
+  2  frame rate            9  subtitle timing
+  3  A/V duration sync    10  audio clipping
+  4  missing audio        11  excessive silence
+  5  black frames         12  render errors
+  6  frozen frames        13  file corruption
+  7  duplicate footage    14  final duration vs narration
+
+The report states explicitly that subjective cinematic quality is NOT provable
+by these checks; it only blocks objective defects.
+"""
+import json
+import os
+import re
+import subprocess
+
+
+def _run(args):
+    return subprocess.run(args, capture_output=True, text=True)
+
+
+def _probe(path):
+    r = _run(["ffprobe", "-v", "error", "-show_format", "-show_streams",
+              "-of", "json", path])
+    try:
+        return json.loads(r.stdout or "{}")
+    except Exception:
+        return None
+
+
+# Frozen-run detection (added 2026-11-22). Sample one frame every 2s,
+# downscale to 128x72 luma and measure the mean absolute difference between
+# consecutive samples - the method used to profile this channel's renders
+# (STYLE_PROFILE 2026-11-22: the 2026-11-20 production Long sat pixel-
+# identical on one stock photo for ~797s yet passed, because the old
+# freezedetect version of this check was non-blocking and black_frames
+# cannot see a frozen BRIGHT still). A run whose samples stay below
+# codec-noise level (<0.005 mean abs diff) for more than 10s of screen
+# time is a hard defect. The first 1.0s is excluded from every run
+# (opening fade/title), mirroring the black_frames head exclusion.
+_FROZEN_INTERVAL = 2.0
+_FROZEN_DIFF = 0.005
+_FROZEN_MAX_RUN = 10.0
+_FROZEN_HEAD_SKIP = 1.0
+_FROZEN_W, _FROZEN_H = 128, 72
+
+
+def _frozen_runs(mp4, dur=0.0):
+    """Return [(start_s, end_s)] stretches with no measurable picture change."""
+    size = _FROZEN_W * _FROZEN_H
+    cmd = ["ffmpeg", "-hide_banner", "-nostats", "-i", mp4,
+           "-vf", (f"fps=1/{_FROZEN_INTERVAL:g},scale={_FROZEN_W}:{_FROZEN_H},"
+                   "format=gray"),
+           "-an", "-f", "rawvideo", "-"]
+    try:
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+                                stderr=subprocess.DEVNULL)
+    except Exception:
+        return []
+    runs, prev, run_start, run_end = [], None, None, None
+    idx = 0
+    while True:
+        buf = proc.stdout.read(size)
+        if len(buf) < size:
+            break
+        t = idx * _FROZEN_INTERVAL
+        if prev is not None:
+            diff = sum(abs(a - b) for a, b in zip(prev, buf)) / size / 255.0
+            if diff < _FROZEN_DIFF:
+                if run_start is None:
+                    run_start = t - _FROZEN_INTERVAL
+                run_end = t + _FROZEN_INTERVAL
+            elif run_start is not None:
+                runs.append((run_start, run_end))
+                run_start = None
+        prev, idx = buf, idx + 1
+    try:
+        proc.stdout.close()
+        proc.wait(timeout=30)
+    except Exception:
+        proc.kill()
+    if run_start is not None:
+        runs.append((run_start, run_end))
+    out = []
+    for s, e in runs:
+        if dur:
+            e = min(e, dur)
+        s2 = max(s, _FROZEN_HEAD_SKIP)  # the first ~1s never counts as frozen
+        if e - s2 > 0:
+            out.append((s2, e))
+    return out
+
+
+def check(mp4, storyboard=None, captions_meta=None, caption_errors=None,
+          assets=None, render_errors=None, expected_w=1920, expected_h=1080,
+          expected_fps=25, min_seconds=None):
+    rep = {"file": os.path.abspath(mp4), "checks": [], "errors": []}
+
+    def add(name, ok, detail, blocking=True):
+        rep["checks"].append({"check": name, "ok": bool(ok),
+                              "detail": detail, "blocking": blocking})
+
+    info = _probe(mp4) or {}
+    streams = info.get("streams") or []
+    v = next((s for s in streams if s.get("codec_type") == "video"), None)
+    a = next((s for s in streams if s.get("codec_type") == "audio"), None)
+    fmt = info.get("format") or {}
+    dur = float(fmt.get("duration") or 0)
+    rep["duration_s"] = round(dur, 2)
+    rep["size_bytes"] = int(fmt.get("size") or (os.path.getsize(mp4) if os.path.exists(mp4) else 0))
+
+    if not v:
+        rep["errors"].append("no video stream / corrupt container")
+        add("file_integrity", False, "ffprobe could not read a video stream")
+        rep["ok"] = False
+        rep["score"] = 0
+        return rep
+
+    # 13 corruption / 1 resolution / 2 fps
+    add("file_integrity", dur > 1 and rep["size_bytes"] > 200_000,
+        f"duration={dur:.2f}s size={rep['size_bytes']//1024}KB")
+    W, H = int(v.get("width") or 0), int(v.get("height") or 0)
+    add("resolution", (W, H) == (expected_w, expected_h) or
+        (H, W) == (expected_w, expected_h) or (W >= 1080 and H >= 1080),
+        f"{W}x{H} (target {expected_w}x{expected_h})")
+    num, den = (v.get("r_frame_rate") or "0/1").split("/")
+    fps = float(num) / float(den or 1) if float(den or 1) else 0
+    add("frame_rate", abs(fps - expected_fps) <= 1.0, f"{fps:.2f} fps (target {expected_fps})")
+
+    # 4 missing audio + 3 sync
+    add("audio_present", bool(a), "audio stream " + ("found" if a else "MISSING"))
+    if a:
+        adur = float(a.get("duration") or dur)
+        vdur = float(v.get("duration") or dur)
+        add("av_duration_sync", abs(adur - vdur) <= 0.6,
+            f"video={vdur:.2f}s audio={adur:.2f}s delta={abs(adur - vdur):.2f}s")
+
+    # 5 black frames / 6 frozen frames
+    r = _run(["ffmpeg", "-hide_banner", "-nostats", "-i", mp4,
+              "-vf", "blackdetect=d=0.35:pix_th=0.10", "-an", "-f", "null", "-"])
+    black = [(float(s), float(e)) for s, e in
+             re.findall(r"black_start:([\d.]+) black_end:([\d.]+)", r.stderr or "")]
+    # The finished timeline deliberately fades in from black (0.8s) and out
+    # to black (1.2s) - motion.assemble's fade_in/fade_out. The head fade is
+    # already ignored (a defect segment must start after 1.0s), but the tail
+    # fade was not: on a moderately dark closing shot the fade pushes the
+    # frame under the black threshold for the last ~0.8s, and QC failed the
+    # film for a fade the engine itself applied (fix 2026-11-22). A segment
+    # wholly inside the closing fade window and reaching the end of the film
+    # is design, not missing footage, so it is not counted as a defect. The
+    # detail string now names the first defect segment's timestamps so a
+    # future failure is locatable from the QC report alone.
+    def _in_tail_fade(b):
+        return b[0] >= dur - 1.3 and b[1] >= dur - 0.15
+    long_black = [b for b in black
+                  if b[1] - b[0] > 0.6 and b[0] > 1.0
+                  and not _in_tail_fade(b)]
+    black_cov = sum(e - s for s, e in black) / dur if dur else 0.0
+    add("black_frames", not long_black and black_cov < 0.5,
+        f"{len(black)} black ranges, {len(long_black)} longer than 0.6s, "
+        f"{black_cov * 100:.0f}% of runtime black"
+        + (f"; first long segment {long_black[0][0]:.1f}-{long_black[0][1]:.1f}s"
+           if long_black else ""))
+
+    # 6 frozen frames: 2s-sampled luma-diff runs (see _frozen_runs above).
+    # BLOCKING since 2026-11-22: a frozen BRIGHT still is invisible to
+    # black_frames, and the old freezedetect version of this check was
+    # non-blocking, so a render that sat on one stock photo for ~98% of
+    # its runtime still passed QC and published.
+    frozen = _frozen_runs(mp4, dur)
+    long_frozen = [f for f in frozen if f[1] - f[0] > _FROZEN_MAX_RUN]
+    add("frozen_frames", not long_frozen,
+        f"{len(long_frozen)} frozen ranges longer than {_FROZEN_MAX_RUN:.0f}s "
+        f"(2s-sampled luma diff < {_FROZEN_DIFF})"
+        + (f"; first frozen segment {long_frozen[0][0]:.1f}-{long_frozen[0][1]:.1f}s"
+           if long_frozen else ""))
+
+    # 7 duplicate footage / 8 missing assets
+    if assets:
+        used = [a.get("asset_id") for a in assets if a.get("source") != "generated"]
+        dup = len(used) - len(set(used))
+        add("duplicate_footage", dup == 0, f"{dup} repeated asset ids "
+                                          f"of {len(used)} sourced assets")
+        missing = [a["path"] for a in assets if not os.path.exists(a.get("path", ""))]
+        add("scene_assets_present", not missing,
+            f"{len(assets)} assets, {len(missing)} missing files")
+        cards = [a for a in assets if a.get("source") == "generated"]
+        add("generated_fallback_share", len(cards) <= max(1, len(assets) // 3),
+            f"{len(cards)}/{len(assets)} scenes used a generated card",
+            blocking=False)
+        lic = sorted({a.get("license", "?") for a in assets})
+        rep["licenses"] = lic
+        widths = [a.get("width") or 0 for a in assets if a.get("source") != "generated"]
+        if widths:
+            low = sum(1 for w in widths if w and w < 960)
+            add("source_resolution", low <= max(1, len(widths) // 2),
+                f"{low}/{len(widths)} sourced clips are below 960px wide",
+                blocking=False)
+
+    # 9 subtitle timing
+    if captions_meta:
+        ce = caption_errors or []
+        add("subtitle_timing", not ce,
+            f"{captions_meta.get('cues', 0)} cues ({captions_meta.get('timing_source')})"
+            + (f"; {len(ce)} problems: {ce[:3]}" if ce else ""))
+    # 10 clipping / 11 silence
+    try:
+        from . import audio as A
+    except ImportError:
+        import audio as A
+    if a:
+        m = A.measure(mp4)
+        rep["audio_metrics"] = m
+        add("audio_clipping", (m.get("true_peak_db") or -99) < -0.5,
+            f"true peak {m.get('true_peak_db')} dBTP (target < -0.5)",
+            blocking=False)
+        sr = m.get("silence_ratio")
+        add("excessive_silence", sr is not None and sr < 0.22,
+            f"silence ratio {sr} of runtime", blocking=False)
+        add("loudness", m.get("lufs") is not None and -18 <= (m.get("lufs") or 0) <= -11,
+            f"integrated {m.get('lufs')} LUFS (target -14 +/-3)", blocking=False)
+
+    # 12 render errors
+    add("render_errors", not render_errors, f"{len(render_errors or [])} scene errors"
+        + (f": {render_errors[:2]}" if render_errors else ""))
+
+    # 14 duration vs narration
+    if storyboard:
+        nd = storyboard.get("narration_duration") or 0
+        if nd:
+            add("final_duration", abs(dur - nd) <= max(2.5, nd * 0.03),
+                f"final {dur:.2f}s vs narration {nd:.2f}s")
+        scene_sum = sum(s.get("duration", 0) for s in storyboard.get("scenes", []))
+        add("scene_coverage", abs(scene_sum - nd) <= max(1.5, nd * 0.02),
+            f"scene timeline {scene_sum:.2f}s vs narration {nd:.2f}s")
+
+    blocking = [c for c in rep["checks"] if c["blocking"]]
+    passed = sum(1 for c in blocking if c["ok"])
+    rep["score"] = round(100 * passed / len(blocking), 1) if blocking else 0
+    rep["ok"] = all(c["ok"] for c in blocking)
+    rep["not_provable"] = ("subjective cinematic quality (pacing taste, emotional "
+                           "impact, hook strength) is NOT verified by these checks")
+    return rep
+
+
+def save(rep, path):
+    os.makedirs(os.path.dirname(os.path.abspath(path)) or ".", exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(rep, f, indent=1, ensure_ascii=False)
+    return path
+
+
+def summary(rep):
+    bad = [c for c in rep.get("checks", []) if not c["ok"]]
+    head = (f"QC {'PASS' if rep.get('ok') else 'FAIL'} — score {rep.get('score')}, "
+            f"{rep.get('duration_s')}s, {rep.get('size_bytes', 0)//1024//1024} MB")
+    lines = [head]
+    for c in rep.get("checks", []):
+        lines.append(f"  {'ok  ' if c['ok'] else 'FAIL'} {c['check']}: {c['detail']}")
+    return "\n".join(lines)
