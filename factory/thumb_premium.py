@@ -9,13 +9,25 @@ from the repo. This generator is the deterministic, dependency-light
 primary: PIL + ffmpeg only, no LLM, no image-model quota, no network.
 
 Design, measured from a real @airevolutionx thumbnail (GPT 6.2 Astra,
-_VXBCcECXJ4, read 2026-11-22): near-black canvas, a short subject line in
-white ("GPT 6.2 ASTRA"), a thin gold rule under it, then a 3-5 word hook in
-very large bold caps - white with ONE emotional word in glowing red.
-Ours: the produced video's own frame as the background (darkened, with a
-left-weighted black gradient so text always wins), the model/subject line
-on top, the hook below it, and the channel bug (red bar + NEXTAI VISION)
-in the top-left corner, matching the house branding.
+_VXBCcECXJ4, read 2026-11-22): near-black canvas, a LARGE expressive face
+cutout on the left (~45% of the frame), and on the right a short subject
+line in white ("GPT 6.2 ASTRA"), a thin gold rule under it, then a 3-5
+word hook in very large bold caps - white with ONE emotional word in
+glowing red.
+Ours (owner spec 2026-11-22, corrected the same night after the owner
+sent a screenshot of the reference channel's page): there is NO fixed
+face and NO fixed accent - like the reference, the visual and the text
+colours follow the TOPIC. A small library of generated faces lives in
+factory/assets/faces/ (each company's own public face for its stories,
+an expressive drama man, a worried shock face, a robot profile for
+model launches); _style_for() picks the face and the accent/rule
+colours from the title's brand and mood (Google cyan, Anthropic amber,
+drama red). The text block (subject line + coloured rule, hook) sits
+to the right of the face. No channel name appears on the canvas.
+Behind both sits the produced video's own frame, darkened (or the
+procedural dark-tech backdrop). If the face asset is missing at runtime,
+the generator falls back to the previous centred-text design - fail-soft,
+never raises.
 
 Writes BOTH workdir/thumb.jpg (what factory.set_thumbnail reads) and
 workdir/thumbnail.jpg (what the QC gate and the variants engine use).
@@ -32,7 +44,6 @@ W, H = 1280, 720
 ACCENT = (255, 32, 32)          # the one accent colour: signal red
 GOLD = (255, 194, 26)           # subject rule, as in the reference
 WHITE = (255, 255, 255)
-BRAND = "NEXTAI VISION"
 
 _STOP = {
     "the", "a", "an", "and", "or", "of", "to", "in", "on", "for", "with",
@@ -231,20 +242,123 @@ def _cover(img):
     return im.crop((x, y, x + W, y + H))
 
 
-def _darken(img):
-    """Boost a touch, darken, then lay a left-weighted black gradient so
-    the text side is always close to the reference's black canvas."""
+def _darken(img, side="left"):
+    """Boost a touch, darken, then lay a black gradient weighted toward
+    `side` so the text side is always close to the reference's black
+    canvas (left for the centred design, right for the face design)."""
     from PIL import Image, ImageDraw, ImageEnhance
     im = ImageEnhance.Color(img).enhance(1.12)
     im = ImageEnhance.Contrast(im).enhance(1.07)
     im = ImageEnhance.Brightness(im).enhance(0.52)
     grad = Image.new("L", (W, 1))
-    grad.putdata([int(228 - 108 * (x / W)) for x in range(W)])
+    if side == "right":
+        grad.putdata([int(96 + 136 * (x / W)) for x in range(W)])
+    else:
+        grad.putdata([int(228 - 108 * (x / W)) for x in range(W)])
     black = Image.new("RGB", (W, H), (0, 0, 0))
     im = Image.composite(black, im, grad.resize((W, H)))
     d = ImageDraw.Draw(im, "RGBA")
     d.rectangle([0, H - 190, W, H], fill=(0, 0, 0, 66))
     return im
+
+# --------------------------------------------------------------------------
+# per-topic style: face + accent colours follow the topic (owner rule)
+
+_FACE_DRAMA = "drama_man.jpg"        # expressive man, hand on forehead
+_FACE_SHOCK = "shock_face.jpg"       # worried face, hand over mouth
+_FACE_ROBOT = "robot_profile.jpg"    # AI robot in profile, for launches
+_FACE_OPENAI = "face_openai.jpg"     # each company's own public face,
+_FACE_ANTHROPIC = "face_anthropic.jpg"  # as the reference channel uses
+_FACE_GOOGLE = "face_google.jpg"
+
+_DRAMA_WORDS = {
+    "shock", "shocked", "shocking", "shockingly", "mad", "panic",
+    "panicking", "broke", "wild", "embarrassed", "cracked", "chaos",
+    "attack", "warning", "dangerous", "furious", "angry", "destroyed",
+    "disaster", "worst", "fail", "failed", "fails", "crash", "crashed",
+    "banned", "leaked", "exposed", "secret", "secrets", "unlocked",
+    "containment", "terrifying", "scary",
+}
+
+
+def _style_for(title):
+    """Pick the thumbnail style for a title: the accent + rule colours
+    follow the brand, the face follows the mood. Drama (an emotional
+    story) gets a human face; a model launch gets the robot profile."""
+    t = (title or "").lower()
+    words = set(re.findall(r"[a-z0-9]+", t))
+    accent, rule = ACCENT, GOLD
+    tint = (58, 8, 8)                              # deep maroon (drama)
+    if "gemini" in t or "google" in t or "deepmind" in t:
+        accent = rule = (0, 229, 255)              # Google cyan
+        tint = (4, 52, 72)                         # deep cyan-blue
+    elif "anthropic" in t or "claude" in t:
+        accent, rule = (255, 170, 0), GOLD         # Anthropic amber
+        tint = (56, 36, 4)                         # deep warm amber
+    elif "qwen" in t or "deepseek" in t:
+        accent = rule = (0, 255, 170)              # mint
+        tint = (4, 56, 36)                         # deep green
+    # the reference puts each company's own public face on its stories
+    # (OpenAI's presenter on OpenAI videos, Google's on Google's);
+    # product launches get the robot visual, and brand-less drama gets
+    # an expressive face, alternating deterministically for variety
+    launch = any(w in t for w in ("introducing", "unleashes", "drops",
+                                  "launches", "unveils", "dropped"))
+    if "anthropic" in t or "claude" in t:
+        face = _FACE_ANTHROPIC
+    elif "openai" in t or "gpt" in t or "chatgpt" in t:
+        face = _FACE_OPENAI
+    elif ("google" in t or "gemini" in t or "deepmind" in t) \
+            and not launch:
+        face = _FACE_GOOGLE
+    elif words & _DRAMA_WORDS:
+        face = _FACE_DRAMA if sum(t.encode()) % 2 == 0 else _FACE_SHOCK
+    else:
+        face = _FACE_ROBOT
+    return {"accent": accent, "rule": rule, "face": face, "tint": tint}
+
+
+def _load_face(name=None):
+    """The topic face asset, or None if absent (fail-soft fallback)."""
+    here = os.path.dirname(os.path.abspath(__file__))
+    cands = []
+    if name:
+        cands.append(os.path.join(here, "assets", "faces", name))
+    cands.append(os.path.join(here, "assets", "faces", _FACE_ROBOT))
+    cands.append(os.path.join(here, "assets", "presenter_face.jpg"))
+    for p in cands:
+        if os.path.exists(p):
+            try:
+                from PIL import Image
+                return Image.open(p).convert("RGB")
+            except Exception:
+                continue
+    return None
+
+
+def _paste_face(im, face):
+    """Composite the presenter LARGE on the left: ~44% of the canvas at
+    full height, with its right edge melted into the canvas through a
+    horizontal alpha gradient. Returns (image, panel_width)."""
+    from PIL import Image, ImageEnhance
+    panel_w = int(W * 0.44)                      # 563 of 1280
+    iw, ih = face.size
+    sc = max(panel_w / iw, H / ih)
+    f = face.resize((round(iw * sc), round(ih * sc)), Image.LANCZOS)
+    x = (f.width - panel_w) // 2
+    y = (f.height - H) // 2
+    f = f.crop((x, y, x + panel_w, y + H))
+    f = ImageEnhance.Color(f).enhance(1.07)
+    f = ImageEnhance.Contrast(f).enhance(1.04)
+    blend = 200                                  # px of melt on the edge
+    row = [255 if i < panel_w - blend
+           else int(255 * (panel_w - i) / blend)
+           for i in range(panel_w)]
+    mask = Image.new("L", (panel_w, H))
+    mask.putdata(row * H)
+    base = im.convert("RGBA")
+    base.paste(f.convert("RGBA"), (0, 0), mask)
+    return base.convert("RGB"), panel_w
 
 
 # --------------------------------------------------------------------------
@@ -305,33 +419,55 @@ def build(e, workdir, video_path=None, clip_path=None):
                     break
         if bg is None:
             bg = _procedural_bg()
-        im = _darken(_cover(bg))
+        style = _style_for(title)
+        face = _load_face(style["face"])
+        im = _darken(_cover(bg),
+                     side="right" if face is not None else "left")
+        # topic-tinted canvas (owner rule): the reference's background is
+        # not always black - it carries a deep tint of the topic colour
+        # (maroon for drama, deep blue for Google, warm amber for
+        # Anthropic), with a soft glow behind the text block
+        tint = style.get("tint")
+        if tint:
+            im = Image.blend(im, Image.new("RGB", (W, H), tint), 0.42)
+            glow = Image.new("RGB", (W, H), (0, 0, 0))
+            gd = ImageDraw.Draw(glow)
+            gd.ellipse([W - 620, 120, W + 260, 640],
+                       fill=tuple(int(c * 0.55) for c in tint))
+            glow = glow.filter(ImageFilter.GaussianBlur(120))
+            from PIL import ImageChops
+            im = ImageChops.add(im, glow)
+        panel_w = 0
+        if face is not None:
+            im, panel_w = _paste_face(im, face)
         draw = ImageDraw.Draw(im)
 
-        mx = 62                      # left margin
-        max_w = W - mx - 40
+        if panel_w:
+            mx = panel_w + 36        # text block sits right of the face
+            max_w = W - mx - 34
+        else:
+            mx = 62                  # fallback: previous centred design
+            max_w = W - mx - 40
 
-        # brand bug (top-left): red bar + wordmark, as on existing thumbs
-        bf = _font(40)
-        draw.rectangle([mx, 40, mx + 10, 40 + 46], fill=ACCENT)
-        draw.text((mx + 24, 42), BRAND, font=bf, fill=WHITE)
+        # no channel name anywhere on the canvas (owner rule - the
+        # reference thumbnails carry none either, only the topic)
 
         # subject line + gold rule (the reference's top text block)
-        y = 148
+        y = 84
         if subject:
             sf, _ = _fit(draw, [subject], max_w, 96, 54)
             draw.text((mx + 2, y), subject, font=sf, fill=WHITE)
             y += int(sf.size * 1.18)
             glow = Image.new("RGB", (W, H), (0, 0, 0))
             gd = ImageDraw.Draw(glow)
-            gd.line([(mx + 2, y), (min(W - 40, mx + 560), y)],
-                    fill=(120, 84, 0), width=9)
+            gd.line([(mx + 2, y), (min(W - 40, mx + min(560, max_w)), y)],
+                    fill=tuple(c // 2 for c in style["rule"]), width=9)
             glow = glow.filter(ImageFilter.GaussianBlur(7))
             from PIL import ImageChops
             im = ImageChops.add(im, glow)
             draw = ImageDraw.Draw(im)
-            draw.line([(mx + 2, y), (min(W - 40, mx + 560), y)],
-                      fill=GOLD, width=4)
+            draw.line([(mx + 2, y), (min(W - 40, mx + min(560, max_w)), y)],
+                      fill=style["rule"], width=4)
             y += 34
 
         # hook: fit by width AND by the height left under the subject
@@ -339,6 +475,12 @@ def build(e, workdir, video_path=None, clip_path=None):
         hf, hs = _fit(draw, lines, max_w, 196, 76)
         while len(lines) * hs * 1.07 > avail_h and hs > 76:
             hs -= 6
+            hf = _font(hs)
+        # guarantee: a hook line must never run off the canvas, whatever
+        # font is in use (the _fit floor can still overflow on wide fonts)
+        while hs > 40 and any(draw.textlength(t, font=hf) > max_w
+                              for t in lines):
+            hs -= 4
             hf = _font(hs)
         stroke = max(4, hs // 15)
 
@@ -360,7 +502,7 @@ def build(e, workdir, video_path=None, clip_path=None):
             x = mx
             for w_i, word in enumerate(ln.split(" ")):
                 wtxt = word + (" " if w_i < len(ln.split(" ")) - 1 else "")
-                fill = ACCENT if word == hi else WHITE
+                fill = style["accent"] if word == hi else WHITE
                 draw.text((x, yy), wtxt, font=hf, fill=fill,
                           stroke_width=stroke, stroke_fill=(0, 0, 0))
                 x += draw.textlength(wtxt, font=hf)
