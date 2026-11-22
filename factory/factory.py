@@ -898,10 +898,18 @@ def render(e, workdir, clips, audio):
         clip, wc = sg["clip"], sg["wc"]
         di = (dur + XF * (n - 1)) * wc / wsum
         if sg["intro"] is None:
-            cdur = min(clip["dur"], di * 2)      # cap pre-slow trim
+            # OWNER FIX 2026-11-22: cut the clip AT the segment end. The old
+            # cap (di * 2) took up to twice the segment's length from the
+            # source and squeezed it into the slot via setpts (slow < 1), so
+            # a 15s clip under a 10s beat played its full 15s (sped up)
+            # instead of being trimmed to the 10s the narration covers. Now a
+            # longer clip is trimmed to exactly di at natural speed; the
+            # slow-mo below only ever stretches SHORTER clips (slow >= 1),
+            # whose remaining gap is still filled by the clone pad.
+            cdur = min(clip["dur"], di)          # trim at the segment end
             trim = f"trim=0:{cdur:.3f}"
         else:
-            cdur = max(min(clip["dur"] / 2.0, di * 2), 0.4)
+            cdur = max(min(clip["dur"] / 2.0, di), 0.4)
             if sg["intro"] == 0:
                 trim = f"trim=0:{cdur:.3f}"
             else:  # second half of the clip, so the cut shows new motion
