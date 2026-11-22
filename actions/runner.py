@@ -1180,20 +1180,27 @@ def write_report(e, vid, publish_at, slot_local, mode, extra="", qc=None):
         if e.get("_cine_qc_failures"):
             qc_block += ("**Cinematic QC failures:** "
                          + str(e["_cine_qc_failures"])[:800] + "\n")
+    # Thumbnail outcome (2026-11-22): the attach used to be invisible - the
+    # report only carried a ChatGPT prompt for the owner while set_thumbnail
+    # failed or succeeded silently in the workflow log. Record it durably.
+    thumb_block = ""
+    if e.get("_thumb_status"):
+        thumb_block = ("\n**Thumbnail:** " + str(e["_thumb_status"])[:200]
+                       + "\n")
     open(f, "w").write(f"""# {e['title']}
 
 **Status:** {state}
 **Slot (Dhaka):** {slot_local or 'n/a'}  |  **Slot (UTC):** {publish_at or 'n/a'}
 {"**Video:** https://www.youtube.com/watch?v=" + vid if vid else ""}
 **Topic pillar:** {e.get('content_pillar')}  |  **Sources:** {', '.join(str(x)[:60] for x in (e.get('verified_sources') or [])[:2])}
-{qc_block}
+{qc_block}{thumb_block}
 
 ## Thumbnail prompt (owner makes it in ChatGPT)
 {extra}
 
 ## Report (বাংলা)
 ভিডিও তৈরি হয়েছে Actions রানার দিয়ে (কোনো Base44 ক্রেডিট খরচ হয়নি)।
-থাম্বনেল উপরের প্রম্পট দিয়ে ChatGPT-তে বানিয়ে নিচে।
+থাম্বনেল অটো-জেনারেট হয়ে আপলোডের সময় API দিয়ে যুক্ত করা হয় — ফলাফল উপরের Thumbnail লাইনে।
 """)
     return f
 
@@ -1304,6 +1311,29 @@ def _three_thumbs(e, workdir, pairs):
         return bool(res.get("final") and os.path.exists(res["final"]))
     except Exception as ex:
         log("three-thumb step failed: " + str(ex)[:160])
+        return False
+
+
+def _premium_thumb(e, workdir, video_path=None):
+    """Premium PIL thumbnail (factory/thumb_premium.py): the @airevolutionx
+    grammar measured 2026-11-22 - dark frame from the produced video,
+    subject line + gold rule, huge hook text with one red accent word.
+    Deterministic (no LLM hook copy, no image-model quota), writes both
+    thumb.jpg (set_thumbnail) and thumbnail.jpg (QC gate). Fail-soft."""
+    try:
+        import thumb_premium
+    except Exception as ex:
+        log("thumb_premium unavailable: " + str(ex)[:120])
+        return False
+    try:
+        p = thumb_premium.build(e, workdir, video_path=video_path)
+        if p and os.path.exists(p):
+            log("thumbs: premium PIL thumbnail selected")
+            return True
+        log("thumbs: premium generator produced no file")
+        return False
+    except Exception as ex:
+        log("premium thumb failed: " + str(ex)[:160])
         return False
 
 
@@ -1784,7 +1814,7 @@ def main():
     # Thumbnail FIRST: the QC gate scores the thumbnail (10 pts) and used to
     # block a video over a file that was only generated after the upload.
     try:
-        if not _three_thumbs(e, workdir, pairs):
+        if not _premium_thumb(e, workdir, mp4) and not _three_thumbs(e, workdir, pairs):
             if not factory.make_thumb_ai(e, workdir):
                 factory.make_thumb(e, workdir, pairs[0][0])
     except Exception as ex:
@@ -1817,11 +1847,18 @@ def main():
     try:
         if not (os.path.exists(os.path.join(workdir, "thumbnail.jpg"))
                 or os.path.exists(os.path.join(workdir, "thumb.jpg"))):
-            if not _three_thumbs(e, workdir, pairs):
+            if not _premium_thumb(e, workdir, mp4) and not _three_thumbs(e, workdir, pairs):
                 if not factory.make_thumb_ai(e, workdir):
                     factory.make_thumb(e, workdir, pairs[0][0])
-        factory.set_thumbnail(vid, workdir)
+        if factory.set_thumbnail(vid, workdir):
+            e["_thumb_status"] = "attached"
+        elif not os.path.exists(os.path.join(workdir, "thumb.jpg")):
+            e["_thumb_status"] = "FAILED - no thumbnail file was generated"
+        else:
+            e["_thumb_status"] = ("FAILED - thumbnails.set API error "
+                                  "(see workflow log 'thumbnail:' lines)")
     except Exception as ex:
+        e["_thumb_status"] = "FAILED - exception: " + str(ex)[:120]
         log("thumbnail step failed (video already uploaded; continuing): " + str(ex)[:140])
 
     # DAILY cadence (owner 2026-10-07 21:46 BD): 2 Shorts/day.
