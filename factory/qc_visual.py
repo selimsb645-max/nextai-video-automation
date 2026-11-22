@@ -9,6 +9,7 @@ Checks
   * resolution and aspect ratio
   * black frames (ffmpeg blackdetect)
   * frozen frames (ffmpeg freezedetect)
+  * frozen runs >10s (2s-sampled luma diff) - BLOCKING, see frozen_runs()
   * scene count and scene duration distribution
   * duplicate / near-duplicate scenes (dHash distance on sampled frames)
   * audio clipping (astats peak + number of clipped samples)
@@ -68,6 +69,59 @@ def frozen_frames(mp4):
                     "freezedetect=n=-60dB:d=1.2", "-an", "-f", "null", "-"])
     return [{"t": float(m.group(1))}
             for m in re.finditer(r"freeze_start:\s*([\d.]+)", out)]
+
+
+def frozen_runs(mp4, duration=0.0):
+    """Hard frozen-run detection (added 2026-11-22): sample frames every 2s
+    at 128x72 luma and measure the mean absolute difference between
+    consecutive samples - the STYLE_PROFILE method. Returns
+    [{"t", "end", "dur"}] for stretches that stay below codec-noise level
+    (<0.005 mean abs diff) for more than 10s; the first 1s never counts.
+    A frozen BRIGHT still passes blackdetect untouched and cost only the
+    3 freezedetect points above - this is the blocking-grade measurement
+    behind the 2026-11-20 Long that published ~98% frozen."""
+    interval, thresh, w, h = 2.0, 0.005, 128, 72
+    size = w * h
+    try:
+        proc = subprocess.Popen(
+            ["ffmpeg", "-hide_banner", "-nostats", "-i", mp4,
+             "-vf", f"fps=1/{interval:g},scale={w}:{h},format=gray",
+             "-an", "-f", "rawvideo", "-"],
+            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+    except Exception:
+        return []
+    runs, prev, run_start, run_end, idx = [], None, None, None, 0
+    while True:
+        buf = proc.stdout.read(size)
+        if len(buf) < size:
+            break
+        t = idx * interval
+        if prev is not None:
+            diff = sum(abs(a - b) for a, b in zip(prev, buf)) / size / 255.0
+            if diff < thresh:
+                if run_start is None:
+                    run_start = t - interval
+                run_end = t + interval
+            elif run_start is not None:
+                runs.append((run_start, run_end))
+                run_start = None
+        prev, idx = buf, idx + 1
+    try:
+        proc.stdout.close()
+        proc.wait(timeout=30)
+    except Exception:
+        proc.kill()
+    if run_start is not None:
+        runs.append((run_start, run_end))
+    out = []
+    for s, e in runs:
+        if duration:
+            e = min(e, duration)
+        s = max(s, 1.0)  # the first ~1s never counts as frozen time
+        if e - s > 10.0:
+            out.append({"t": round(s, 1), "end": round(e, 1),
+                        "dur": round(e - s, 1)})
+    return out
 
 
 def scene_times(mp4, threshold=0.30):
@@ -173,6 +227,7 @@ def relevance_checks(e, mp4_duration):
 def analyse(e, mp4, workdir, narration_path=None):
     """Run every measurable check. Never raises; returns (score_parts, report)."""
     rep = {"video": os.path.basename(mp4), "problems": [], "checks": {},
+           "blocking_failures": [],
            "subjective_checks": ["cinematic taste / pacing feel = manual review required"]}
     info = probe(mp4)
     vs, aus = _video_stream(info), _audio_stream(info)
@@ -207,6 +262,23 @@ def analyse(e, mp4, workdir, narration_path=None):
         rep["problems"].append({"check": "frozen_frames", "t": f["t"],
                                 "detail": "picture frozen >= 1.2s"})
     rep["checks"]["frozen_frames"] = fz
+
+    # BLOCKING: a single frozen run longer than 10s (2s-sampled luma diff)
+    # fails the publish gate outright, however many points the video earns
+    # elsewhere - see frozen_runs() and runner.quality_gate().
+    fruns = frozen_runs(mp4, dur)
+    rep["checks"]["frozen_runs"] = fruns
+    for r in fruns:
+        rep["problems"].append({"check": "frozen_frames", "t": r["t"],
+                                "detail": f"picture frozen {r['dur']:.1f}s "
+                                          f"({r['t']:.1f}-{r['end']:.1f}s) - "
+                                          "exceeds the 10s hard limit"})
+    if fruns:
+        rep["blocking_failures"].append(
+            {"check": "frozen_frames",
+             "detail": "; ".join(f"frozen {r['dur']:.1f}s at "
+                                 f"{r['t']:.1f}-{r['end']:.1f}s"
+                                 for r in fruns[:3])})
 
     times = scene_times(mp4)
     durs = [round(b - a, 2) for a, b in zip(times, times[1:])]
