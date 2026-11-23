@@ -509,15 +509,20 @@ KOKORO_SR = 24000
 _MOODS = [
     ("sad", ["sad", "tragedy", "tragic", "died", "death", "lost", "grief",
              "mourning", "devastat", "tears", "farewell", "heartbroken",
-             "funeral", "passed away", "no one knew"], 0.90),
+             "funeral", "passed away", "no one knew"], 1.05),
     ("tense", ["warning", "danger", "threat", "war", "attack", "emergency",
                "panic", "fear", "crisis", "alarm", "risk", "nearly",
-               "countdown", "collapse", "too late", "under control"], 0.94),
+               "countdown", "collapse", "too late", "under control"], 1.12),
     ("excited", ["amazing", "incredible", "record", "fastest", "first ever",
                  "breakthrough", "stunned", "shocked", "massive", "historic",
-                 "unbelievable", "exploded", "smashed", "milestone"], 1.04),
+                 "unbelievable", "exploded", "smashed", "milestone"], 1.24),
 ]
-_MOOD_DEFAULT_SPEED = 0.97  # slightly slower than natural = steady documentary pace
+# PACE FIX 2026-11-23 (measured): the 2026-11-20 Long narrated at 119 WPM
+# against the reference channel's 165 WPM - the slow delivery is a large
+# part of why the videos feel machine-made. Speeds raised across all moods
+# (default 0.97 -> 1.16) for a ~145-155 WPM documentary pace; the voice
+# itself (af_heart) is unchanged, only its delivery speed.
+_MOOD_DEFAULT_SPEED = 1.16
 
 
 def _kokoro_speed(text):
@@ -879,11 +884,18 @@ def render(e, workdir, clips, audio):
     # must change every 2-3 seconds so long-video retention holds. Each of the
     # first 3 beats is split into two visually-distinct segments: second half
     # gets a zoom-punch + shifted framing, giving a hard cut inside every beat.
+    # CUT-RHYTHM FIX 2026-11-23 (measured): the split now applies to EVERY
+    # Long beat, not just the first 3. A beat is 26-38 words (~13-19 s of
+    # narration); unsplit, one framing could sit on screen that whole time -
+    # and a short clip under it was slow-stretched + clone-padded, which is
+    # how a single stock photo once filled ~98% of a published Long. Split,
+    # no framing survives longer than half a beat (~7-10 s) and the second
+    # half always shows the clip's other half with a punch cut.
     segs = []
     _btexts = [b.get("t", "") for b in e.get("beats", [])]
     for k, (clip, wc) in enumerate(clips):
         _bt = _btexts[k] if k < len(_btexts) else ""
-        if e.get("kind") != "short" and k < 3:
+        if e.get("kind") != "short":
             segs.append({"clip": clip, "wc": wc / 2.0, "intro": 0, "bt": _bt})
             segs.append({"clip": clip, "wc": wc / 2.0, "intro": 1, "bt": _bt})
         else:
