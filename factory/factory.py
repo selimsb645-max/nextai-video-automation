@@ -551,6 +551,7 @@ def _kokoro_voice(e, out):
     if not parts:
         parts = [s.strip() for s in re.split(r"(?<=[.!?])\s+", e["narration"]) if s.strip()]
     pieces, moods = [], []
+    spans, cursor = [], 0          # measured per-beat timeline (samples)
     try:
         # shorts: keep under the 61s vertical gate; longs: slow steady pace
         sp_factor = (1.05 if e.get("kind") == "short" else 1.0) * KOKORO_SPEED
@@ -563,6 +564,16 @@ def _kokoro_voice(e, out):
                 _rms = float(_np.sqrt(_np.mean(_np.square(audio.astype("float32")))))
                 if _rms > 1e-5:
                     audio = (audio.astype("float32") * (0.09 / _rms)).astype(audio.dtype)
+            # SYNC FIX 2026-11-23: record this beat's REAL span in the final
+            # narration timeline. The cinematic storyboard used to re-estimate
+            # beat boundaries from word counts, so visuals drifted seconds
+            # away from the spoken words by mid-film (owner: "কথাগুলো দেরিতে
+            # হয়"). These spans are measured from the synthesized samples
+            # themselves - scene cuts and captions are built from them.
+            spans.append({"i": i, "t": txt,
+                          "start": round(cursor / KOKORO_SR, 3),
+                          "end": round((cursor + len(audio)) / KOKORO_SR, 3)})
+            cursor += len(audio)
             pieces.append(audio)
             if i < len(parts) - 1:
                 # natural beat pause: base + longer after question/dramatic dots
@@ -581,6 +592,7 @@ def _kokoro_voice(e, out):
                     pause += 0.15
                 pause *= KOKORO_PAUSE
                 pieces.append(np.zeros(int(KOKORO_SR * pause), dtype=audio.dtype))
+                cursor += int(KOKORO_SR * pause)
         full = np.concatenate(pieces)
         wav = out.replace(".mp3", ".wav")
         sf.write(wav, full, KOKORO_SR)
@@ -589,6 +601,20 @@ def _kokoro_voice(e, out):
             os.remove(wav)
         if not ok:
             return False
+        if spans:
+            # sidecar the storyboard/captions consume for exact sync; the
+            # post chain (EQ/loudnorm/encode) preserves duration, and the
+            # storyboard rescales these spans onto the final file's measured
+            # duration, so encoder padding cannot shift them.
+            try:
+                tj = {"version": 1, "source": "kokoro_per_beat_measured",
+                      "sample_rate": KOKORO_SR, "beats": spans,
+                      "total_s": round(cursor / KOKORO_SR, 3)}
+                with open(os.path.join(os.path.dirname(os.path.abspath(out)),
+                                       "beats_timing.json"), "w") as f:
+                    json.dump(tj, f, indent=1)
+            except Exception:
+                pass
         print(f"voice: OK (kokoro {KOKORO_VOICE}, {len(parts)} beats, speeds {','.join(moods[:6])}...)", flush=True)
         return True
     except Exception as ex:

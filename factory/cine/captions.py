@@ -110,19 +110,29 @@ def build(storyboard, out_path, W=1920, H=1080, accent="cyan",
                              f"{{\\fad(120,120)}}{body}")
             timing_parts.append("word")
         else:                                   # character-weighted estimate
-            total = sum(len(c) for c in cues) or 1
-            t = start
-            for c in cues:
-                len_c = len(c)
-                d = max(span * len_c / total, 0.7)
-                t2 = min(t + d, end)
-                if t2 - t < 0.35:
-                    t2 = min(t + 0.35, end)
-                cue_i += 1
-                body = _highlight(c, sc.get("keywords", []), accent_ass)
-                lines.append(f"Dialogue: 0,{ass_time(t)},{ass_time(t2)},Doc,,0,0,0,,"
-                             f"{{\\fad(120,120)}}{body}")
-                t = t2
+            # anchor per SEGMENT (each sentence/clause carries its own
+            # measured span from the storyboard) so a cue can never drift
+            # beyond its own sentence, even inside a merged scene
+            segs = sc.get("segments") or [{"t": text, "start": start,
+                                           "end": end}]
+            for seg in segs:
+                scues = _chunks(seg["t"], max_chars)
+                if not scues:
+                    continue
+                s0, s1 = float(seg["start"]), float(seg["end"])
+                sspan = max(s1 - s0, 0.4)
+                total = sum(len(c) for c in scues) or 1
+                t = s0
+                for c in scues:
+                    d = max(sspan * len(c) / total, 0.7)
+                    t2 = min(t + d, s1)
+                    if t2 - t < 0.35:
+                        t2 = min(t + 0.35, s1)
+                    cue_i += 1
+                    body = _highlight(c, sc.get("keywords", []), accent_ass)
+                    lines.append(f"Dialogue: 0,{ass_time(t)},{ass_time(t2)},Doc,,0,0,0,,"
+                                 f"{{\\fad(120,120)}}{body}")
+                    t = t2
             timing_parts.append("estimated")
 
     os.makedirs(os.path.dirname(os.path.abspath(out_path)) or ".", exist_ok=True)
@@ -132,6 +142,11 @@ def build(storyboard, out_path, W=1920, H=1080, accent="cyan",
         timing_source = "word"
     elif timing_parts and any(t == "word" for t in timing_parts):
         timing_source = "mixed_word_and_estimated"
+    elif str(storyboard.get("timing_source", "")).startswith("tts_measured"):
+        # cues are char-weighted INSIDE scene spans that are themselves the
+        # measured spoken boundaries - the cue can never drift off its
+        # sentence, which is the sync the owner asked for (2026-11-23).
+        timing_source = "char_weight_within_measured_scenes"
     else:
         timing_source = "estimated_char_weight"
     meta = {

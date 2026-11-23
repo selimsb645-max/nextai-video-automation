@@ -184,7 +184,10 @@ def test_end_to_end_micro_film(tmp_path, narration):
     assert os.path.exists(str(tmp_path / "out" / "storyboard.json"))
     assert os.path.exists(str(tmp_path / "out" / "qc_report.json"))
     sb = json.load(open(str(tmp_path / "out" / "storyboard.json")))
-    # short trailing beats may merge into the previous scene; the timeline must
-    # still cover the whole narration with no gap
-    assert 2 <= sb["scene_count"] <= 3
+    # OWNER HOOK RULE 2026-11-23 supersedes the old merge expectation: this
+    # micro film sits entirely inside the first 30 s, where beats are NEVER
+    # merged and a long sentence is clause-split into its own visuals - so
+    # the scene count is >= the beat count, not <=. The timeline must still
+    # cover the whole narration with no gap.
+    assert 3 <= sb["scene_count"] <= 6
     assert not SB.validate(sb)

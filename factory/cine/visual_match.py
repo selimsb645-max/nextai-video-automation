@@ -326,17 +326,78 @@ class ArchiveOrg:
 PROVIDERS = [Pixabay(), Commons(), ArchiveOrg()]
 
 
+def frame_luma(path):
+    """Mean brightness (0..1) of frames at 30% and 70% of the clip, or None.
+
+    Carry-over guard from demo #2 (owner rejection, 2026-11-23): dark/failed
+    archive downloads passed probe() (valid container, real size) and then
+    sat on screen as effectively black frames, failing cinematic QC. A clip
+    whose sampled frames are BOTH near-black is not footage, whatever its
+    metadata says, so the matcher rejects it at match time.
+    """
+    try:
+        pr = probe(path)
+        if not pr:
+            return None
+        vals = []
+        for frac in (0.3, 0.7):
+            at = max(pr[0] * frac, 0.1)
+            r = subprocess.run(["ffmpeg", "-v", "error", "-ss", f"{at:.2f}",
+                                "-i", path, "-frames:v", "1", "-vf",
+                                "scale=64:36,format=gray", "-f", "rawvideo", "-"],
+                               capture_output=True)
+            b = r.stdout
+            if b:
+                vals.append(sum(b) / len(b) / 255.0)
+        return max(vals) if vals else None
+    except Exception:
+        return None
+
+
+# words that must never headline a card (dates/filler, not the story)
+_CARD_WEAK = set("""january february march april may june july august september
+october november december monday tuesday wednesday thursday friday saturday
+sunday today yesterday tomorrow tonight morning evening""".split())
+
+
+_CARD_STOP = set("""a an the of to in on for and or but is are was were it its
+this that as at by with from""".split())
+
+
+def _card_headline(scene):
+    kw = [k for k in (scene.get("keywords") or [])
+          if k.lower().strip(".,!?") not in _CARD_WEAK]
+    if kw:
+        return " ".join(kw[:2]).upper()
+    words = [w.strip(".,!?;:\"'") for w in
+             (scene.get("narration_text", "") or "").split()]
+    words = [w for w in words if w and w.lower() not in _CARD_STOP]
+    return " ".join(words[:3]).upper() or "NEXT AI"
+
+
 # ── motion-graphic card fallback (always available, original) ──────────────
 def make_card(scene, out_png, w=1920, h=1080, accent=(0, 236, 255)):
     """A designed still that still looks intentional: dark gradient, accent
-    rule, the scene's key phrase. Used only when no footage passes QC."""
+    rule, the scene's key phrase. Used only when no footage passes QC.
+
+    PROMPT-LEAK FIX (owner screenshot, demo #2 at 0:55): this card used to
+    print the scene's `visual_description` - the internal generation prompt
+    ("close, dynamic shot of X performing the action the narration
+    describes") - as the on-screen sub-line. That text is an instruction to
+    the matcher, never viewer content. The card now shows only words from
+    the narration line itself."""
     from PIL import Image, ImageDraw, ImageFilter, ImageFont
-    img = Image.new("RGB", (w, h), (7, 10, 18))
+    # BRIGHTNESS FLOOR (demo #3 QC, 2026-11-23): the old gradient topped out
+    # at luma ~25/255, so a card scene tripped blackdetect as a >0.6 s black
+    # segment and failed cinematic QC on its own. The card is a designed
+    # visual, never a black frame - its darkest row now sits at luma ~32 and
+    # the gradient rises to ~56, still a dark navy card to the eye.
+    img = Image.new("RGB", (w, h), (24, 32, 54))
     d = ImageDraw.Draw(img)
     for y in range(h):                      # vertical gradient
         k = y / h
-        d.line([(0, y), (w, y)], fill=(int(7 + 12 * k), int(10 + 14 * k),
-                                      int(18 + 26 * k)))
+        d.line([(0, y), (w, y)], fill=(int(24 + 20 * k), int(32 + 24 * k),
+                                      int(54 + 34 * k)))
     glow = Image.new("RGB", (w, h), (0, 0, 0))
     gd = ImageDraw.Draw(glow)
     gd.ellipse([int(w * 0.55), int(h * 0.05), int(w * 1.15), int(h * 0.95)],
@@ -355,15 +416,17 @@ def make_card(scene, out_png, w=1920, h=1080, accent=(0, 236, 255)):
                 continue
         return ImageFont.load_default()
 
-    phrase = " ".join(scene.get("keywords", [])[:2]).upper() or "NEXT AI"
+    phrase = _card_headline(scene)
     f = font(int(h * 0.12))
     while d.textlength(phrase, font=f) > w * 0.8 and f.size > 40:
         f = font(f.size - 8)
     d.text((w * 0.09, h * 0.44), phrase, font=f, fill=(245, 249, 255))
     d.rectangle([w * 0.09, h * 0.40, w * 0.09 + 120, h * 0.40 + 8], fill=accent)
     sub = font(int(h * 0.028))
-    d.text((w * 0.09, h * 0.60), (scene.get("visual_description", "")[:88]),
-           font=sub, fill=(150, 168, 190))
+    # the sub-line is the spoken line itself (viewer content), never the
+    # internal visual_description prompt - see the leak note above.
+    line = " ".join((scene.get("narration_text", "") or "").split())[:72]
+    d.text((w * 0.09, h * 0.60), line, font=sub, fill=(150, 168, 190))
     img.save(out_png, quality=92)
     return out_png
 
@@ -401,20 +464,42 @@ def _queries_for(scene):
 
 
 def match_scene(scene, out_dir, manifest, used_hashes, used_hues,
-                used_ids, min_score=1, workdir_tag=None):
-    """Return an accepted asset dict for one scene, or a generated card."""
+                used_ids, min_score=1, workdir_tag=None, hook=False):
+    """Return an accepted asset dict for one scene, or a generated card.
+
+    HOOK MODE (owner rule, 2026-11-23): in the first 30 s every visual must
+    show exactly what the line says. Archive.org's Prelinger-era catalogue is
+    matched on film TITLES from the 1930s-60s - it is where demo #2's
+    unrelated B&W laundry film and newspaper close-up came from - so archive
+    is excluded outright in the hook, and every remaining provider must clear
+    a stricter relevance bar (2 query words in the candidate's tags/title,
+    not 1). Outside the hook the relevance gate now applies to ALL providers
+    (previously only Pixabay was gated; archive candidates sailed through
+    with zero overlap). Anything that fails falls back to a designed card
+    built from the line itself, which is never off-topic.
+    """
     os.makedirs(out_dir, exist_ok=True)
     tag = workdir_tag or f"s{scene['scene_id']:02d}"
     rejects = []
+    required = 2 if hook else min_score
+
+    def _required(prov):
+        # Archive.org metadata is a bare film TITLE: one shared word (demo
+        # #3: a "20 google explainer videos" compilation passed on "Google"
+        # alone) proves nothing about the footage, so archive always needs
+        # 2 query words in the title, hook or not.
+        return max(required, 2) if prov.name == "archive" else required
 
     for qi, query in enumerate(_queries_for(scene)):
         for prov in PROVIDERS:
             if not prov.available():
                 continue
+            if hook and prov.name == "archive":
+                continue
             cands = prov.search(query, limit=10)
             cands.sort(key=lambda c: -overlap(query, c.get("tags")))
             for rank, c in enumerate(cands[:6]):
-                if overlap(query, c.get("tags")) < min_score and prov.name == "pixabay":
+                if overlap(query, c.get("tags")) < _required(prov):
                     rejects.append({"id": c["id"], "why": "weak tag overlap",
                                     "query": query})
                     continue
@@ -429,6 +514,12 @@ def match_scene(scene, out_dir, manifest, used_hashes, used_hues,
                 pr = probe(dest)
                 if not pr or pr[0] < 1.6 or pr[1] < 480:
                     rejects.append({"id": c["id"], "why": f"unusable media {pr}",
+                                    "query": query})
+                    continue
+                lum = frame_luma(dest)
+                if lum is not None and lum < 0.05:
+                    rejects.append({"id": c["id"],
+                                    "why": f"near-black frames (luma {lum:.3f})",
                                     "query": query})
                     continue
                 h, hue = dhash(dest), hue_hist(dest)

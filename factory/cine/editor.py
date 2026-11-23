@@ -106,6 +106,41 @@ def _gen_narration(entry, workdir, log):
         return None
 
 
+def _load_beat_spans(entry, narration_path, workdir):
+    """Measured per-beat TTS spans from factory's beats_timing.json sidecar.
+
+    Searched next to the narration file (where gen_voice wrote it), in the
+    cine workdir, and in its parent (the runner generates narration one
+    level up from the cine workdir). Returns (spans, source) or (None, None)
+    when the sidecar is missing or does not align with the entry's beats -
+    the storyboard then falls back to its labelled estimation path.
+    """
+    beats = [b for b in (entry.get("beats") or []) if b.get("t")]
+    if not beats:
+        beats = [{"t": s} for s in SB._split_sentences(entry.get("narration", ""))]
+    cands = []
+    if narration_path:
+        cands.append(os.path.join(os.path.dirname(os.path.abspath(narration_path)),
+                                  "beats_timing.json"))
+    cands.append(os.path.join(workdir, "beats_timing.json"))
+    cands.append(os.path.join(os.path.dirname(os.path.abspath(workdir)),
+                              "beats_timing.json"))
+    for p in cands:
+        try:
+            with open(p) as f:
+                d = json.load(f)
+            rows = d.get("beats") or []
+            if len(rows) != len(beats):
+                continue
+            spans = [{"start": float(r["start"]), "end": float(r["end"])}
+                     for r in rows]
+            if all(s["end"] > s["start"] for s in spans):
+                return spans, d.get("source", "tts_measured")
+        except Exception:
+            continue
+    return None, None
+
+
 def build_baseline(sb, assets, workdir, mixed_audio, W, H, fps, log=print):
     """Render the SAME storyboard and SAME assets the old way: static crop, one
     flat grade, hard cuts, no captions. This is the A/B baseline the new engine
@@ -153,7 +188,15 @@ def build(entry, workdir, narration_path=None, music=None, W=1920, H=1080,
     log(f"narration: {ndur:.1f}s")
 
     # 2 - storyboard -----------------------------------------------------------
-    sb = SB.build(entry, narration_path=npath, duration=ndur, announce=log)
+    beat_spans, span_source = _load_beat_spans(entry, npath, workdir)
+    if beat_spans:
+        log(f"sync: measured per-beat TTS spans loaded ({span_source}) - "
+            f"scene cuts and captions anchor to the real voice")
+    else:
+        log("sync: no measured beat spans - storyboard will estimate "
+            "(timing_source in the report says so)")
+    sb = SB.build(entry, narration_path=npath, duration=ndur,
+                  beat_spans=beat_spans, announce=log)
     errs = SB.validate(sb)
     if errs:
         report["errors"] += errs[:6]
@@ -161,6 +204,8 @@ def build(entry, workdir, narration_path=None, music=None, W=1920, H=1080,
     SB.save(sb, os.path.join(workdir, "storyboard.json"))
     report["stages"]["storyboard"] = {"scenes": sb["scene_count"],
                                       "timing_source": sb["timing_source"],
+                                      "beat_span_source": span_source,
+                                      "hook_scenes": sb.get("hook_scene_count", 0),
                                       "validation_errors": errs}
     report["storyboard"] = sb
 
@@ -171,15 +216,29 @@ def build(entry, workdir, narration_path=None, music=None, W=1920, H=1080,
     used_hues = []
     used_ids = set(manifest.get("history_ids", []))
     assets, clips, render_errors = [], [], []
-    XF = 0.55                     # transition length, must match the assembly
+    measured = str(sb.get("timing_source", "")).startswith("tts_measured")
+    # transition length, must match the assembly. With measured sync the hook
+    # cuts every ~1-2 s; a 0.55 s crossfade would smear them (the scene would
+    # never sit fully on screen), so a hook film uses short 0.25 s fades.
+    XF = 0.25 if any(s.get("hook") for s in sb["scenes"]) else 0.55
     n_scenes = len(sb["scenes"])
     for idx, sc in enumerate(sb["scenes"]):
         # every scene but the last gets a tail long enough to be consumed by the
-        # transition, so the finished film matches the narration to the frame
-        dur = max(sc["duration"], 1.2) + (XF if idx < n_scenes - 1 else 0.0)
+        # transition, so the finished film matches the narration to the frame.
+        # SYNC: with measured spans there is NO 1.2 s duration floor - inflating
+        # a 1.0 s hook scene to 1.2 s would push every later cut off the voice.
+        if measured:
+            dur = max(sc["duration"], 0.6) + (XF if idx < n_scenes - 1 else 0.0)
+        else:
+            dur = max(sc["duration"], 1.2) + (XF if idx < n_scenes - 1 else 0.0)
         try:
-            asset = _matcher()(sc, os.path.join(workdir, "assets"), manifest,
-                               used_hashes, used_hues, used_ids)
+            try:
+                asset = _matcher()(sc, os.path.join(workdir, "assets"), manifest,
+                                   used_hashes, used_hues, used_ids,
+                                   hook=bool(sc.get("hook")))
+            except TypeError:
+                asset = _matcher()(sc, os.path.join(workdir, "assets"), manifest,
+                                   used_hashes, used_hues, used_ids)
         except Exception as e:
             asset = {"kind": "image", "path": VM.make_card(
                 sc, os.path.join(workdir, "assets", f"s{sc['scene_id']:02d}_card.png")),
